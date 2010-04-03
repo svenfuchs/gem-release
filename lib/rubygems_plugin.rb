@@ -26,7 +26,7 @@ class Gem::Commands::ReleaseCommand < Gem::Command
     command = Gem::Commands::BuildCommand.new
     command.handle_options([gemspec])
     command.execute
-    command.load_gemspecs(gemspec).first.filename
+    command.load_gemspecs(gemspec).first.file_name
   end
 
   def push(filename)
