@@ -1,0 +1,24 @@
+h1. gem release
+
+This gem plugin adds a `release` command to the rubygems `gem` command which 
+
+ * builds a gem from your gemspec and
+ * pushes it to rubygems.org
+ * deletes the gem file
+
+h2. Installation
+
+Obviously ...
+
+<pre>
+  $ gem install gem-release
+</pre>
+
+h2. Usage
+
+<pre>
+  $ gem release path/to/your.gemspec
+  $ gem release
+</pre>
+
+If you don't specify a gemspec filename the first \*.gemspec file found in your current working directory will be used.
