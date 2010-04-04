@@ -5,22 +5,19 @@ require 'gem_release/gemspec'
 require 'fileutils'
 
 class InitCommandTest < Test::Unit::TestCase
-  include Gem::Commands
-
   def setup
-    @cwd = Dir.pwd
-    FileUtils.mkdir_p('tmp/foo-bar')
-    Dir.chdir('tmp/foo-bar')
-
-    InitCommand.new.send(:write_scaffold)
+    build_sandbox
+    stub_command(GemspecCommand, :execute)
+    stub_command(InitCommand, :say)
   end
 
   def teardown
-    Dir.chdir(@cwd)
-    FileUtils.rm_r('tmp/foo-bar')
+    teardown_sandbox
   end
 
   test "write_scaffold" do
+    InitCommand.new.send(:write_scaffold)
+
     assert File.file?('lib/foo_bar/version.rb')
     assert File.file?('README')
     assert File.directory?('test')
@@ -30,11 +27,8 @@ class InitCommandTest < Test::Unit::TestCase
   end
 
   test "write_gemspec" do
+    GemspecCommand.new.expects(:execute)
     InitCommand.new.send(:write_gemspec)
-
-    filename = 'foo-bar.gemspec'
-    assert File.exists?(filename)
-    assert_equal 'foo-bar', eval(File.read(filename)).name
   end
 
   test "create_repo" do
@@ -43,12 +37,15 @@ class InitCommandTest < Test::Unit::TestCase
     command.stubs(:github_user).returns('svenfuchs')
     command.stubs(:github_token).returns('token')
 
-    command.expects(:`).with("curl -F 'login=svenfuchs' -F 'name=foo-bar' -F 'token=token' http://github.com/api/v2/yaml/repos/create")
     command.expects(:`).with("git init")
     command.expects(:`).with("git add .")
     command.expects(:`).with("git commit -m 'initial commit'")
     command.expects(:`).with("git remote add origin git@github.com:svenfuchs/foo-bar.git")
     command.expects(:`).with("git push origin master")
+    command.expects(:`).with do |cmd|
+      tokens = %w(curl login=svenfuchs name=foo-bar token=token http://github.com/api/v2/yaml/repos/create)
+      tokens.inject(true) { |result, token| result && cmd =~ /#{token}/ }
+    end
 
     command.send(:create_repo)
   end

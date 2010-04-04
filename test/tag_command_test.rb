@@ -9,7 +9,7 @@ class TagCommandTest < Test::Unit::TestCase
     stub_command(TagCommand, :say)
   end
 
-  test "foo" do
+  test "tag_command" do
     command = TagCommand.new
     command.stubs(:gem_version).returns('1.0.0')
     command.expects(:`).with("git tag -am 'tag v1.0.0' v1.0.0")

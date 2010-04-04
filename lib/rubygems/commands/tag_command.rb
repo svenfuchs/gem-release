@@ -1,14 +1,13 @@
 require 'gem_release/helpers'
 
 class Gem::Commands::TagCommand < Gem::Command
-  include GemRelease::Helpers
+  include GemRelease
+  include Helpers, CommandOptions
 
   attr_reader :arguments, :usage
 
   def initialize
     super 'tag', 'Create a git tag and push --tags to origin'
-    @arguments = '' 
-    @usage = "#{program_name}"
   end
 
   def execute

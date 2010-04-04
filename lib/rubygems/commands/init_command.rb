@@ -1,14 +1,11 @@
 require 'gem_release/helpers'
+require 'rubygems/commands/gemspec_command'
 
 class Gem::Commands::InitCommand < Gem::Command
-  include GemRelease
+  include GemRelease, Gem::Commands
   include Helpers, CommandOptions
 
-  OPTIONS = {
-    :gemspec  => true,
-    :scaffold => false,
-    :github   => false
-  }
+  OPTIONS = { :gemspec => true, :strategy => 'git', :scaffold => false, :github => false }
 
   attr_reader :arguments, :usage
   
@@ -16,11 +13,9 @@ class Gem::Commands::InitCommand < Gem::Command
     super 'init', 'Initialize a new gem source repository', OPTIONS
 
     option :gemspec,  '-g', 'Generate a .gemspec'
+    option :strategy, '-f', 'Strategy for collecting files [glob|git] in .gemspec'
     option :scaffold, '-s', 'Scaffold lib/[gem_name]/version.rb README test/'
     option :github,   '-h', 'Init a git repo, create on github and push'
-
-    @arguments = ''
-    @usage = "#{program_name}"
   end
 
   def execute
@@ -29,14 +24,21 @@ class Gem::Commands::InitCommand < Gem::Command
     create_repo    if options[:github]
   end
 
-  def write_scaffold
-    `mkdir lib test`
-    `touch README`
-    Version.new(options).write
+  def write_gemspec
+    GemspecCommand.new.invoke
   end
 
-  def write_gemspec
-    Gemspec.new(options).write
+  def write_scaffold
+    say 'scaffolding lib/ README test/'
+    `mkdir lib test`
+    `touch README`
+    write_version
+  end
+  
+  def write_version
+    version = Version.new(options)
+    say "Creating #{version.filename}"
+    version.write
   end
 
   def create_repo
