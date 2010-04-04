@@ -1,10 +1,20 @@
 h1. gem release
 
-This gem plugin adds a `release` command to the rubygems `gem` command which 
+This gem plugin adds a @tag@ and a @release@ command to the rubygems @gem@ command.
+
+The @tag@ command
+
+ * executes @git tag -am 'tag [tag_name]' [tag_name]@ and
+ * executes @git push --tags origin@
+
+... with @tag_name@ being the version number as specified in your .gemspec preceeded by a @"v"@ (e.g. @v0.0.1@).
+
+The @release@ command
 
  * builds a gem from your gemspec and
  * pushes it to rubygems.org
  * deletes the gem file
+ * optionally invokes the @tag@ command
 
 h2. Installation
 
