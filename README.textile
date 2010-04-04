@@ -16,11 +16,15 @@ The @release@ command
  * deletes the gem file
  * optionally invokes the @tag@ command
 
+The @gemspec@ command
+
+ * generates an initial @[gem_name].gemspec@ file with sane defaults (will overwrite an existing gemspec)
+
 The @bootstrap@ command
 
- * generates an initial [gem_name].gemspec file with sane defaults
- * optionally scaffolds: lib/[gem_name]/version.rb README test/
- * optionally inits a git repo, creates it on github and pushes it to github
+ * generates an initial @[gem_name].gemspec@ file with sane defaults
+ * optionally scaffolds: @lib/[gem_name]/version.rb@, @README@, @test/@
+ * optionally inits a git repo, creates it on github and pushes it to github (requires git config for @github.user@ and @github.token@ to be set)
 
 h2. Installation
 
@@ -33,8 +37,19 @@ Obviously ...
 h2. Usage
 
 <pre>
-  $ gem release path/to/your.gemspec
-  $ gem release
+  $ gem release your.gemspec       # builds the gem and pushes it to rubygems.org
+  $ gem release                    # uses the first *.gemspec in the current working directory
+  $ gem release --tag              # also executes gem tag
+
+  $ gem tag                        # creates a git tag and pushes tags to the origin repository
+
+  $ gem gemspec                    # generates a [gem_name].gemspec using `git ls-files {app,lib}`.split("\n")
+  $ gem gemspec --strategy glob    # uses s.files = Dir['{lib/**/*,[A-Z]*}']
+
+  $ gem bootstrap
+  $ gem bootstrap --scaffold       # scaffolds lib/[gem_name]/version.rb, README, test/
+  $ gem bootstrap --github         # inits a git repo, creates it on github and pushes it to github
+                                   # (requires git config for github.user and github.token to be set)
 </pre>
 
-If you don't specify a gemspec filename the first \*.gemspec file found in your current working directory will be used.
+If you don't specify a gemspec filename the first *.gemspec file found in your current working directory will be used.
