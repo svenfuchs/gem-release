@@ -1,6 +1,6 @@
 h1. gem release
 
-This gem plugin adds a @tag@ and a @release@ command to the rubygems @gem@ command.
+This gem plugin adds a @init@, @tag@ and a @release@ command to the rubygems @gem@ command.
 
 The @tag@ command
 
@@ -15,6 +15,12 @@ The @release@ command
  * pushes it to rubygems.org
  * deletes the gem file
  * optionally invokes the @tag@ command
+
+The @init@ command
+
+ * generates an initial [gem_name].gemspec file with sane defaults
+ * optionally scaffolds: lib/[gem_name]/version.rb README test/
+ * optionally inits a git repo, creates it on github and pushes it to github
 
 h2. Installation
 
