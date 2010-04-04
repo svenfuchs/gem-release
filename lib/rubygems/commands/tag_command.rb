@@ -12,9 +12,8 @@ class Gem::Commands::TagCommand < Gem::Command
   end
 
   def execute
-    p "KEKSE!"
-    # tag
-    # push
+    tag
+    push
   end
   
   protected
