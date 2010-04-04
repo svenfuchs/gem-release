@@ -1,0 +1,20 @@
+# encoding: utf-8
+
+$: << File.expand_path('../lib', __FILE__)
+require '<%= module_path %>/version'
+
+Gem::Specification.new do |s|
+  s.name         = <%= name.inspect %>
+  s.version      = <%= module_name %>::VERSION
+  s.authors      = <%= authors.inspect %>
+  s.email        = <%= email.inspect %>
+  s.homepage     = <%= homepage.inspect %>
+  s.summary      = <%= summary.inspect %>
+  s.description  = <%= description.inspect %>
+
+  s.files        = <%= files %>
+  s.platform     = Gem::Platform::RUBY
+  s.require_path = 'lib'
+  s.rubyforge_project = '[none]'
+  s.required_rubygems_version = '>= 1.3.6'
+end

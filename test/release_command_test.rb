@@ -1,6 +1,7 @@
 require File.expand_path('../test_helper', __FILE__)
 
 require 'rubygems/commands/release_command'
+require 'gem_release/version'
 
 class ReleaseCommandTest < Test::Unit::TestCase
   include Gem::Commands
@@ -10,6 +11,7 @@ class ReleaseCommandTest < Test::Unit::TestCase
     stub_command(PushCommand, :execute)
     stub_command(TagCommand, :execute)
     stub_command(ReleaseCommand, :remove, :say)
+    GemRelease::VERSION.replace('0.0.1')
   end
   
   test "build executes BuildCommand with the current gemspec filename" do
@@ -21,10 +23,10 @@ class ReleaseCommandTest < Test::Unit::TestCase
   
   test "push executes PushCommand with the current gem filename" do
     command = PushCommand.new
-    command.stubs(:gem_filename).returns('gem-release-0.0.5.gem')
+    command.stubs(:gem_filename).returns('gem-release-0.0.1.gem')
     command.expects(:execute)
     ReleaseCommand.new.send(:push)
-    assert_equal ['gem-release-0.0.5.gem'], command.options[:args]
+    assert_equal ['gem-release-0.0.1.gem'], command.options[:args]
   end
   
   test "tag executes TagCommand if --tag option was given" do
