@@ -1,7 +1,7 @@
 require 'gem_release/helpers'
 require 'rubygems/commands/gemspec_command'
 
-class Gem::Commands::InitCommand < Gem::Command
+class Gem::Commands::BootstrapCommand < Gem::Command
   include GemRelease, Gem::Commands
   include Helpers, CommandOptions
 
@@ -10,12 +10,12 @@ class Gem::Commands::InitCommand < Gem::Command
   attr_reader :arguments, :usage
   
   def initialize
-    super 'init', 'Initialize a new gem source repository', OPTIONS
+    super 'bootstrap', 'Bootstrap a new gem source repository', OPTIONS
 
     option :gemspec,  '-g', 'Generate a .gemspec'
     option :strategy, '-f', 'Strategy for collecting files [glob|git] in .gemspec'
     option :scaffold, '-s', 'Scaffold lib/[gem_name]/version.rb README test/'
-    option :github,   '-h', 'Init a git repo, create on github and push'
+    option :github,   '-h', 'Bootstrap a git repo, create on github and push'
   end
 
   def execute
@@ -45,7 +45,7 @@ class Gem::Commands::InitCommand < Gem::Command
     options = { :login => github_user, :token => github_token, :name  => gem_name }
     options = options.map { |name, value| "-F '#{name}=#{value}'" }.join(' ')
     
-    say 'Initializing git repository'
+    say 'Bootstrapializing git repository'
     `git init`
     
     say 'Staging files'

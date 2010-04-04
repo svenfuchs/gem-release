@@ -1,14 +1,14 @@
 require File.expand_path('../test_helper', __FILE__)
 
-require 'rubygems/commands/init_command'
+require 'rubygems/commands/bootstrap_command'
 require 'gem_release/gemspec'
 require 'fileutils'
 
-class InitCommandTest < Test::Unit::TestCase
+class BootstrapCommandTest < Test::Unit::TestCase
   def setup
     build_sandbox
     stub_command(GemspecCommand, :execute)
-    stub_command(InitCommand, :say)
+    stub_command(BootstrapCommand, :say)
   end
 
   def teardown
@@ -16,7 +16,7 @@ class InitCommandTest < Test::Unit::TestCase
   end
 
   test "write_scaffold" do
-    InitCommand.new.send(:write_scaffold)
+    BootstrapCommand.new.send(:write_scaffold)
 
     assert File.file?('lib/foo_bar/version.rb')
     assert File.file?('README')
@@ -28,11 +28,11 @@ class InitCommandTest < Test::Unit::TestCase
 
   test "write_gemspec" do
     GemspecCommand.new.expects(:execute)
-    InitCommand.new.send(:write_gemspec)
+    BootstrapCommand.new.send(:write_gemspec)
   end
 
   test "create_repo" do
-    command = InitCommand.new
+    command = BootstrapCommand.new
     command.stubs(:say)
     command.stubs(:github_user).returns('svenfuchs')
     command.stubs(:github_token).returns('token')

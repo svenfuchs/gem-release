@@ -9,7 +9,7 @@ class Gem::Commands::GemspecCommand < Gem::Command
   attr_reader :arguments, :usage
 
   def initialize
-    super 'init', 'Initialize a new gem source repository', OPTIONS
+    super 'bootstrap', 'Bootstrap a new gem source repository', OPTIONS
 
     option :strategy, '-f', 'Strategy for collecting files [glob|git] in .gemspec'
   end

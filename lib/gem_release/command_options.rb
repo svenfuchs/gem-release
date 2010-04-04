@@ -11,10 +11,10 @@ module GemRelease
 
       if String === default
         long = "--#{key} #{key.to_s.upcase}"
-        args = [short, long, String, "description (defaults to #{default})"]
+        args = [short, long, String, "#{description} (defaults to #{default})"]
       else
         long = "--[no-]#{key}"
-        args = [short, long, "description (defaults to #{default})"]
+        args = [short, long, "#{description} (defaults to #{default})"]
       end
 
       add_option(*args) { |value, options| options[key] = value }
