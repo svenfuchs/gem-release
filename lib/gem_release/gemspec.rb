@@ -7,8 +7,7 @@ module GemRelease
 
       @authors     ||= [`git config --get user.name`.strip]
       @email       ||= `git config --get user.email`.strip
-      @github_user ||= `git config --get github.user`.strip
-      @homepage    ||= "http://github.com/#{@github_user}/#{name}" || "[your github name]"
+      @homepage    ||= "http://github.com/#{github_user}/#{name}" || "[your github name]"
 
       @summary     ||= '[summary]'
       @description ||= '[description]'

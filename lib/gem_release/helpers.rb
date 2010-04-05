@@ -5,25 +5,29 @@ module GemRelease
     def github_user
       @github_user ||= `git config --get github.user`.strip
     end
-  
+
     def github_token
       @github_token ||= `git config --get github.token`.strip
     end
-  
+
     def gem_name
-      @gem_name ||= gemspec ? gemspec.name : File.basename(Dir.pwd)
+      @gem_name ||= gemspec ? gemspec.name : gem_name_from_directory
     end
-  
+
+    def gem_name_from_directory
+      File.basename(Dir.pwd)
+    end
+
     def gem_filename
       gemspec.file_name
     end
-    
+
     def gem_version
       gemspec.version.to_s
     end
-    
+
     def gemspec
-      @gemspec ||= silence { Gem::Specification.load(gemspec_filename) }
+      @gemspec ||= Gem::Specification.load(gemspec_filename) # silence {  }
     rescue LoadError, RuntimeError
       nil
     end
