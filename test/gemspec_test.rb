@@ -3,7 +3,7 @@ require File.expand_path('../test_helper', __FILE__)
 require 'gem_release/version'
 require 'gem_release/gemspec'
 
-class GemspecTest < Test::Unit::TestCase
+class GemspecTest < MiniTest::Unit::TestCase
   include Gem::Commands
   
   test 'scaffolds a gemspec with default values' do

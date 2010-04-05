@@ -2,7 +2,7 @@ require File.expand_path('../test_helper', __FILE__)
 
 require 'rubygems/commands/release_command'
 
-class HelpersTest < Test::Unit::TestCase
+class HelpersTest < MiniTest::Unit::TestCase
   include Gem::Commands
   
   test "gems_filename" do

@@ -4,7 +4,7 @@ require 'rubygems/commands/bootstrap_command'
 require 'gem_release/gemspec'
 require 'fileutils'
 
-class BootstrapCommandTest < Test::Unit::TestCase
+class BootstrapCommandTest < MiniTest::Unit::TestCase
   def setup
     build_sandbox
     stub_command(GemspecCommand, :execute)
