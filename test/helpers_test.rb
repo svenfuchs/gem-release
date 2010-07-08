@@ -6,11 +6,11 @@ class HelpersTest < MiniTest::Unit::TestCase
   include Gem::Commands
   
   test "gems_filename" do
-    assert_match /gem-release-\d\.\d\.\d\.gem/, ReleaseCommand.new.gem_filename
+    assert_match /gem-release-\d+\.\d+\.\d+\.gem/, ReleaseCommand.new.gem_filename
   end
   
   test "gems_version" do
-    assert_match /^\d\.\d\.\d$/, ReleaseCommand.new.gem_version
+    assert_match /^\d+\.\d+\.\d+$/, ReleaseCommand.new.gem_version
   end
   
   test "gemspec_filename with an cmdline argument given" do
