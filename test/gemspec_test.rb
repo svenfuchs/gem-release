@@ -9,20 +9,40 @@ class GemspecTest < MiniTest::Unit::TestCase
   test 'scaffolds a gemspec with default values' do
     source  = GemRelease::Gemspec.new.render
     gemspec = eval(source)
-    
+
+    common_parameters(gemspec, source)
+
+    assert_match %r(files\s*=[^$]*git ls\-files), source
+  end
+  
+  test 'scaffolds a gemspec with glob strategy' do
+    source  = GemRelease::Gemspec.new(:strategy => 'glob').render
+    gemspec = eval(source)
+
+    common_parameters(gemspec,source)
+
+    assert_match %r(files\s*=[^$]*Dir['{lib/**/*,[A-Z]*}']), source
+  end
+
+  test 'filename' do
+    assert_equal 'gem-release.gemspec', GemRelease::Gemspec.new.filename
+  end
+
+  def common_parameters(gemspec,source)
+
+    user = %x[git config --get user.name].chomp
+    email = %x[git config --get user.email].chomp
+    github_user = %x[git config --get github.user].chomp
+
     assert_equal 'gem-release', gemspec.name
     assert_equal GemRelease::VERSION, gemspec.version.to_s
-    assert_equal ['Sven Fuchs'], gemspec.authors
-    assert_equal 'svenfuchs@artweb-design.de', gemspec.email
-    assert_equal 'http://github.com/svenfuchs/gem-release', gemspec.homepage
+    # will work with local git config
+    assert_equal [user], gemspec.authors
+    assert_equal email, gemspec.email
+    assert_equal "http://github.com/#{github_user}/gem-release", gemspec.homepage
     assert_equal '[summary]', gemspec.summary
     assert_equal '[description]', gemspec.description
     
     assert_match %r(require 'gem_release/version'), source
-    assert_match %r(files\s*=[^$]*git ls\-files), source
-  end
-  
-  test 'filename' do
-    assert_equal 'gem-release.gemspec', GemRelease::Gemspec.new.filename
   end
 end
