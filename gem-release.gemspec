@@ -16,5 +16,10 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.platform     = Gem::Platform::RUBY
   s.rubyforge_project = '[none]'
+
+  s.add_development_dependency 'minitest', '>=1.6.0'
+  s.add_development_dependency 'test_declarative', '>=0.0.2'
+  s.add_development_dependency 'mocha', '>=0.9.8'
+
   s.required_rubygems_version = '>= 1.3.6'
 end
