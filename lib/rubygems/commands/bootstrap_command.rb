@@ -33,12 +33,29 @@ class Gem::Commands::BootstrapCommand < Gem::Command
     `mkdir lib test`
     `touch README`
     write_version
+    write_rakefile
   end
   
   def write_version
     version = Version.new(options)
     say "Creating #{version.filename}"
     version.write
+  end
+
+  def write_rakefile
+    rakefile = <<RAKEFILE
+require 'rake'
+require 'rake/testtask'
+
+Rake::TestTask.new do |t|
+  t.libs << 'lib'
+  t.pattern = 'test/**/*_test.rb'
+  t.verbose = false
+end
+
+task :default => :test
+RAKEFILE
+    File.open('Rakefile', 'w').write(rakefile)
   end
 
   def create_repo
