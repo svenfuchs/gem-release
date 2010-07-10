@@ -11,13 +11,14 @@ module GemRelease
 
       @summary     ||= '[summary]'
       @description ||= '[description]'
+      @strategy = options[:strategy]
     end
     
     def files
-      case @strategy || :git
-      when :glob
-        "Dir['{lib/**/*,[A-Z]*}']"
-      when :git
+      case @strategy || 'git'
+      when 'glob'
+        'Dir.glob("lib/**/**")'
+      when 'git'
         '`git ls-files {app,lib}`.split("\n")'
       end
     end
