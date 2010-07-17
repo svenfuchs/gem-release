@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-$: << File.expand_path('../lib', __FILE__)
+$:.unshift File.expand_path('../lib', __FILE__)
 require 'gem_release/version'
 
 Gem::Specification.new do |s|
