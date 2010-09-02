@@ -15,11 +15,11 @@ module GemRelease
     end
     
     def files
-      case @strategy || 'git'
-      when 'glob'
-        'Dir.glob("lib/**/**")'
+      case @strategy
       when 'git'
         '`git ls-files {app,lib}`.split("\n")'
+      else
+        'Dir.glob("lib/**/**")'
       end
     end
     
