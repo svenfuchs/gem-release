@@ -1,6 +1,10 @@
 h1. gem release
 
-This gem plugin adds a @bootstrap@, @tag@ and a @release@ command to the rubygems @gem@ command.
+This gem plugin adds a @bootstrap@, @bump@, @tag@ and a @release@ command to the rubygems @gem@ command.
+
+The @bump@ command
+
+ * bumps the version number defined in @lib/[gem_name]/version.rb@ to the next major, minor or patch level or to a given, particular version number
 
 The @tag@ command
 
@@ -50,6 +54,11 @@ h2. Usage
   $ gem bootstrap --scaffold       # scaffolds lib/[gem_name]/version.rb, README, test/
   $ gem bootstrap --github         # inits a git repo, creates it on github and pushes it to github
                                    # (requires git config for github.user and github.token to be set)
+
+  $ gem bump                       # Bump the gem version to the next patch level (e.g. 0.0.1 to 0.0.2)
+  $ gem bump --to minor            # Bump the gem version to the next minor level (e.g. 0.0.1 to 0.1.0)
+  $ gem bump --to major            # Bump the gem version to the next major level (e.g. 0.0.1 to 1.0.0)
+  $ gem bump --to 1.1.1            # Bump the gem version to the given version number
 </pre>
 
 If you don't specify a gemspec filename the first *.gemspec file found in your current working directory will be used.
