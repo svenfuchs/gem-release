@@ -1,5 +1,5 @@
 module GemRelease
-  VERSION = '0.0.12'
+  VERSION = '0.0.13'
 
   class Version < Template
     attr_reader :version
@@ -16,5 +16,5 @@ module GemRelease
     def template_name
       'version.erb'
     end
-  end
+  end if defined?(Template)
 end
