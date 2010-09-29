@@ -1,26 +1,24 @@
 $: << File.expand_path('../../lib', __FILE__)
 
-require 'minitest/unit'
-require 'test_declarative'
-require 'mocha'
-
 require 'rubygems'
 require 'rubygems_plugin'
 
-MiniTest::Unit.autorun
+require 'test/unit'
+require 'test_declarative'
+require 'mocha'
 
-class MiniTest::Unit::TestCase
+class Test::Unit::TestCase
   include Gem::Commands
 
   def build_sandbox
     @cwd = Dir.pwd
-    FileUtils.mkdir_p('tmp/foo-bar')
-    Dir.chdir('tmp/foo-bar')
+    FileUtils.mkdir_p('tmp/gem-release-test/foo-bar')
+    Dir.chdir('tmp/gem-release-test/foo-bar')
   end
 
   def teardown_sandbox
     Dir.chdir(@cwd)
-    FileUtils.rm_r('tmp/foo-bar')
+    FileUtils.rm_r('tmp/gem-release-test/foo-bar')
   end
 
   def stub_command(command_class, *methods)

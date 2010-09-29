@@ -3,7 +3,7 @@ require File.expand_path('../test_helper', __FILE__)
 require 'gem_release/version'
 require 'gem_release/gemspec'
 
-class GemspecTest < MiniTest::Unit::TestCase
+class GemspecTest < Test::Unit::TestCase
   include Gem::Commands
   
   test 'scaffolds a gemspec with default values' do
@@ -24,14 +24,19 @@ class GemspecTest < MiniTest::Unit::TestCase
     assert_equal '[description]', gemspec.description
     
     assert_match %r(require 'gem_release/version'), source
-
-    assert_match %r(files\s*=[^$]*git ls\-files), source
+    assert_match %r(files\s*=\s*Dir.glob\(\"lib\/\*\*\/\*\*\"\)), source
   end
   
   test 'scaffolds a gemspec with glob strategy' do
     source  = GemRelease::Gemspec.new(:strategy => 'glob').render
     gemspec = eval(source)
     assert_match %r(files\s*=\s*Dir.glob\(\"lib\/\*\*\/\*\*\"\)), source
+  end
+  
+  test 'scaffolds a gemspec with git strategy' do
+    source  = GemRelease::Gemspec.new(:strategy => 'git').render
+    gemspec = eval(source)
+    assert_match %r(files\s*=[^$]*git ls\-files), source
   end
 
   test 'filename' do

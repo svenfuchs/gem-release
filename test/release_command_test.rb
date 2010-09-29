@@ -3,7 +3,7 @@ require File.expand_path('../test_helper', __FILE__)
 require 'rubygems/commands/release_command'
 require 'gem_release/version'
 
-class ReleaseCommandTest < MiniTest::Unit::TestCase
+class ReleaseCommandTest < Test::Unit::TestCase
   include Gem::Commands
   
   def setup

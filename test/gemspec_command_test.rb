@@ -3,7 +3,7 @@ require File.expand_path('../test_helper', __FILE__)
 require 'rubygems/commands/bootstrap_command'
 require 'rubygems/commands/gemspec_command'
 
-class GemspecCommandTest < MiniTest::Unit::TestCase
+class GemspecCommandTest < Test::Unit::TestCase
   def setup
     build_sandbox
     stub_command(GemspecCommand, :say)
