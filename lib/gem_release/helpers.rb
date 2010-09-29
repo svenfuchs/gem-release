@@ -18,6 +18,14 @@ module GemRelease
       File.basename(Dir.pwd)
     end
 
+    def gem_module_path
+      @gem_module_path ||= gem_name.gsub('-', '_')
+    end
+
+    def gem_module_name
+      @gem_module_name ||= gem_module_path.camelize
+    end
+
     def gem_filename
       gemspec.file_name
     end
@@ -34,7 +42,7 @@ module GemRelease
 
     def gemspec_filename
       @gemspec_filename ||= begin
-        name = Array(options[:args]).first
+        name = Array(options[:args]).first rescue nil
         name ||= Dir['*.gemspec'].first
         name || raise("No gemspec found or given.")
       end

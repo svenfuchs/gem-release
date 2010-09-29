@@ -1,4 +1,3 @@
-require 'gem_release/helpers'
 require 'rubygems/commands/gemspec_command'
 
 class Gem::Commands::BootstrapCommand < Gem::Command

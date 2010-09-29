@@ -1,7 +1,6 @@
 require 'rubygems/commands/build_command'
 require 'rubygems/commands/push_command'
 require 'rubygems/commands/tag_command'
-require 'gem_release/helpers'
 
 class Gem::Commands::ReleaseCommand < Gem::Command
   include GemRelease, Gem::Commands

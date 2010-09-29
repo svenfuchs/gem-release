@@ -1,5 +1,3 @@
-require 'gem_release/helpers'
-
 class Gem::Commands::GemspecCommand < Gem::Command
   include GemRelease
   include Helpers, CommandOptions
