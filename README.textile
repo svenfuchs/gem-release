@@ -59,6 +59,7 @@ h2. Usage
   $ gem bump --to minor            # Bump the gem version to the next minor level (e.g. 0.0.1 to 0.1.0)
   $ gem bump --to major            # Bump the gem version to the next major level (e.g. 0.0.1 to 1.0.0)
   $ gem bump --to 1.1.1            # Bump the gem version to the given version number
+  $ gem bump --push                # Bump and git push to origin
 </pre>
 
 If you don't specify a gemspec filename the first *.gemspec file found in your current working directory will be used.
