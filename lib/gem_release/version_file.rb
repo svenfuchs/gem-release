@@ -48,7 +48,7 @@ module GemRelease
       end
 
       def bumped_content
-        content.sub(VERSION_PATTERN) { "#{$1}#{new_number}#{$3}"}
+        content.sub(VERSION_PATTERN) { "#{$1}#{new_number}#{$3}" }
       end
   end
 end

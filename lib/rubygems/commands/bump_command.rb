@@ -1,26 +1,31 @@
-require 'core_ext/string/camelize'
+require 'rubygems/commands/tag_command'
+require 'rubygems/commands/release_command'
 
 class Gem::Commands::BumpCommand < Gem::Command
-  include GemRelease
+  include GemRelease, Gem::Commands
   include Helpers, CommandOptions
 
   attr_reader :arguments, :usage
 
-  OPTIONS = { :to => :patch, :push => false }
+  OPTIONS = { :version => 'patch', :push => false, :tag => false, :release => false }
 
   def initialize
     super 'bump', 'Bump the gem version', OPTIONS
 
-    option :to,   '-t', 'Target version: next [major|minor|patch] or a given version number [x.x.x]'
-    option :push, '-p', 'Push to origin (defaults to false)'
+    option :version, '-v', 'Target version: next [major|minor|patch] or a given version number [x.x.x]'
+    option :push,    '-p', 'Push to origin'
+    option :tag,     '-t', 'Create a git tag and push --tags to origin'
+    option :release, '-r', 'Build gem from a gemspec and push to rubygems.org'
   end
 
   def execute
     bump
     commit
-    push if options[:push]
+    push    if options[:push] || options[:tag]
+    release if options[:release]
+    tag     if options[:tag]
   end
-  
+
   protected
 
     def bump
@@ -38,8 +43,16 @@ class Gem::Commands::BumpCommand < Gem::Command
       say "Pushing to origin"
       `git push`
     end
-    
+
+    def release
+      ReleaseCommand.new.invoke
+    end
+
+    def tag
+      TagCommand.new.invoke
+    end
+
     def version
-      @version ||= VersionFile.new(:target => options[:to])
+      @version ||= VersionFile.new(:target => options[:version])
     end
 end
