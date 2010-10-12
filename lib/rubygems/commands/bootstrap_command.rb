@@ -1,4 +1,5 @@
 require 'rubygems/commands/gemspec_command'
+require 'core_ext/kernel/silence'
 
 class Gem::Commands::BootstrapCommand < Gem::Command
   include GemRelease, Gem::Commands

@@ -1,4 +1,4 @@
-require 'core_ext/kernel/silence'
+require 'core_ext/string/camelize'
 
 module GemRelease
   module Helpers
@@ -35,7 +35,7 @@ module GemRelease
     end
 
     def gemspec
-      @gemspec ||= Gem::Specification.load(gemspec_filename) # silence {  }
+      @gemspec ||= Gem::Specification.load(gemspec_filename)
     rescue LoadError, RuntimeError
       nil
     end
