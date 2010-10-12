@@ -12,7 +12,7 @@ class Gem::Commands::TagCommand < Gem::Command
     tag
     push
   end
-  
+
   protected
 
     def tag
@@ -24,7 +24,7 @@ class Gem::Commands::TagCommand < Gem::Command
       say "Pushing --tags to origin git repository"
       `git push --tags origin`
     end
-    
+
     def tag_name
       "v#{gem_version}"
     end

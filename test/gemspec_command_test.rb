@@ -9,11 +9,11 @@ class GemspecCommandTest < Test::Unit::TestCase
     stub_command(GemspecCommand, :say)
     stub_command(BootstrapCommand, :say)
   end
-  
+
   def teardown
     teardown_sandbox
   end
-  
+
   test "gemspec_command" do
     GemspecCommand.new.invoke
 

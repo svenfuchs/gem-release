@@ -12,7 +12,7 @@ module GemRelease
     def filename
       "lib/#{module_path}/version.rb"
     end
-    
+
     def template_name
       'version.erb'
     end

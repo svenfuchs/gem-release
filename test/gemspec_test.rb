@@ -5,7 +5,7 @@ require 'gem_release/gemspec'
 
 class GemspecTest < Test::Unit::TestCase
   include Gem::Commands
-  
+
   test 'scaffolds a gemspec with default values' do
     source  = GemRelease::Gemspec.new.render
     gemspec = eval(source)
@@ -22,17 +22,17 @@ class GemspecTest < Test::Unit::TestCase
     assert_equal "http://github.com/#{github_user}/gem-release", gemspec.homepage
     assert_equal '[summary]', gemspec.summary
     assert_equal '[description]', gemspec.description
-    
+
     assert_match %r(require 'gem_release/version'), source
     assert_match %r(files\s*=\s*Dir.glob\(\"lib\/\*\*\/\*\*\"\)), source
   end
-  
+
   test 'scaffolds a gemspec with glob strategy' do
     source  = GemRelease::Gemspec.new(:strategy => 'glob').render
     gemspec = eval(source)
     assert_match %r(files\s*=\s*Dir.glob\(\"lib\/\*\*\/\*\*\"\)), source
   end
-  
+
   test 'scaffolds a gemspec with git strategy' do
     source  = GemRelease::Gemspec.new(:strategy => 'git').render
     gemspec = eval(source)

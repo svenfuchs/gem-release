@@ -28,7 +28,7 @@ class Test::Unit::TestCase
     methods.each { |method| command.stubs(method) }
     command_class.stubs(:new).returns(command)
   end
-  
+
   def capture_io
     require 'stringio'
 

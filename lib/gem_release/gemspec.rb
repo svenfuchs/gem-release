@@ -13,7 +13,7 @@ module GemRelease
       @description ||= '[description]'
       @strategy = options[:strategy]
     end
-    
+
     def files
       case @strategy
       when 'git'
@@ -22,7 +22,7 @@ module GemRelease
         'Dir.glob("lib/**/**")'
       end
     end
-    
+
     def filename
       "#{name}.gemspec"
     end

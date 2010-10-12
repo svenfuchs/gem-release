@@ -11,7 +11,7 @@ class Gem::Commands::ReleaseCommand < Gem::Command
   attr_reader :arguments, :usage
 
   def initialize
-    super 'release', 'Build a gem from a gemspec and push to rubygems.org'
+    super 'release', 'Build gem from a gemspec and push to rubygems.org'
     option :tag, '-t', 'Create a git tag and push --tags to origin'
     @arguments = "gemspec - optional gemspec file name, will use the first *.gemspec if not specified"
     @usage = "#{program_name} [gemspec]"

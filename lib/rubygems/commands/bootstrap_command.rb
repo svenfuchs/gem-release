@@ -8,7 +8,7 @@ class Gem::Commands::BootstrapCommand < Gem::Command
   OPTIONS = { :gemspec => true, :strategy => 'git', :scaffold => false, :github => false }
 
   attr_reader :arguments, :usage
-  
+
   def initialize
     super 'bootstrap', 'Bootstrap a new gem source repository', OPTIONS
 
@@ -35,7 +35,7 @@ class Gem::Commands::BootstrapCommand < Gem::Command
     write_version
     write_rakefile
   end
-  
+
   def write_version
     version = Version.new(options)
     say "Creating #{version.filename}"
@@ -61,22 +61,22 @@ RAKEFILE
   def create_repo
     options = { :login => github_user, :token => github_token, :name  => gem_name }
     options = options.map { |name, value| "-F '#{name}=#{value}'" }.join(' ')
-    
+
     say 'Bootstrapializing git repository'
     `git init`
-    
+
     say 'Staging files'
     `git add .`
-    
+
     say 'Creating initial commit'
     `git commit -m 'initial commit'`
-    
+
     say "Adding remote origin git@github.com:#{github_user}/#{gem_name}.git"
     `git remote add origin git@github.com:#{github_user}/#{gem_name}.git`
 
     say 'Creating repository on Github'
     silence { `curl #{options} http://github.com/api/v2/yaml/repos/create` }
-    
+
     say 'Pushing to Github'
     `git push origin master`
   end

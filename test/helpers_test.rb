@@ -4,15 +4,15 @@ require 'rubygems/commands/release_command'
 
 class HelpersTest < Test::Unit::TestCase
   include Gem::Commands
-  
+
   test "gems_filename" do
     assert_match /gem-release-\d+\.\d+\.\d+\.gem/, ReleaseCommand.new.gem_filename
   end
-  
+
   test "gems_version" do
     assert_match /^\d+\.\d+\.\d+$/, ReleaseCommand.new.gem_version
   end
-  
+
   test "gemspec_filename with an cmdline argument given" do
     command = ReleaseCommand.new
     command.handle_options(['path/to/some.gemspec'])

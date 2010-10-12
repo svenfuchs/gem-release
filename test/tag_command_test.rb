@@ -4,7 +4,7 @@ require 'rubygems/commands/tag_command'
 
 class TagCommandTest < Test::Unit::TestCase
   include Gem::Commands
-  
+
   def setup
     stub_command(TagCommand, :say)
   end
