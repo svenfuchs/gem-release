@@ -1,0 +1,20 @@
+PATH
+  remote: .
+  specs:
+    gem-release (0.0.14)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    mocha (0.9.8)
+      rake
+    rake (0.8.7)
+    test_declarative (0.0.4)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  gem-release!
+  mocha (>= 0.9.8)
+  test_declarative (>= 0.0.2)

@@ -5,8 +5,8 @@ module GemRelease
     def initialize(options = {})
       super
 
-      @authors     ||= [`git config --get user.name`.strip]
-      @email       ||= `git config --get user.email`.strip
+      @authors     ||= [user_name]
+      @email       ||= user_email
       @homepage    ||= "http://github.com/#{github_user}/#{name}" || "[your github name]"
 
       @summary     ||= '[summary]'

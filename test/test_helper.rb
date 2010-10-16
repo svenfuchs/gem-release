@@ -4,10 +4,11 @@ require 'rubygems'
 require 'rubygems_plugin'
 
 require 'test/unit'
-require 'test_declarative'
-require 'mocha'
 require 'ruby-debug'
 require 'fileutils'
+require 'bundler/setup'
+require 'test_declarative'
+require 'mocha'
 
 class Test::Unit::TestCase
   include Gem::Commands
@@ -21,6 +22,12 @@ class Test::Unit::TestCase
   def teardown_sandbox
     Dir.chdir(@cwd)
     FileUtils.rm_r('tmp')
+  end
+
+  def stub_exec(klass, commands)
+    commands.each do |command, result|
+      klass.any_instance.stubs(:`).with(command).returns(result)
+    end
   end
 
   def stub_command(command_class, *methods)

@@ -2,6 +2,14 @@ require 'core_ext/string/camelize'
 
 module GemRelease
   module Helpers
+    def user_name
+      `git config --get user.name`.strip
+    end
+
+    def user_email
+      `git config --get user.email`.strip
+    end
+
     def github_user
       @github_user ||= `git config --get github.user`.strip
     end

@@ -1,6 +1,3 @@
-source 'http://gemcutter.org'
+source :rubygems
+gemspec
 
-group :test do
-  gem 'test_declarative'
-  gem 'mocha'
-end
