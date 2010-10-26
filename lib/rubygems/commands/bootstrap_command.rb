@@ -12,16 +12,18 @@ class Gem::Commands::BootstrapCommand < Gem::Command
   def initialize
     super 'bootstrap', 'Bootstrap a new gem source repository', OPTIONS
 
-    option :gemspec,  '-g', 'Generate a .gemspec'
-    option :strategy, '-f', 'Strategy for collecting files [glob|git] in .gemspec'
-    option :scaffold, '-s', 'Scaffold lib/[gem_name]/version.rb README test/'
-    option :github,   '-h', 'Bootstrap a git repo, create on github and push'
+    option :gemspec,        '-g', 'Generate a .gemspec'
+    option :strategy,       '-f', 'Strategy for collecting files [glob|git] in .gemspec'
+    option :scaffold,       '-s', 'Scaffold lib/[gem_name]/version.rb README test/'
+    option :github,         '-h', 'Bootstrap a git repo, create on github and push'
+    option :versionfile,    '-e', 'Just set up lib/[gem_name]/version.rb'
   end
 
   def execute
-    write_gemspec  if options[:gemspec]
-    write_scaffold if options[:scaffold]
-    create_repo    if options[:github]
+    write_version      if options[:versionfile]
+    write_gemspec      if options[:gemspec]
+    write_scaffold     if options[:scaffold]
+    create_repo        if options[:github]
   end
 
   def write_gemspec
@@ -39,7 +41,7 @@ class Gem::Commands::BootstrapCommand < Gem::Command
   def write_version
     version = Version.new(options)
     say "Creating #{version.filename}"
-    version.write
+    version.write unless File.exists?("#{version.filename}")
   end
 
   def write_rakefile
@@ -55,7 +57,7 @@ end
 
 task :default => :test
 RAKEFILE
-    File.open('Rakefile', 'w').write(rakefile)
+    File.open('Rakefile', 'w').write(rakefile) unless File.exists?('Rakefile')
   end
 
   def create_repo
