@@ -23,6 +23,10 @@ module GemRelease
       end
     end
 
+    def exists?
+      File.exists?(filename)
+    end
+
     def filename
       "#{name}.gemspec"
     end

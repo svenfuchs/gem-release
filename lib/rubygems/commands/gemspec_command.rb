@@ -14,7 +14,11 @@ class Gem::Commands::GemspecCommand < Gem::Command
 
   def execute
     gemspec = Gemspec.new(options)
-    say "Creating #{gemspec.filename}"
-    gemspec.write
+    if gemspec.exists?
+      say "Skipping #{gemspec.filename}: already exists"
+    else
+      say "Creating #{gemspec.filename}"
+      gemspec.write
+    end
   end
 end

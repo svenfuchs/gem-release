@@ -38,12 +38,19 @@ class Gem::Commands::BootstrapCommand < Gem::Command
 
   def write_version
     version = Version.new(options)
-    say "Creating #{version.filename}"
-    version.write
+    if File.exists?("#{version.filename}")
+      say "Skipping #{version.filename}: already exists"
+    else
+      say "Creating #{version.filename}"
+      version.write
+    end
   end
 
   def write_rakefile
-    rakefile = <<RAKEFILE
+    if File.exists?('Rakefile')
+      say "Skipping Rakefile: already exists"
+    else
+      rakefile = <<RAKEFILE
 require 'rake'
 require 'rake/testtask'
 
@@ -55,7 +62,8 @@ end
 
 task :default => :test
 RAKEFILE
-    File.open('Rakefile', 'w').write(rakefile)
+      File.open('Rakefile', 'w').write(rakefile)
+    end
   end
 
   def create_repo
