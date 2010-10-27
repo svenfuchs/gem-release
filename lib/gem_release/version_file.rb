@@ -1,3 +1,5 @@
+require 'core_ext/kernel/silence'
+
 module GemRelease
   class VersionFile
     include GemRelease::Helpers
@@ -13,6 +15,11 @@ module GemRelease
 
     def bump!
       File.open(filename, 'w+') { |f| f.write(bumped_content) }
+      force_load!
+    end
+
+    def force_load!
+      silence { load(filename) }
     end
 
     def new_number
