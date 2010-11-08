@@ -7,7 +7,7 @@ class Gem::Commands::BumpCommand < Gem::Command
 
   attr_reader :arguments, :usage
 
-  OPTIONS = { :version => 'patch', :push => false, :tag => false, :release => false }
+  OPTIONS = { :version => 'patch', :push => false, :tag => false, :release => false, :commit => true }
 
   def initialize
     super 'bump', 'Bump the gem version', OPTIONS
@@ -16,11 +16,12 @@ class Gem::Commands::BumpCommand < Gem::Command
     option :push,    '-p', 'Push to origin'
     option :tag,     '-t', 'Create a git tag and push --tags to origin'
     option :release, '-r', 'Build gem from a gemspec and push to rubygems.org'
+    option :commit,  '-c', 'Perform a commit after incrementing gem version'
   end
 
   def execute
     bump
-    commit
+    commit  if options[:commit]
     push    if options[:push] || options[:tag]
     release if options[:release]
     tag     if options[:tag]
