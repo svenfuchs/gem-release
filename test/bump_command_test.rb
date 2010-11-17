@@ -46,6 +46,18 @@ class BumpCommandTest < Test::Unit::TestCase
     command.invoke('--push')
   end
 
+  test "gem bump --recurse" do
+    command = BumpCommand.new
+    command.expects(:bump).times(@recurse_dirs.size)
+    command.invoke('--recurse')
+  end
+
+  test "gem bump --recurse --version 3.3.3" do
+    command = BumpCommand.new
+    command.expects(:bump).times(@recurse_dirs.size)
+    command.invoke('--recurse', '--version', '3.3.3')
+  end
+
   test "gem bump --push --tag" do
     command = BumpCommand.new
     command.expects(:`).with("git add #{version.send(:filename)}")
