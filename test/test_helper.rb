@@ -8,6 +8,8 @@ require 'ruby-debug'
 require 'fileutils'
 require 'bundler/setup'
 require 'test_declarative'
+require 'test/unit/testcase'
+require 'test/unit'
 require 'mocha'
 
 class Test::Unit::TestCase
@@ -15,7 +17,19 @@ class Test::Unit::TestCase
 
   def build_sandbox
     @cwd = Dir.pwd
+    @recurse_dirs=['tmp/gem-release-test/foo-bar/spec1',
+                   'tmp/gem-release-test/foo-bar/spec2',
+                   'tmp/gem-release-test/foo-bar/spec3',
+                   'tmp/gem-release-test/foo-bar/spec3/spec4']
     FileUtils.mkdir_p('tmp/gem-release-test/foo-bar')
+    @recurse_dirs.each do |dir|
+      project = dir.split('/').last
+      FileUtils.mkdir_p(dir)
+      Dir.chdir(dir)
+      BootstrapCommand.new.send(:write_scaffold)
+      FileUtils.touch("#{project}.gemspec")
+      Dir.chdir(@cwd)
+    end
     Dir.chdir('tmp/gem-release-test/foo-bar')
   end
 
