@@ -14,7 +14,8 @@ class Gem::Commands::BumpCommand < Gem::Command
               :tag     => false,
               :release => false,
               :commit  => false,
-              :recurse => false }
+              :recurse => false,
+              :build   => false }
 
   def initialize(my_options=nil)
     my_options.nil? ? @my_options={} : @my_options=OPTIONS.merge(my_options)
@@ -27,26 +28,32 @@ class Gem::Commands::BumpCommand < Gem::Command
     option :release, '-r', 'Build gem from a gemspec and push to rubygems.org'
     option :commit,  '-c', 'Perform a commit after incrementing gem version'
     option :recurse, '-R', 'Recurse current directory and include other gems in actions'
+    option :build,   '-b', 'Build gem but don\'t push it (see --release)'
   end
 
   def execute
+    push?
     merge_options
+
     if(options[:recurse])
       specdirs.each do |dir|
         Dir.chdir(dir) do
           cmd=BumpCommand.new(options.merge({:recurse=>false}))
           cmd.invoke
-          commit  if options[:commit]
-          release if options[:release]
-          push    if options[:push] || options[:tag]
-          tag     if options[:tag]
+          ## Doesn't seem to be needed now
+          #build   if options[:build]
+          #commit  if options[:commit]
+          #release if options[:release]
+          #push    if options[:push] || options[:tag]
+          #tag     if options[:tag]
         end
       end
     else
       bump
+      build   if options[:build]
       commit  if options[:commit]
-      push    if options[:push] || options[:tag]
       release if options[:release]
+      push    if options[:push] || options[:tag]
       tag     if options[:tag]
     end
   end
@@ -73,6 +80,10 @@ class Gem::Commands::BumpCommand < Gem::Command
       ReleaseCommand.new.invoke
     end
 
+    def build
+      ReleaseCommand.new.invoke('--no-push', '--no-remove')
+    end
+
     def tag
       TagCommand.new.invoke
     end
@@ -91,6 +102,10 @@ class Gem::Commands::BumpCommand < Gem::Command
 
     def specdirs
       gemspecs.map{|spec| File.dirname(spec)}
+    end
+
+    def push?
+      options[:commit]=true if options[:push]
     end
     
     #def libdirs(dirs)

@@ -26,16 +26,14 @@ class BumpCommandTest < Test::Unit::TestCase
 
   test "gem bump" do
     command = BumpCommand.new
-    command.expects(:`).with("git add #{version.send(:filename)}")
-    command.expects(:`).with('git commit -m "Bump to 0.0.2"')
     command.invoke
   end
 
-  test "gem bump --version 0.1.0" do
+  test "gem bump --version 0.1.0 --commit" do
     command = BumpCommand.new
     command.expects(:`).with("git add #{version.send(:filename)}")
     command.expects(:`).with('git commit -m "Bump to 0.1.0"')
-    command.invoke('--version', '0.1.0')
+    command.invoke('--version', '0.1.0', '--commit')
   end
 
   test "gem bump --push" do

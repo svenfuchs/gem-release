@@ -82,6 +82,13 @@ class TestRecurse < Test::Unit::TestCase
   ##    @bump_command.invoke('--version', '0.8.0', '--recurse', '--no-commit', '--release')
   ##  end
   ##end
+
+  ### DANGER: do not run this test because you'll push a bogus gem
+  ##test "can invoke recurse bump with --version 0.8.0 --no-commit --release" do
+  ##  assert_nothing_raised do
+  ##    @bump_command.invoke('--version', '0.8.0', '--recurse', '--no-commit', '--release')
+  ##  end
+  ##end
   
   ### can't be tested well because of pushes to origin
   ##test "can invoke recurse bump with --version 0.8.0 --tag --no-commit" do
