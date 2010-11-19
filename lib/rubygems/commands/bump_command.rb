@@ -13,7 +13,7 @@ class Gem::Commands::BumpCommand < Gem::Command
               :push    => false,
               :tag     => false,
               :release => false,
-              :commit  => true,
+              :commit  => false,
               :recurse => false }
 
   def initialize(my_options=nil)
