@@ -13,7 +13,7 @@ class Gem::Commands::BumpCommand < Gem::Command
               :push    => false,
               :tag     => false,
               :release => false,
-              :commit  => false,
+              :commit  => true,
               :recurse => false,
               :build   => false }
 
