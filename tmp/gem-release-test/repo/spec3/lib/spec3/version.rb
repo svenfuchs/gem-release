@@ -1,3 +1,3 @@
 module Spec3
-  VERSION = "3.3.3"
+  VERSION = "0.0.2"
 end
