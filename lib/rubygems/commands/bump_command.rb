@@ -40,18 +40,12 @@ class Gem::Commands::BumpCommand < Gem::Command
         Dir.chdir(dir) do
           cmd=BumpCommand.new(options.merge({:recurse=>false}))
           cmd.invoke
-          ## Doesn't seem to be needed now
-          #build   if options[:build]
-          #commit  if options[:commit]
-          #release if options[:release]
-          #push    if options[:push] || options[:tag]
-          #tag     if options[:tag]
         end
       end
     else
       bump
-      build   if options[:build]
       commit  if options[:commit]
+      build   if options[:build]
       release if options[:release]
       push    if options[:push] || options[:tag]
       tag     if options[:tag]

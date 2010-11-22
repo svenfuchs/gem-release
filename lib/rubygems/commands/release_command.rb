@@ -6,22 +6,26 @@ class Gem::Commands::ReleaseCommand < Gem::Command
   include GemRelease, Gem::Commands
   include Helpers, CommandOptions
 
-  OPTIONS = { :tag => false }
+  OPTIONS = { :tag    => false,
+              :push   => true,
+              :remove => true }
 
   attr_reader :arguments, :usage
 
   def initialize
     super 'release', 'Build gem from a gemspec and push to rubygems.org'
-    option :tag, '-t', 'Create a git tag and push --tags to origin'
+    option :tag,    '-t', 'Create a git tag and push --tags to origin'
+    option :push,   '-p', 'Push to rubygems.org'
+    option :remove, '-R', 'Remove *.gem afterwards'
     @arguments = "gemspec - optional gemspec file name, will use the first *.gemspec if not specified"
     @usage = "#{program_name} [gemspec]"
   end
 
   def execute
     build
-    push
-    remove
-    tag if options[:tag]
+    push    if options[:push]
+    remove  if options[:remove]
+    tag     if options[:tag]
     say "All is good, thanks buddy.\n"
   end
 
