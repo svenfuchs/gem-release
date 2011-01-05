@@ -19,7 +19,7 @@ module GemRelease
       when 'git'
         '`git ls-files app lib`.split("\n")'
       else
-        'Dir.glob("lib/**/**")'
+        'Dir.glob("{lib/**/*,[A-Z]*}")'
       end
     end
 

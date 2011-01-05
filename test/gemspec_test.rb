@@ -32,13 +32,13 @@ class GemspecTest < Test::Unit::TestCase
     assert_equal '[description]', gemspec.description
 
     assert_match %r(require 'foo_bar/version'), source
-    assert_match %r(files\s*=\s*Dir.glob\(\"lib\/\*\*\/\*\*\"\)), source
+    assert_match %r(files\s*=\s*Dir.glob\(), source
   end
 
   test 'scaffolds a gemspec with glob strategy' do
     source  = GemRelease::Gemspec.new(:strategy => 'glob').render
     gemspec = eval(source)
-    assert_match %r(files\s*=\s*Dir.glob\(\"lib\/\*\*\/\*\*\"\)), source
+    assert_match %r(files\s*=\s*Dir.glob\(), source
   end
 
   test 'scaffolds a gemspec with git strategy' do
