@@ -1,0 +1,1 @@
+script: "ruby test/all.rb"
