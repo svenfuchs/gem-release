@@ -1,1 +1,3 @@
 script: "ruby test/all.rb"
+matrix:
+  - ["rvm", "1.8.7", "ree"]
