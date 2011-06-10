@@ -19,7 +19,6 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'test_declarative', '>=0.0.2'
   s.add_development_dependency 'mocha', '>=0.9.8'
-  s.add_development_dependency 'ruby-debug'
 
   s.required_rubygems_version = '>= 1.3.6'
 end
