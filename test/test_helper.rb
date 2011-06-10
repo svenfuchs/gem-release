@@ -4,7 +4,6 @@ require 'rubygems'
 require 'rubygems_plugin'
 
 require 'test/unit'
-require 'ruby-debug'
 require 'fileutils'
 require 'bundler/setup'
 require 'test_declarative'
