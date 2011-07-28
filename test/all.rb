@@ -1,3 +1,3 @@
-Dir[File.dirname(__FILE__) + '/**/*_test.rb'].each do |filename|
+Dir[File.expand_path('../**/*_test.rb', __FILE__)].each do |filename|
   require filename
 end

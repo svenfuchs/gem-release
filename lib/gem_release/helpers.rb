@@ -2,6 +2,10 @@ require 'core_ext/string/camelize'
 
 module GemRelease
   module Helpers
+    def quiet?
+      options[:quiet]
+    end
+
     def user_name
       `git config --get user.name`.strip
     end
@@ -11,15 +15,15 @@ module GemRelease
     end
 
     def github_user
-      @github_user ||= `git config --get github.user`.strip
+      `git config --get github.user`.strip
     end
 
     def github_token
-      @github_token ||= `git config --get github.token`.strip
+      `git config --get github.token`.strip
     end
 
     def gem_name
-      @gem_name ||= gemspec ? gemspec.name : gem_name_from_directory
+      gemspec ? gemspec.name : gem_name_from_directory
     end
 
     def gem_name_from_directory
@@ -27,11 +31,11 @@ module GemRelease
     end
 
     def gem_module_path
-      @gem_module_path ||= gem_name.gsub('-', '_')
+      gem_name.gsub('-', '_')
     end
 
     def gem_module_name
-      @gem_module_name ||= gem_module_path.camelize
+      gem_module_path.camelize
     end
 
     def gem_filename
@@ -43,17 +47,15 @@ module GemRelease
     end
 
     def gemspec
-      @gemspec ||= Gem::Specification.load(gemspec_filename)
+      Gem::Specification.load(gemspec_filename)
     rescue LoadError, RuntimeError
       nil
     end
 
     def gemspec_filename
-      @gemspec_filename ||= begin
-        name = Array(options[:args]).first rescue nil
-        name ||= Dir['*.gemspec'].first
-        name || raise("No gemspec found or given.")
-      end
+      name = Array(options[:args]).first rescue nil
+      name ||= Dir['*.gemspec'].first
+      name || raise("No gemspec found or given.")
     end
   end
 end

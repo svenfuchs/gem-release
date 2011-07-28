@@ -20,7 +20,7 @@ class GemspecCommandTest < Test::Unit::TestCase
     filename = 'foo-bar.gemspec'
     assert File.exists?(filename)
 
-    BootstrapCommand.new.send(:write_version) # so it can be required by .gemspec
+    BootstrapCommand.new.execute # so it can be required by .gemspec
     assert_equal 'foo-bar', eval(File.read(filename)).name
   end
 end

@@ -6,11 +6,15 @@ module GemRelease
   class Template
     include GemRelease::Helpers
 
-    attr_reader :name, :module_name, :module_path, :options
+    attr_reader :template, :name, :module_name, :module_path
 
-    def initialize(options = {})
-      @options = options
-      options.each { |key, value| instance_variable_set(:"@#{key}", value) }
+    def initialize(template, options = {})
+      @template = template
+
+      options.each do |key, value|
+        instance_variable_set(:"@#{key}", value)
+        meta_class.send(:attr_reader, key)
+      end
 
       @name        ||= gem_name_from_directory
       @module_path ||= name.gsub('-', '_')
@@ -22,12 +26,22 @@ module GemRelease
       File.open(filename, 'w+') { |f| f.write(render) }
     end
 
-    def render
-      ERB.new(template, nil, "%").result(binding)
-    end
+    protected
 
-    def template
-      File.new(File.expand_path("../templates/#{template_name}", __FILE__)).read
-    end
+      def filename
+        template
+      end
+
+      def render
+        ERB.new(read_template, nil, "%").result(binding)
+      end
+
+      def read_template
+        File.new(File.expand_path("../templates/#{template}", __FILE__)).read
+      end
+
+      def meta_class
+        class << self; self; end
+      end
   end
 end

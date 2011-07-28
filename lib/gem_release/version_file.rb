@@ -15,11 +15,7 @@ module GemRelease
 
     def bump!
       File.open(filename, 'w+') { |f| f.write(bumped_content) }
-      force_load!
-    end
-
-    def force_load!
-      silence { load(filename) }
+      require_version
     end
 
     def new_number
@@ -37,6 +33,15 @@ module GemRelease
     end
 
     protected
+
+      def require_version
+        $: << 'lib' unless $:.include?('lib')
+        require "#{gem_module_path}/version"
+      end
+
+      def force_load!
+        silence { load(filename) }
+      end
 
       def major(major, minor, patch)
         "#{major.to_i + 1}.0.0"

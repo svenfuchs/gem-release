@@ -20,7 +20,7 @@ class GemspecTest < Test::Unit::TestCase
   end
 
   test 'scaffolds a gemspec with default values' do
-    source  = GemRelease::Gemspec.new.render
+    source  = GemRelease::Gemspec.new.send(:render)
     gemspec = eval(source)
 
     assert_equal 'foo-bar', gemspec.name
@@ -36,13 +36,13 @@ class GemspecTest < Test::Unit::TestCase
   end
 
   test 'scaffolds a gemspec with glob strategy' do
-    source  = GemRelease::Gemspec.new(:strategy => 'glob').render
+    source  = GemRelease::Gemspec.new(:strategy => 'glob').send(:render)
     gemspec = eval(source)
     assert_match %r(files\s*=\s*Dir.glob\(), source
   end
 
   test 'scaffolds a gemspec with git strategy' do
-    source  = GemRelease::Gemspec.new(:strategy => 'git').render
+    source  = GemRelease::Gemspec.new(:strategy => 'git').send(:render)
     gemspec = eval(source)
     assert_match %r(files\s*=[^$]*git ls\-files), source
   end

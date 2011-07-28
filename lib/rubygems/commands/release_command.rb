@@ -6,13 +6,19 @@ class Gem::Commands::ReleaseCommand < Gem::Command
   include GemRelease, Gem::Commands
   include Helpers, CommandOptions
 
-  OPTIONS = { :tag => false }
+  DEFAULTS = {
+    :tag   => false,
+    :quiet => false
+  }
 
   attr_reader :arguments, :usage
 
-  def initialize
-    super 'release', 'Build gem from a gemspec and push to rubygems.org'
-    option :tag, '-t', 'Create a git tag and push --tags to origin'
+  def initialize(options = {})
+    super 'release', 'Build gem from a gemspec and push to rubygems.org', DEFAULTS.merge(options)
+
+    option :tag,   '-t', 'Create a git tag and push --tags to origin'
+    option :quiet, '-q', 'Do not output status messages'
+
     @arguments = "gemspec - optional gemspec file name, will use the first *.gemspec if not specified"
     @usage = "#{program_name} [gemspec]"
   end
@@ -36,8 +42,8 @@ class Gem::Commands::ReleaseCommand < Gem::Command
     end
 
     def remove
+      say "Deleting left over gem file #{gem_filename}" unless quiet?
       `rm #{gem_filename}`
-      say "Deleting left over gem file #{gem_filename}"
     end
 
     def tag

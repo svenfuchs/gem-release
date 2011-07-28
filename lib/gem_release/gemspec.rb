@@ -1,21 +1,22 @@
 module GemRelease
   class Gemspec < Template
-    attr_reader :authors, :email, :homepage, :summary, :description
+    attr_reader :author, :email, :homepage, :summary, :description, :strategy
 
     def initialize(options = {})
-      super
+      super('gemspec', options)
 
-      @authors     ||= [user_name]
+      @author      ||= user_name
       @email       ||= user_email
       @homepage    ||= "http://github.com/#{github_user}/#{name}" || "[your github name]"
 
       @summary     ||= '[summary]'
       @description ||= '[description]'
+
       @strategy = options[:strategy]
     end
 
     def files
-      case @strategy
+      case strategy
       when 'git'
         '`git ls-files app lib`.split("\n")'
       else
@@ -29,10 +30,6 @@ module GemRelease
 
     def filename
       "#{name}.gemspec"
-    end
-
-    def template_name
-      'gemspec.erb'
     end
   end
 end

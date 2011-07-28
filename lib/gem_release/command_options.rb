@@ -6,10 +6,9 @@ module GemRelease
     end
 
     def option(key, short, description)
-      options = self.class::OPTIONS
-      default = options[key]
+      default = self.class::DEFAULTS[key]
 
-      if String === default
+      if default.is_a?(String)
         long = "--#{key} #{key.to_s.upcase}"
         args = [short, long, String, "#{description} (defaults to #{default})"]
       else

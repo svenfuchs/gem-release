@@ -18,9 +18,12 @@ class BootstrapCommandTest < Test::Unit::TestCase
   test "write_scaffold" do
     BootstrapCommand.new.send(:write_scaffold)
 
+    assert File.file?('Gemfile')
+    assert File.file?('LICENSE')
+    assert File.file?('README.md')
     assert File.file?('lib/foo_bar/version.rb')
-    assert File.file?('README')
     assert File.directory?('test')
+    assert File.file?('test/test_helper.rb')
 
     eval(File.read('lib/foo_bar/version.rb'))
     assert_equal '0.0.1', FooBar::VERSION

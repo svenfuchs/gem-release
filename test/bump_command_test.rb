@@ -7,7 +7,7 @@ class BumpCommandTest < Test::Unit::TestCase
   include GemRelease
 
   def setup
-    build_sandbox
+    build_sandbox(:spec_dirs => true)
     stub_command(BootstrapCommand, :say)
     stub_command(TagCommand, :say)
     stub_command(BumpCommand, :say)
@@ -26,9 +26,23 @@ class BumpCommandTest < Test::Unit::TestCase
 
   test "gem bump" do
     command = BumpCommand.new
+    command.expects(:bump).times(spec_dirs.size)
     command.expects(:`).with("git add #{version.send(:filename)}")
     command.expects(:`).with('git commit -m "Bump to 0.0.2"')
     command.invoke
+  end
+
+  test "gem bump nested" do
+    command = BumpCommand.new
+    command.invoke('--no-commit', '--quiet')
+
+    version_1 = File.read('lib/foo_bar/version.rb')
+    assert version_1.include?('module FooBar')
+    assert version_1.include?('0.0.2')
+
+    version_2 = File.read('spec_1/lib/spec_1/version.rb')
+    assert version_2.include?('module Spec1')
+    assert version_2.include?('0.0.2')
   end
 
   test "gem bump --version 0.1.0" do
@@ -44,18 +58,6 @@ class BumpCommandTest < Test::Unit::TestCase
     command.expects(:`).with('git commit -m "Bump to 0.0.2"')
     command.expects(:`).with('git push')
     command.invoke('--push')
-  end
-
-  test "gem bump --recurse" do
-    command = BumpCommand.new
-    command.expects(:bump).times(@recurse_dirs.size)
-    command.invoke('--recurse')
-  end
-
-  test "gem bump --recurse --version 3.3.3" do
-    command = BumpCommand.new
-    command.expects(:bump).times(@recurse_dirs.size)
-    command.invoke('--recurse', '--version', '3.3.3')
   end
 
   test "gem bump --push --tag" do

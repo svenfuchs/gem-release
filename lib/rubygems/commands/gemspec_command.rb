@@ -2,22 +2,26 @@ class Gem::Commands::GemspecCommand < Gem::Command
   include GemRelease
   include Helpers, CommandOptions
 
-  OPTIONS = { :strategy => 'git' }
+  DEFAULTS = {
+    :strategy => 'git',
+    :quiet    => false
+  }
 
   attr_reader :arguments, :usage
 
-  def initialize
-    super 'bootstrap', 'Bootstrap a new gem source repository', OPTIONS
+  def initialize(options = {})
+    super 'bootstrap', 'Bootstrap a new gem source repository', DEFAULTS.merge(options)
 
     option :strategy, '-f', 'Strategy for collecting files [glob|git] in .gemspec'
+    option :quiet,    '-q', 'Do not output status messages'
   end
 
   def execute
     gemspec = Gemspec.new(options)
     if gemspec.exists?
-      say "Skipping #{gemspec.filename}: already exists"
+      say "Skipping #{gemspec.filename}: already exists" unless quiet?
     else
-      say "Creating #{gemspec.filename}"
+      say "Creating #{gemspec.filename}" unless quiet?
       gemspec.write
     end
   end

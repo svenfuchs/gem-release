@@ -1,40 +1,46 @@
-$: << File.expand_path('../../lib', __FILE__)
-
 require 'rubygems'
 require 'rubygems_plugin'
 
 require 'test/unit'
 require 'fileutils'
+require 'pathname'
 require 'bundler/setup'
 require 'test_declarative'
 require 'test/unit/testcase'
 require 'test/unit'
 require 'mocha'
+require 'ruby-debug'
+require 'rubygems/commands/bootstrap_command'
 
 class Test::Unit::TestCase
   include Gem::Commands
 
-  def build_sandbox
-    @cwd = Dir.pwd
-    @recurse_dirs=['tmp/gem-release-test/foo-bar/spec1',
-                   'tmp/gem-release-test/foo-bar/spec2',
-                   'tmp/gem-release-test/foo-bar/spec3',
-                   'tmp/gem-release-test/foo-bar/spec3/spec4']
-    FileUtils.mkdir_p('tmp/gem-release-test/foo-bar')
-    @recurse_dirs.each do |dir|
-      project = dir.split('/').last
-      FileUtils.mkdir_p(dir)
-      Dir.chdir(dir)
-      BootstrapCommand.new.send(:write_scaffold)
-      FileUtils.touch("#{project}.gemspec")
-      Dir.chdir(@cwd)
+  attr_reader :base_dir, :spec_dirs
+
+  def build_sandbox(options = {})
+    FileUtils.rm_r('tmp') if File.exists?('tmp')
+
+    @cwd       = Dir.pwd
+    @base_dir  = Pathname.new('tmp/foo-bar')
+
+    base_dir.mkpath
+    spec_dirs.each do |dir|
+      dir.mkpath
+      Dir.chdir(dir) do
+        BootstrapCommand.new(:scaffold => true, :quiet => true).execute
+      end
     end
-    Dir.chdir('tmp/gem-release-test/foo-bar')
+
+    Dir.chdir(base_dir)
   end
 
   def teardown_sandbox
     Dir.chdir(@cwd)
     FileUtils.rm_r('tmp')
+  end
+
+  def spec_dirs
+    @spec_dirs ||= %w(. spec_1 spec_2 nested/spec_3).map { |dir| base_dir.join(dir) }
   end
 
   def stub_exec(klass, commands)

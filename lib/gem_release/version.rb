@@ -5,16 +5,12 @@ module GemRelease
     attr_reader :version
 
     def initialize(options = {})
-      super
+      super('version.rb', options)
       @version ||= '0.0.1'
     end
 
     def filename
       "lib/#{module_path}/version.rb"
-    end
-
-    def template_name
-      'version.erb'
     end
   end if defined?(Template)
 end

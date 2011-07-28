@@ -2,10 +2,16 @@ class Gem::Commands::TagCommand < Gem::Command
   include GemRelease
   include Helpers, CommandOptions
 
+  DEFAULTS = {
+    :quiet => false
+  }
+
   attr_reader :arguments, :usage
 
-  def initialize
-    super 'tag', 'Create a git tag and push --tags to origin'
+  def initialize(options = {})
+    super 'tag', 'Create a git tag and push --tags to origin', DEFAULTS.merge(options)
+
+    option :quiet, '-q', 'Do not output status messages'
   end
 
   def execute
@@ -16,12 +22,12 @@ class Gem::Commands::TagCommand < Gem::Command
   protected
 
     def tag
-      say "Creating git tag #{tag_name}"
+      say "Creating git tag #{tag_name}" unless quiet?
       `git tag -am 'tag #{tag_name}' #{tag_name}`
     end
 
     def push
-      say "Pushing --tags to origin git repository"
+      say "Pushing --tags to origin git repository" unless quiet?
       `git push --tags origin`
     end
 
