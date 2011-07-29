@@ -7,7 +7,7 @@ module GemRelease
 
       @author      ||= user_name
       @email       ||= user_email
-      @homepage    ||= "http://github.com/#{github_user}/#{name}" || "[your github name]"
+      @homepage    ||= "https://github.com/#{github_user}/#{name}" || "[your github name]"
 
       @summary     ||= '[summary]'
       @description ||= '[description]'

@@ -27,7 +27,7 @@ class GemspecTest < Test::Unit::TestCase
     assert_equal '0.0.1', gemspec.version.to_s
     assert_equal ['John Doe'], gemspec.authors
     assert_equal 'john@example.org', gemspec.email
-    assert_equal "http://github.com/johndoe/foo-bar", gemspec.homepage
+    assert_equal "https://github.com/johndoe/foo-bar", gemspec.homepage
     assert_equal '[summary]', gemspec.summary
     assert_equal '[description]', gemspec.description
 
