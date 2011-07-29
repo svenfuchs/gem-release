@@ -26,11 +26,11 @@ module GemRelease
       File.open(filename, 'w+') { |f| f.write(render) }
     end
 
-    protected
+    def filename
+      template
+    end
 
-      def filename
-        template
-      end
+    protected
 
       def render
         ERB.new(read_template, nil, "%").result(binding)

@@ -37,63 +37,25 @@ class Gem::Commands::BootstrapCommand < Gem::Command
 
   def write_scaffold
     say 'scaffolding ...' unless quiet?
-    create_lib
-    create_readme
-    create_license
-    create_gemfile
-    create_test_helper
-    create_version
-    create_rakefile
+
+    create_file Template.new('README.md')
+    create_file Template.new('LICENSE', :year => Time.now.year, :author => user_name, :email => user_email)
+    create_file Template.new('Gemfile')
+    create_file Template.new('Rakefile')
+    create_file Template.new('test/test_helper.rb')
+    create_file Version.new(options)
   end
 
   def create_lib
     `mkdir -p lib test`
   end
 
-  def create_readme
-    `echo "# #{gem_name}" > README.md`
-  end
-
-  def create_license
-    Template.new('LICENSE', :year => Time.now.year, :author => user_name, :email => user_email).write
-  end
-
-  def create_gemfile
-    Template.new('Gemfile').write
-  end
-
-  def create_test_helper
-    Template.new('test/test_helper.rb').write
-  end
-
-  def create_version
-    version = Version.new(options)
-    if File.exists?("#{version.filename}")
-      say "Skipping #{version.filename}: already exists" unless quiet?
+  def create_file(template)
+    if File.exists?(template.filename)
+      say "Skipping #{template.filename}: already exists" unless quiet?
     else
-      say "Creating #{version.filename}" unless quiet?
-      version.write
-    end
-  end
-
-  def create_rakefile
-    if File.exists?('Rakefile')
-      say "Skipping Rakefile: already exists" unless quiet?
-    else
-      say "Creating Rakefile" unless quiet?
-      rakefile = <<RAKEFILE
-require 'rake'
-require 'rake/testtask'
-
-Rake::TestTask.new do |t|
-  t.libs << 'lib'
-  t.pattern = 'test/**/*_test.rb'
-  t.verbose = false
-end
-
-task :default => :test
-RAKEFILE
-      File.open('Rakefile', 'w').write(rakefile)
+      say "Creating #{template.filename}" unless quiet?
+      template.write
     end
   end
 

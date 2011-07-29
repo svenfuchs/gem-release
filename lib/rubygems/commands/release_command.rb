@@ -24,9 +24,12 @@ class Gem::Commands::ReleaseCommand < Gem::Command
   end
 
   def execute
-    build
-    push
-    remove
+    in_gemspec_dirs do
+      build
+      push
+      remove
+    end
+
     tag if options[:tag]
     say "All is good, thanks buddy.\n"
   end

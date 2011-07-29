@@ -57,5 +57,16 @@ module GemRelease
       name ||= Dir['*.gemspec'].first
       name || raise("No gemspec found or given.")
     end
+
+    def in_gemspec_dirs
+      gemspec_dirs.each do |dir|
+        @version = nil # UGH.
+        Dir.chdir(dir) { yield }
+      end
+    end
+
+    def gemspec_dirs
+      Dir.glob('**/*.gemspec').map { |spec| File.dirname(spec) }
+    end
   end
 end

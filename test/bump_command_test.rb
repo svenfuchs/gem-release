@@ -77,11 +77,10 @@ class BumpCommandTest < Test::Unit::TestCase
     command.expects(:`).with('git commit -m "Bump to 0.0.2"')
     command.expects(:`).with('git push')
 
-    release_command = ReleaseCommand.new
-    ReleaseCommand.expects(:new).returns(release_command)
-    ReleaseCommand.any_instance.expects(:build)
-    ReleaseCommand.any_instance.expects(:push)
-    ReleaseCommand.any_instance.expects(:remove)
+    count = spec_dirs.size
+    ReleaseCommand.any_instance.expects(:build).times(count)
+    ReleaseCommand.any_instance.expects(:push).times(count)
+    ReleaseCommand.any_instance.expects(:remove).times(count)
 
     command.invoke('--push', '--release')
   end
@@ -92,11 +91,10 @@ class BumpCommandTest < Test::Unit::TestCase
     command.expects(:`).with('git commit -m "Bump to 0.0.2"')
     command.expects(:`).with('git push')
 
-    release_command = ReleaseCommand.new
-    ReleaseCommand.expects(:new).returns(release_command)
-    ReleaseCommand.any_instance.expects(:build)
-    ReleaseCommand.any_instance.expects(:push)
-    ReleaseCommand.any_instance.expects(:remove)
+    count = spec_dirs.size
+    ReleaseCommand.any_instance.expects(:build).times(count)
+    ReleaseCommand.any_instance.expects(:push).times(count)
+    ReleaseCommand.any_instance.expects(:remove).times(count)
 
     release_command = TagCommand.new
     TagCommand.expects(:new).returns(release_command)

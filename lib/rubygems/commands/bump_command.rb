@@ -29,7 +29,9 @@ class Gem::Commands::BumpCommand < Gem::Command
   end
 
   def execute
-    in_spec_dirs { bump }
+    in_gemspec_dirs do
+      bump
+    end
 
     commit  if options[:commit]
     push    if options[:push] || options[:tag]
@@ -39,21 +41,18 @@ class Gem::Commands::BumpCommand < Gem::Command
 
   protected
 
-    def in_spec_dirs
-      spec_dirs.each do |dir|
-        @version = nil
-        Dir.chdir(dir) { yield }
-      end
-    end
-
     def bump
-      say "Bumping #{gem_name} from #{version.old_number} to version #{version.new_number}" unless quiet?
-      version.bump!
+      if File.exist?(version.filename)
+        say "Bumping #{gem_name} from #{version.old_number} to version #{version.new_number}" unless quiet?
+        version.bump!
+        `git add #{version.filename}` if options[:commit]
+      else
+        say "Ignoring #{gem_name}. Version file #{version.filename} not found" unless quiet?
+      end
     end
 
     def commit
       say "Creating commit" unless quiet?
-      `git add #{version.filename}`
       `git commit -m "Bump to #{version.new_number}"`
     end
 
@@ -72,9 +71,5 @@ class Gem::Commands::BumpCommand < Gem::Command
 
     def version
       @version ||= VersionFile.new(:target => options[:version])
-    end
-
-    def spec_dirs
-      Dir.glob('**/*.gemspec').map { |spec| File.dirname(spec) }
     end
 end
