@@ -58,7 +58,8 @@ Obviously ...
     $ gem bump --to 1.1.1            # Bump the gem version to the given version number
     $ gem bump --push                # Bump and git push to origin
 
-If you don't specify a gemspec filename the first *.gemspec file found in your current working directory will be used.
+If the current directory (and subdirectories) contain multiple `*.gemspec` files then each of these gems will be bumped. I.e. gem-release
+will search for `lib/[gem_name]/version.rb` files and bump the version in each of them.
 
 ## License
 
