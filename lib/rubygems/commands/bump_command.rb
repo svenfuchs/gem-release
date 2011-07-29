@@ -33,6 +33,7 @@ class Gem::Commands::BumpCommand < Gem::Command
       bump
     end
 
+    @version = nil # UGH
     commit  if options[:commit]
     push    if options[:push] || options[:tag]
     release if options[:release]
