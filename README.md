@@ -11,7 +11,7 @@ The `tag` command
  * executes `git tag -am "tag [tag_name]" [tag_name]` and
  * executes `git push --tags origin`
 
-... with `tag_name` being the version number as specified in your .gemspec preceeded by `v` (e.g. `v0.0.1`).
+... with `tag_name` being the version number as specified in your .gemspec preceded  by `v` (e.g. `v0.0.1`).
 
 The `release` command
 
