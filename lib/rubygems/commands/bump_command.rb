@@ -31,6 +31,10 @@ class Gem::Commands::BumpCommand < Gem::Command
   def execute
     @new_version_number = nil
 
+    # enforce option dependencies
+    options[:push] = options[:push] || options[:tag]
+    options[:commit] = options[:commit] || options[:push] || options[:release]
+
     in_gemspec_dirs do
       bump
     end
@@ -39,7 +43,7 @@ class Gem::Commands::BumpCommand < Gem::Command
       say "No version files could be found, so no actions were performed." unless quiet?
     else
       commit  if options[:commit]
-      push    if options[:push] || options[:tag]
+      push    if options[:push]
       release if options[:release]
       tag     if options[:tag]
     end
