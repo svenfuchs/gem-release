@@ -60,7 +60,6 @@ module GemRelease
 
     def in_gemspec_dirs
       gemspec_dirs.each do |dir|
-        @version = nil # UGH.
         Dir.chdir(dir) { yield }
       end
     end
