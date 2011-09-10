@@ -15,7 +15,7 @@ require 'rubygems/commands/bootstrap_command'
 class Test::Unit::TestCase
   include Gem::Commands
 
-  attr_reader :base_dir, :spec_dirs
+  attr_reader :base_dir, :gemspec_dirs
 
   def build_sandbox(options = {})
     FileUtils.rm_r('tmp') if File.exists?('tmp')
@@ -24,13 +24,14 @@ class Test::Unit::TestCase
     @base_dir  = Pathname.new('tmp/foo-bar')
 
     base_dir.mkpath
-    spec_dirs.each do |dir|
-      dir.mkpath
-      Dir.chdir(dir) do
-        BootstrapCommand.new(:scaffold => true, :quiet => true).execute
+    if options[:gemspec_dirs]
+      gemspec_dirs.each do |dir|
+        dir.mkpath
+        Dir.chdir(dir) do
+          BootstrapCommand.new(:scaffold => true, :quiet => true).execute
+        end
       end
     end
-
     Dir.chdir(base_dir)
   end
 
@@ -39,8 +40,16 @@ class Test::Unit::TestCase
     FileUtils.rm_r('tmp')
   end
 
-  def spec_dirs
-    @spec_dirs ||= %w(. spec_1 spec_2 nested/spec_3).map { |dir| base_dir.join(dir) }
+  def gemspec_dirs
+    @gemspec_dirs ||= %w(. spec_1 spec_2 nested/spec_3).map { |dir| base_dir.join(dir) }
+  end
+
+  def in_gemspec_dirs
+    Dir.chdir(@cwd) do
+      gemspec_dirs.each do |dir|
+        Dir.chdir(dir) { yield }
+      end
+    end
   end
 
   def stub_exec(klass, commands)
