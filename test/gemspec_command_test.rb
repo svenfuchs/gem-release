@@ -5,7 +5,7 @@ require 'rubygems/commands/gemspec_command'
 
 class GemspecCommandTest < Test::Unit::TestCase
   def setup
-    build_sandbox
+    build_sandbox(:gemspec_dirs => true)
     stub_command(GemspecCommand, :say)
     stub_command(BootstrapCommand, :say)
   end

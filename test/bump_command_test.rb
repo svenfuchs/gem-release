@@ -7,7 +7,7 @@ class BumpCommandTest < Test::Unit::TestCase
   include GemRelease
 
   def setup
-    build_sandbox(:spec_dirs => true)
+    build_sandbox(:gemspec_dirs => true)
     stub_command(BootstrapCommand, :say)
     stub_command(TagCommand, :say)
     stub_command(BumpCommand, :say)
@@ -16,18 +16,18 @@ class BumpCommandTest < Test::Unit::TestCase
   end
 
   def teardown
-    @version = nil
     teardown_sandbox
   end
 
   def version(options = {})
-    @version ||= VersionFile.new(options)
+    VersionFile.new(options)
   end
 
   test "gem bump" do
     command = BumpCommand.new
-    command.expects(:bump).times(spec_dirs.size)
-    command.expects(:`).with("git add #{version.send(:filename)}")
+    in_gemspec_dirs do
+      command.expects(:`).with("git add #{version.send(:filename)}")
+    end
     command.expects(:`).with('git commit -m "Bump to 0.0.2"')
     command.invoke
   end
@@ -47,14 +47,18 @@ class BumpCommandTest < Test::Unit::TestCase
 
   test "gem bump --version 0.1.0" do
     command = BumpCommand.new
-    command.expects(:`).with("git add #{version.send(:filename)}")
+    in_gemspec_dirs do
+      command.expects(:`).with("git add #{version.send(:filename)}")
+    end
     command.expects(:`).with('git commit -m "Bump to 0.1.0"')
     command.invoke('--version', '0.1.0')
   end
 
   test "gem bump --push" do
     command = BumpCommand.new
-    command.expects(:`).with("git add #{version.send(:filename)}")
+    in_gemspec_dirs do
+      command.expects(:`).with("git add #{version.send(:filename)}")
+    end
     command.expects(:`).with('git commit -m "Bump to 0.0.2"')
     command.expects(:`).with('git push')
     command.invoke('--push')
@@ -62,7 +66,9 @@ class BumpCommandTest < Test::Unit::TestCase
 
   test "gem bump --push --tag" do
     command = BumpCommand.new
-    command.expects(:`).with("git add #{version.send(:filename)}")
+    in_gemspec_dirs do
+      command.expects(:`).with("git add #{version.send(:filename)}")
+    end
     command.expects(:`).with('git commit -m "Bump to 0.0.2"')
     command.expects(:`).with('git push')
     TagCommand.any_instance.stubs(:gem_version).returns('0.0.2')
@@ -73,11 +79,13 @@ class BumpCommandTest < Test::Unit::TestCase
 
   test "gem bump --push --release" do
     command = BumpCommand.new
-    command.expects(:`).with("git add #{version.send(:filename)}")
+    in_gemspec_dirs do
+      command.expects(:`).with("git add #{version.send(:filename)}")
+    end
     command.expects(:`).with('git commit -m "Bump to 0.0.2"')
     command.expects(:`).with('git push')
 
-    count = spec_dirs.size
+    count = gemspec_dirs.size
     ReleaseCommand.any_instance.expects(:build).times(count)
     ReleaseCommand.any_instance.expects(:push).times(count)
     ReleaseCommand.any_instance.expects(:remove).times(count)
@@ -87,11 +95,13 @@ class BumpCommandTest < Test::Unit::TestCase
 
   test "gem bump --push --tag --release" do
     command = BumpCommand.new
-    command.expects(:`).with("git add #{version.send(:filename)}")
+    in_gemspec_dirs do
+      command.expects(:`).with("git add #{version.send(:filename)}")
+    end
     command.expects(:`).with('git commit -m "Bump to 0.0.2"')
     command.expects(:`).with('git push')
 
-    count = spec_dirs.size
+    count = gemspec_dirs.size
     ReleaseCommand.any_instance.expects(:build).times(count)
     ReleaseCommand.any_instance.expects(:push).times(count)
     ReleaseCommand.any_instance.expects(:remove).times(count)

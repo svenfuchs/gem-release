@@ -7,7 +7,7 @@ class GemspecTest < Test::Unit::TestCase
   include Gem::Commands
 
   def setup
-    build_sandbox
+    build_sandbox(:gemspec_dirs => true)
     stub_exec(GemRelease::Gemspec,
       'git config --get user.name'   => 'John Doe',
       'git config --get user.email'  => 'john@example.org',

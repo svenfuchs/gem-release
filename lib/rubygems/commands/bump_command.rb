@@ -29,21 +29,32 @@ class Gem::Commands::BumpCommand < Gem::Command
   end
 
   def execute
+    @new_version_number = nil
+
+    # enforce option dependencies
+    options[:push] = options[:push] || options[:tag]
+    options[:commit] = options[:commit] || options[:push] || options[:release]
+
     in_gemspec_dirs do
       bump
     end
 
-    @version = nil # UGH
-    commit  if options[:commit]
-    push    if options[:push] || options[:tag]
-    release if options[:release]
-    tag     if options[:tag]
+    if @new_version_number == nil
+      say "No version files could be found, so no actions were performed." unless quiet?
+    else
+      commit  if options[:commit]
+      push    if options[:push]
+      release if options[:release]
+      tag     if options[:tag]
+    end
   end
 
   protected
 
     def bump
+      version = VersionFile.new(:target => (@new_version_number || options[:version]))
       if File.exist?(version.filename)
+        @new_version_number ||= version.new_number
         say "Bumping #{gem_name} from #{version.old_number} to version #{version.new_number}" unless quiet?
         version.bump!
         `git add #{version.filename}` if options[:commit]
@@ -54,7 +65,7 @@ class Gem::Commands::BumpCommand < Gem::Command
 
     def commit
       say "Creating commit" unless quiet?
-      `git commit -m "Bump to #{version.new_number}"`
+      `git commit -m "Bump to #{@new_version_number}"`
     end
 
     def push
@@ -68,9 +79,5 @@ class Gem::Commands::BumpCommand < Gem::Command
 
     def tag
       TagCommand.new.invoke
-    end
-
-    def version
-      @version ||= VersionFile.new(:target => options[:version])
     end
 end
