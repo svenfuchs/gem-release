@@ -1,6 +1,5 @@
 require 'gem_release'
 require 'rubygems/commands/tag_command'
-require 'rubygems/commands/release_command'
 
 class Gem::Commands::BumpCommand < Gem::Command
   include GemRelease, Gem::Commands
@@ -12,7 +11,6 @@ class Gem::Commands::BumpCommand < Gem::Command
     :version  => 'patch',
     :push     => false,
     :tag      => false,
-    :release  => false,
     :commit   => true,
     :quiet    => false
   }
@@ -24,7 +22,6 @@ class Gem::Commands::BumpCommand < Gem::Command
     option :commit,  '-c', 'Perform a commit after incrementing gem version'
     option :push,    '-p', 'Push to origin'
     option :tag,     '-t', 'Create a git tag and push --tags to origin'
-    option :release, '-r', 'Build gem from a gemspec and push to rubygems.org'
     option :quiet,   '-q', 'Do not output status messages'
   end
 
@@ -33,7 +30,7 @@ class Gem::Commands::BumpCommand < Gem::Command
 
     # enforce option dependencies
     options[:push] = options[:push] || options[:tag]
-    options[:commit] = options[:commit] || options[:push] || options[:release]
+    options[:commit] = options[:commit] || options[:push]
 
     in_gemspec_dirs do
       bump
@@ -44,7 +41,6 @@ class Gem::Commands::BumpCommand < Gem::Command
     else
       commit  if options[:commit]
       push    if options[:push]
-      release if options[:release]
       tag     if options[:tag]
     end
   end
@@ -71,10 +67,6 @@ class Gem::Commands::BumpCommand < Gem::Command
     def push
       say "Pushing to origin" unless quiet?
       `git push`
-    end
-
-    def release
-      ReleaseCommand.new.invoke
     end
 
     def tag

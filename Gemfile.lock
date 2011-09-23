@@ -1,35 +1,12 @@
 PATH
   remote: .
   specs:
-    gem-release (0.0.19)
+    gem-release (0.0.22)
 
 GEM
   remote: http://rubygems.org/
   specs:
-    archive-tar-minitar (0.5.2)
-    columnize (0.3.4)
-    linecache (0.46)
-      rbx-require-relative (> 0.0.4)
-    linecache19 (0.5.12)
-      ruby_core_source (>= 0.1.4)
     mocha (0.9.12)
-    rbx-require-relative (0.0.5)
-    require_relative (1.0.2)
-    ruby-debug (0.10.4)
-      columnize (>= 0.1)
-      ruby-debug-base (~> 0.10.4.0)
-    ruby-debug-base (0.10.4)
-      linecache (>= 0.3)
-    ruby-debug-base19 (0.11.25)
-      columnize (>= 0.3.1)
-      linecache19 (>= 0.5.11)
-      ruby_core_source (>= 0.1.4)
-    ruby-debug19 (0.11.6)
-      columnize (>= 0.3.1)
-      linecache19 (>= 0.5.11)
-      ruby-debug-base19 (>= 0.11.19)
-    ruby_core_source (0.1.5)
-      archive-tar-minitar (>= 0.5.2)
     test_declarative (0.0.5)
 
 PLATFORMS
@@ -38,7 +15,4 @@ PLATFORMS
 DEPENDENCIES
   gem-release!
   mocha (>= 0.9.8)
-  require_relative (~> 1.0.1)
-  ruby-debug
-  ruby-debug19
   test_declarative (>= 0.0.2)
