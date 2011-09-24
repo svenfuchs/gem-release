@@ -77,6 +77,43 @@ class BumpCommandTest < Test::Unit::TestCase
     command.invoke('--push', '--tag')
   end
 
+  test "gem bump --push --release" do
+    command = BumpCommand.new
+    in_gemspec_dirs do
+      command.expects(:`).with("git add #{version.send(:filename)}")
+    end
+    command.expects(:`).with('git commit -m "Bump to 0.0.2"')
+    command.expects(:`).with('git push')
+
+    count = gemspec_dirs.size
+    ReleaseCommand.any_instance.expects(:build).times(count)
+    ReleaseCommand.any_instance.expects(:push).times(count)
+    ReleaseCommand.any_instance.expects(:remove).times(count)
+
+    command.invoke('--push', '--release')
+  end
+
+  test "gem bump --push --tag --release" do
+    command = BumpCommand.new
+    in_gemspec_dirs do
+      command.expects(:`).with("git add #{version.send(:filename)}")
+    end
+    command.expects(:`).with('git commit -m "Bump to 0.0.2"')
+    command.expects(:`).with('git push')
+
+    count = gemspec_dirs.size
+    ReleaseCommand.any_instance.expects(:build).times(count)
+    ReleaseCommand.any_instance.expects(:push).times(count)
+    ReleaseCommand.any_instance.expects(:remove).times(count)
+
+    release_command = TagCommand.new
+    TagCommand.expects(:new).returns(release_command)
+    TagCommand.any_instance.expects(:tag)
+    TagCommand.any_instance.expects(:push)
+
+    command.invoke('--push', '--tag', '--release')
+  end
+
   test "old_number" do
     assert_equal '0.0.1', version.old_number
   end

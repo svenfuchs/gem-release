@@ -59,8 +59,10 @@ Obviously ...
     $ gem bump --version patch       # Bump the gem version to the next patch level (e.g. 0.0.1 to 0.0.2)
     $ gem bump --push                # Bump and git push to origin
     $ gem bump --tag                 # Bump and tag gem and pushes tags to the origin repository
+    $ gem bump --release             # Bump and release gem
+    $ gem bump --tag --release       # Bump, tag, push and release gem
     $ gem bump --no-commit           # Bump the gem version but don't git commit
-                                     #  (will be ignored if combined with push or tag)
+                                     #  (will be ignored if combined with push, tag or release)
 
 If the current directory (and subdirectories) contain multiple `*.gemspec` files then each of these gems will be bumped
 to the same version. I.e. gem-release will search for `lib/[gem_name]/version.rb` files and bump the version in each of

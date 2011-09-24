@@ -43,11 +43,6 @@ module GemRelease
     end
 
     def gem_version
-      # After a version file has been changed, the new version will strangely not be obtained by reloading the spec with
-      # Gem::Specification.load(). Therefore, let's obtain the version from the version file directly, and only use
-      # gemspec.version if this fails.
-      VersionFile.new.old_number
-    rescue
       gemspec.version.to_s
     end
 

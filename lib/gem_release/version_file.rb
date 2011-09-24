@@ -35,12 +35,7 @@ module GemRelease
     protected
 
       def require_version
-        $: << 'lib' unless $:.include?('lib')
-        require "#{gem_module_path}/version"
-      end
-
-      def force_load!
-        silence { load(filename) }
+        silence { require(filename) }
       end
 
       def major(major, minor, patch)
