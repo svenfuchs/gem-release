@@ -67,5 +67,15 @@ module GemRelease
     def gemspec_dirs
       Dir.glob('**/*.gemspec').map { |spec| File.dirname(spec) }
     end
+
+    def in_bootstrapped_dir
+      dir = Array(options[:args]).first rescue nil
+      if dir
+        Dir.mkdir dir
+        Dir.chdir(dir) { yield }
+      else
+        yield
+      end
+    end
   end
 end

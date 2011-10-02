@@ -47,7 +47,8 @@ Obviously ...
     $ gem gemspec                    # generates a [gem_name].gemspec using  Dir["{lib/**/*,[A-Z]*}"]
     $ gem gemspec --strategy gig     # uses s.files = `git ls-files app lib`.split("\n")
 
-    $ gem bootstrap
+    $ gem bootstrap                  # generates a [gem_name].gemspec using the current directory name
+    $ gem bootstrap your_gem         # creates an your_gem directory and generates your_gem.gemspec inside
     $ gem bootstrap --scaffold       # scaffolds lib/[gem_name]/version.rb, README, test/
     $ gem bootstrap --github         # inits a git repo, creates it on github and pushes it to github
                                      # (requires git config for github.user and github.token to be set)
