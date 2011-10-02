@@ -23,12 +23,17 @@ class Gem::Commands::BootstrapCommand < Gem::Command
     option :scaffold, '-s', 'Scaffold lib/[gem_name]/version.rb README test/'
     option :github,   '-h', 'Bootstrap a git repo, create on github and push'
     option :quiet,    '-q', 'Do not output status messages'
+
+    @arguments = "gemname - option name of the gem, will use the current directory if not specified"
+    @usage = "#{program_name} [gemname]"
   end
 
   def execute
-    write_scaffold if options[:scaffold]
-    write_gemspec  if options[:gemspec]
-    create_repo    if options[:github]
+    in_bootstrapped_dir do
+      write_scaffold if options[:scaffold]
+      write_gemspec  if options[:gemspec]
+      create_repo    if options[:github]
+    end
   end
 
   def write_gemspec

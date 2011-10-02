@@ -52,4 +52,12 @@ class BootstrapCommandTest < Test::Unit::TestCase
 
     command.send(:create_repo)
   end
+
+  test "in_bootstrapped_dir" do
+    command = BootstrapCommand.new
+    command.options[:args] = "foo_baz"
+    command.in_bootstrapped_dir do
+      assert_equal "foo_baz", File.basename(Dir.pwd)
+    end
+  end
 end
