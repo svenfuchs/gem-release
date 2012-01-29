@@ -32,6 +32,7 @@ class Gem::Commands::BootstrapCommand < Gem::Command
     in_bootstrapped_dir do
       write_scaffold if options[:scaffold]
       write_gemspec  if options[:gemspec]
+      init_git       if options[:github] || options[:args] # safe to 'git init' in new dir
       create_repo    if options[:github]
     end
   end
@@ -64,12 +65,14 @@ class Gem::Commands::BootstrapCommand < Gem::Command
     end
   end
 
+  def init_git
+    say 'Initializing git repository'
+    `git init`
+  end
+
   def create_repo
     options = { :login => github_user, :token => github_token, :name  => gem_name }
     options = options.map { |name, value| "-F '#{name}=#{value}'" }.join(' ')
-
-    say 'Bootstrapializing git repository'
-    `git init`
 
     say 'Staging files'
     `git add .`

@@ -48,7 +48,7 @@ Obviously ...
 
     $ gem bootstrap                  # generates a [gem_name].gemspec using the current directory name
                                      #  and scaffolds lib/[gem_name]/version.rb, README, test/
-    $ gem bootstrap your_gem         # creates a your_gem directory and then bootstraps your_gem inside
+    $ gem bootstrap your_gem         # creates a your_gem directory, bootstraps your_gem and inits a git repo
     $ gem bootstrap --github         # inits a git repo, creates it on github and pushes it to github
                                      # (requires git config for github.user and github.token to be set)
 
