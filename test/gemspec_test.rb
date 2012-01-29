@@ -33,7 +33,7 @@ class GemspecTest < Test::Unit::TestCase
     assert_equal '[summary]', gemspec.summary
     assert_equal '[description]', gemspec.description
 
-    assert_match %r(require 'foo_bar/version'), source
+    assert_match %r(require 'foo-bar/version'), source
     assert_match %r(files\s*=\s*Dir.glob\(), source
   end
 

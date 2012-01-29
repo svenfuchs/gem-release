@@ -21,12 +21,12 @@ class BootstrapCommandTest < Test::Unit::TestCase
     assert File.file?('Gemfile')
     assert File.file?('LICENSE')
     assert File.file?('README.md')
-    assert File.file?('lib/foo_bar/version.rb')
+    assert File.file?('lib/foo-bar/version.rb')
     assert File.directory?('test')
     assert File.file?('test/test_helper.rb')
 
-    eval(File.read('lib/foo_bar/version.rb'))
-    assert_equal '0.0.1', FooBar::VERSION
+    eval(File.read('lib/foo-bar/version.rb'))
+    assert_equal '0.0.1', Foo::Bar::VERSION
   end
 
   test "write_gemspec" do

@@ -29,10 +29,18 @@ module GemRelease
     end
 
     def filename
-      File.expand_path("lib/#{gem_module_path}/version.rb")
+      path = gem_name
+      path = path.gsub('-', '/') unless File.exists?(path_to_version_file(path))
+      path = path.gsub('/', '_') unless File.exists?(path_to_version_file(path))
+
+      File.expand_path(path_to_version_file(path))
     end
 
     protected
+
+      def path_to_version_file(path)
+        "lib/#{path}/version.rb"
+      end
 
       def require_version
         silence { require(filename) }

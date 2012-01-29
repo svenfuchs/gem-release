@@ -6,7 +6,7 @@ module GemRelease
   class Template
     include GemRelease::Helpers
 
-    attr_reader :template, :name, :module_name, :module_path
+    attr_reader :template, :name, :module_names, :module_path
 
     def initialize(template, options = {})
       @template = template
@@ -16,9 +16,9 @@ module GemRelease
         meta_class.send(:attr_reader, key)
       end
 
-      @name        ||= gem_name_from_directory
-      @module_path ||= name.gsub('-', '_')
-      @module_name ||= module_path.camelize
+      @name         ||= gem_name_from_directory
+      @module_path  ||= name
+      @module_names ||= module_names_from_path(module_path)
     end
 
     def write
@@ -31,6 +31,14 @@ module GemRelease
     end
 
     protected
+
+      def module_names_from_path(path)
+        names = []
+        path.split('-').each do |segment|
+          names << segment.camelize
+        end
+        names
+      end
 
       def render
         ERB.new(read_template, nil, "%").result(binding)

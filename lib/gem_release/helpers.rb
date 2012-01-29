@@ -30,14 +30,6 @@ module GemRelease
       File.basename(Dir.pwd)
     end
 
-    def gem_module_path
-      gem_name.gsub('-', '_')
-    end
-
-    def gem_module_name
-      gem_module_path.camelize
-    end
-
     def gem_filename
       gemspec.file_name
     end

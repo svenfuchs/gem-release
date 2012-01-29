@@ -5,7 +5,7 @@ require '<%= module_path %>/version'
 
 Gem::Specification.new do |s|
   s.name         = <%= name.inspect %>
-  s.version      = <%= module_name %>::VERSION
+  s.version      = <%= module_names.join('::') %>::VERSION
   s.authors      = [<%= author.inspect %>]
   s.email        = <%= email.inspect %>
   s.homepage     = <%= homepage.inspect %>

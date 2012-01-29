@@ -36,13 +36,39 @@ class BumpCommandTest < Test::Unit::TestCase
     command = BumpCommand.new
     command.invoke('--no-commit', '--quiet')
 
-    version_1 = File.read('lib/foo_bar/version.rb')
-    assert version_1.include?('module FooBar')
+    version_1 = File.read('lib/foo-bar/version.rb')
+    assert version_1.include?('module Foo')
+    assert version_1.include?('module Bar')
     assert version_1.include?('0.0.2')
 
     version_2 = File.read('spec_1/lib/spec_1/version.rb')
     assert version_2.include?('module Spec1')
     assert version_2.include?('0.0.2')
+  end
+
+  test "gem bump with version in lib/foo/bar/" do
+    # move version.rb to the alternate dir: /lib/foo/bar
+    FileUtils.mkdir('lib/foo')
+    FileUtils.mkdir('lib/foo/bar')
+    FileUtils.move('lib/foo-bar/version.rb', 'lib/foo/bar')
+
+    command = BumpCommand.new
+    command.invoke('--no-commit', '--quiet')
+
+    version_1 = File.read('lib/foo/bar/version.rb')
+    assert version_1.include?('0.0.2')
+  end
+
+  test "gem bump with version in lib/foo_bar/" do
+    # move version.rb to the alternate dir: /lib/foo_bar
+    FileUtils.mkdir('lib/foo_bar')
+    FileUtils.move('lib/foo-bar/version.rb', 'lib/foo_bar')
+
+    command = BumpCommand.new
+    command.invoke('--no-commit', '--quiet')
+
+    version_1 = File.read('lib/foo_bar/version.rb')
+    assert version_1.include?('0.0.2')
   end
 
   test "gem bump --version 0.1.0" do
@@ -139,6 +165,6 @@ class BumpCommandTest < Test::Unit::TestCase
   end
 
   test "bumped_content" do
-    assert_equal "module FooBar\n  VERSION = \"0.0.2\"\nend\n", version.send(:bumped_content)
+    assert_equal "module Foo\n  module Bar\n    VERSION = \"0.0.2\"\n  end\nend\n", version.send(:bumped_content)
   end
 end
