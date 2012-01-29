@@ -26,8 +26,7 @@ The `gemspec` command
 
 The `bootstrap` command
 
- * generates an initial `[gem_name].gemspec` file with sane defaults
- * optionally scaffolds: `lib/[gem_name]/version.rb`, `README.md`, `test/`
+ * generates an initial `[gem_name].gemspec` file with sane defaults and scaffolds: `lib/[gem_name]/version.rb`, `README.md`, `test/`
  * optionally inits a git repo, creates it on github and pushes it to github (requires git config for `github.user` and `github.token` to be set)
 
 ## Installation
@@ -48,8 +47,8 @@ Obviously ...
     $ gem gemspec --strategy gig     # uses s.files = `git ls-files app lib`.split("\n")
 
     $ gem bootstrap                  # generates a [gem_name].gemspec using the current directory name
-    $ gem bootstrap your_gem         # creates an your_gem directory and generates your_gem.gemspec inside
-    $ gem bootstrap --scaffold       # scaffolds lib/[gem_name]/version.rb, README, test/
+                                     #  and scaffolds lib/[gem_name]/version.rb, README, test/
+    $ gem bootstrap your_gem         # creates a your_gem directory and then bootstraps your_gem inside
     $ gem bootstrap --github         # inits a git repo, creates it on github and pushes it to github
                                      # (requires git config for github.user and github.token to be set)
 
@@ -65,10 +64,18 @@ Obviously ...
     $ gem bump --no-commit           # Bump the gem version but don't git commit
                                      #  (will be ignored if combined with push, tag or release)
 
-If the current directory (and subdirectories) contain multiple `*.gemspec` files then each of these gems will be bumped
-to the same version. I.e. gem-release will search for `lib/[gem_name]/version.rb` files and bump the version in each of
-them. The version will either be the version specified with the --version option or the next patch level for the first
-version.rb file encountered.
+When bumping versions for a gem named `foo-bar`, the following paths will be searched in order for `version.rb`:
+
+    `lib/foo-bar/version.rb`
+    `lib/foo/bar/version.rb`
+    `lib/foo_bar/version.rb`
+
+The first `version.rb` file encountered will be considered definitive for the gem and will be bumped.
+
+If the current directory (and subdirectories) contain multiple `*.gemspec` files, then each of these gems will be bumped
+to the same version. gem-release will search the above paths, relative to the directory of the `gemspec` file, for
+matching `version.rb` files and bump the version in each of them. The version will either be the version specified with
+the `--version` option or the next patch level for the first `version.rb` file encountered.
 
 ## License
 

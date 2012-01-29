@@ -8,7 +8,7 @@ class Gem::Commands::BootstrapCommand < Gem::Command
   DEFAULTS = {
     :gemspec  => true,
     :strategy => 'git',
-    :scaffold => false,
+    :scaffold => true,
     :github   => false,
     :quiet    => false
   }
@@ -19,8 +19,8 @@ class Gem::Commands::BootstrapCommand < Gem::Command
     super 'bootstrap', 'Bootstrap a new gem source repository', DEFAULTS.merge(options)
 
     option :gemspec,  '-g', 'Generate a .gemspec'
-    option :strategy, '-f', 'Strategy for collecting files [glob|git] in .gemspec'
     option :scaffold, '-s', 'Scaffold lib/[gem_name]/version.rb README test/'
+    option :strategy, '-f', 'Strategy for collecting files [glob|git] in .gemspec'
     option :github,   '-h', 'Bootstrap a git repo, create on github and push'
     option :quiet,    '-q', 'Do not output status messages'
 
