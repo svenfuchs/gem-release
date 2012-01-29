@@ -9,8 +9,8 @@ module GemRelease
       @email       ||= user_email
       @homepage    ||= "https://github.com/#{github_user}/#{name}" || "[your github name]"
 
-      @summary     ||= '[summary]'
-      @description ||= '[description]'
+      @summary     ||= '[TODO: summary]'
+      @description ||= '[TODO: description]'
 
       @strategy = options[:strategy]
     end

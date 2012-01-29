@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    gem-release (0.0.24)
+    gem-release (0.1.0)
 
 GEM
   remote: http://rubygems.org/
