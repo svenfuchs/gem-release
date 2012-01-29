@@ -30,8 +30,8 @@ class GemspecTest < Test::Unit::TestCase
     assert_equal ['John Doe'], gemspec.authors
     assert_equal 'john@example.org', gemspec.email
     assert_equal "https://github.com/johndoe/foo-bar", gemspec.homepage
-    assert_equal '[summary]', gemspec.summary
-    assert_equal '[description]', gemspec.description
+    assert_equal '[TODO: summary]', gemspec.summary
+    assert_equal '[TODO: description]', gemspec.description
 
     assert_match %r(require 'foo-bar/version'), source
     assert_match %r(files\s*=\s*Dir.glob\(), source
