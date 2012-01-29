@@ -34,13 +34,18 @@ class BootstrapCommandTest < Test::Unit::TestCase
     BootstrapCommand.new.send(:write_gemspec)
   end
 
+  test "init_git" do
+    command = BootstrapCommand.new
+    command.expects(:`).with("git init")
+    command.send(:init_git)
+  end
+
   test "create_repo" do
     command = BootstrapCommand.new
     command.stubs(:say)
     command.stubs(:github_user).returns('svenfuchs')
     command.stubs(:github_token).returns('token')
 
-    command.expects(:`).with("git init")
     command.expects(:`).with("git add .")
     command.expects(:`).with("git commit -m 'initial commit'")
     command.expects(:`).with("git remote add origin git@github.com:svenfuchs/foo-bar.git")
