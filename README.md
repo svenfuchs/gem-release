@@ -50,7 +50,7 @@ Obviously ...
                                      #  and scaffolds lib/[gem_name]/version.rb, README, test/
     $ gem bootstrap your_gem         # creates a your_gem directory, bootstraps your_gem and inits a git repo
     $ gem bootstrap --github         # inits a git repo, creates it on github and pushes it to github
-                                     # (requires git config for github.user and github.token to be set)
+                                     #  (requires git config for github.user and github.token to be set)
 
     $ gem bump                       # Bump the gem version to the next patch level (e.g. 0.0.1 to 0.0.2)
     $ gem bump --version 1.1.1       # Bump the gem version to the given version number
