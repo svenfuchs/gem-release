@@ -31,7 +31,7 @@ class Gem::Commands::ReleaseCommand < Gem::Command
     end
 
     tag if options[:tag]
-    say "All is good, thanks.\n"
+    say "All is good, thanks my friend.\n"
   end
 
   protected
