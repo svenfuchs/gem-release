@@ -1,5 +1,5 @@
 module GemRelease
-  VERSION = '0.1.1'
+  VERSION = '0.1.2'
 
   class Version < Template
     attr_reader :version
