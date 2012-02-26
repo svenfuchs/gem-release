@@ -28,10 +28,10 @@ class GemspecTest < Test::Unit::TestCase
     #       when it has been already been required by a previous test
     # assert_equal '0.0.1', gemspec.version.to_s
     assert_equal ['John Doe'], gemspec.authors
-    assert_equal 'john@example.org', gemspec.email
+    assert_equal ['john@example.org'], gemspec.email
     assert_equal "https://github.com/johndoe/foo-bar", gemspec.homepage
-    assert_equal '[TODO: summary]', gemspec.summary
-    assert_equal '[TODO: description]', gemspec.description
+    assert_equal 'TODO: summary', gemspec.summary
+    assert_equal 'TODO: description', gemspec.description
 
     assert_match %r(require 'foo-bar/version'), source
     assert_match %r(files\s*=\s*Dir.glob\(), source
