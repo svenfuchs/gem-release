@@ -44,6 +44,7 @@ class Gem::Commands::BootstrapCommand < Gem::Command
   def write_scaffold
     say 'scaffolding ...' unless quiet?
 
+    create_file Template.new('gitignore', :filename => '.gitignore')
     create_file Template.new('README.md')
     create_file Template.new('LICENSE', :year => Time.now.year, :author => user_name, :email => user_email)
     create_file Template.new('Gemfile')

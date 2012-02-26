@@ -6,7 +6,7 @@ module GemRelease
   class Template
     include GemRelease::Helpers
 
-    attr_reader :template, :name, :module_names, :module_path
+    attr_reader :template, :filename, :name, :module_names, :module_path
 
     def initialize(template, options = {})
       @template = template
@@ -16,6 +16,7 @@ module GemRelease
         meta_class.send(:attr_reader, key)
       end
 
+      @filename     ||= @template
       @name         ||= gem_name_from_directory
       @module_path  ||= name
       @module_names ||= module_names_from_path(module_path)
@@ -24,10 +25,6 @@ module GemRelease
     def write
       FileUtils.mkdir_p(File.dirname(filename))
       File.open(filename, 'w+') { |f| f.write(render) }
-    end
-
-    def filename
-      template
     end
 
     protected

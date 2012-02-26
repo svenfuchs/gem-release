@@ -18,6 +18,7 @@ class BootstrapCommandTest < Test::Unit::TestCase
   test "write_scaffold" do
     BootstrapCommand.new.send(:write_scaffold)
 
+    assert File.file?('.gitignore')
     assert File.file?('Gemfile')
     assert File.file?('LICENSE')
     assert File.file?('README.md')
