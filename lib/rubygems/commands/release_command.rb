@@ -8,7 +8,8 @@ class Gem::Commands::ReleaseCommand < Gem::Command
 
   DEFAULTS = {
     :tag   => false,
-    :quiet => false
+    :quiet => false,
+    :pushargs => "",
   }
 
   attr_reader :arguments, :usage
@@ -18,6 +19,7 @@ class Gem::Commands::ReleaseCommand < Gem::Command
 
     option :tag,   '-t', 'Create a git tag and push --tags to origin'
     option :quiet, '-q', 'Do not output status messages'
+    option :pushargs, '-p', "Arguments to pass to the gem push command"
 
     @arguments = "gemspec - optional gemspec file name, will use the first *.gemspec if not specified"
     @usage = "#{program_name} [gemspec]"
@@ -41,7 +43,7 @@ class Gem::Commands::ReleaseCommand < Gem::Command
     end
 
     def push
-      PushCommand.new.invoke(gem_filename)
+      PushCommand.new.invoke(gem_filename, *options[:pushargs].to_s.split(" "))
     end
 
     def remove
