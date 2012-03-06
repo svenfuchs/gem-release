@@ -33,4 +33,10 @@ class ReleaseCommandTest < Test::Unit::TestCase
     TagCommand.new.expects(:execute)
     ReleaseCommand.new.invoke('--tag')
   end
+
+  test "passes -p args to the push command" do
+    PushCommand.new.expects(:invoke).with("gem-release-0.0.1.gem", "--key", "engineyard")
+    ReleaseCommand.new.invoke('-p', '--key engineyard')
+  end
+
 end
