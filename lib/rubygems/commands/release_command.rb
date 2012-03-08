@@ -19,9 +19,9 @@ class Gem::Commands::ReleaseCommand < Gem::Command
 
     option :tag,   '-t', 'Create a git tag and push --tags to origin'
     option :quiet, '-q', 'Do not output status messages'
-    add_option('-k', '--key KEYNAME', Symbol,
+    add_option('-k', '--key KEYNAME',
       'Use the given API key from ~/.gem/credentials'){ |value, _| @pushargs += ["--key", value] }
-    add_option('--host HOST',
+    add_option('-h', '--host HOST',
       'Push to another gemcutter-compatible host'){ |value, _| @pushargs += ["--host", value] }
 
     @arguments = "gemspec - optional gemspec file name, will use the first *.gemspec if not specified"

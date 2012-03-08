@@ -35,7 +35,7 @@ class ReleaseCommandTest < Test::Unit::TestCase
   end
 
   test "passes --key args to the push command" do
-    PushCommand.new.expects(:invoke).with("gem-release-0.0.1.gem", "--key", :engineyard)
+    PushCommand.new.expects(:invoke).with("gem-release-0.0.1.gem", "--key", "engineyard")
     ReleaseCommand.new.invoke('--key', 'engineyard')
   end
 
