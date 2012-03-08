@@ -33,4 +33,15 @@ class ReleaseCommandTest < Test::Unit::TestCase
     TagCommand.new.expects(:execute)
     ReleaseCommand.new.invoke('--tag')
   end
+
+  test "passes --key args to the push command" do
+    PushCommand.new.expects(:invoke).with("gem-release-0.0.1.gem", "--key", :engineyard)
+    ReleaseCommand.new.invoke('--key', 'engineyard')
+  end
+
+  test "passes --host args to the push command" do
+    PushCommand.new.expects(:invoke).with("gem-release-0.0.1.gem", "--host", "http://rubygems.engineyard.com")
+    ReleaseCommand.new.invoke('--host', 'http://rubygems.engineyard.com')
+  end
+
 end
