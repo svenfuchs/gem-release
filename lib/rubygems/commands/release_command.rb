@@ -15,9 +15,14 @@ class Gem::Commands::ReleaseCommand < Gem::Command
 
   def initialize(options = {})
     super 'release', 'Build gem from a gemspec and push to rubygems.org', DEFAULTS.merge(options)
+    @pushargs = []
 
     option :tag,   '-t', 'Create a git tag and push --tags to origin'
     option :quiet, '-q', 'Do not output status messages'
+    add_option('-k', '--key KEYNAME',
+      'Use the given API key from ~/.gem/credentials'){ |value, _| @pushargs += ["--key", value] }
+    add_option('-h', '--host HOST',
+      'Push to another gemcutter-compatible host'){ |value, _| @pushargs += ["--host", value] }
 
     @arguments = "gemspec - optional gemspec file name, will use the first *.gemspec if not specified"
     @usage = "#{program_name} [gemspec]"
@@ -41,7 +46,7 @@ class Gem::Commands::ReleaseCommand < Gem::Command
     end
 
     def push
-      PushCommand.new.invoke(gem_filename)
+      PushCommand.new.invoke(gem_filename, *@pushargs)
     end
 
     def remove
