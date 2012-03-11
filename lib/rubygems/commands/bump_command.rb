@@ -10,11 +10,13 @@ class Gem::Commands::BumpCommand < Gem::Command
 
   DEFAULTS = {
     :version  => 'patch',
+    :commit   => true,
     :push     => false,
     :tag      => false,
     :release  => false,
-    :commit   => true,
-    :quiet    => false
+    :quiet    => false,
+    :key      => '',
+    :host     => ''
   }
 
   def initialize(options = {})
@@ -25,7 +27,9 @@ class Gem::Commands::BumpCommand < Gem::Command
     option :push,    '-p', 'Push to origin'
     option :tag,     '-t', 'Create a git tag and push --tags to origin'
     option :release, '-r', 'Build gem from a gemspec and push to rubygems.org'
-    option :quiet,   '-q', 'Do not output status messages'
+    option :quiet,   '-q', 'When releasing: Do not output status messages'
+    option :key,     '-k', 'When releasing: Use the given API key from ~/.gem/credentials'
+    option :host,    '-h', 'When releasing: Push to a gemcutter-compatible host other than rubygems.org'
   end
 
   def execute
@@ -74,7 +78,13 @@ class Gem::Commands::BumpCommand < Gem::Command
     end
 
     def release
-      ReleaseCommand.new.invoke
+      args = []
+      [:key, :host].each do |option|
+        args += ["--#{option}", options[option]] unless options[option] == ''
+      end
+      args += "--quiet" if quiet?
+
+      ReleaseCommand.new.invoke(*args)
     end
 
     def tag

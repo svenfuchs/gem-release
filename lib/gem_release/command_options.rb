@@ -10,7 +10,12 @@ module GemRelease
 
       if default.is_a?(String)
         long = "--#{key} #{key.to_s.upcase}"
-        args = [short, long, String, "#{description} (defaults to #{default})"]
+        if default == ''
+          default_description = 'not set by default'
+        else
+          default_description = "defaults to #{default}"
+        end
+        args = [short, long, String, "#{description} (#{default_description})"]
       else
         long = "--[no-]#{key}"
         args = [short, long, "#{description} (defaults to #{default})"]

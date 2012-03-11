@@ -8,21 +8,20 @@ class Gem::Commands::ReleaseCommand < Gem::Command
 
   DEFAULTS = {
     :tag   => false,
-    :quiet => false
+    :quiet => false,
+    :key   => '',
+    :host  => ''
   }
 
   attr_reader :arguments, :usage
 
   def initialize(options = {})
     super 'release', 'Build gem from a gemspec and push to rubygems.org', DEFAULTS.merge(options)
-    @pushargs = []
 
     option :tag,   '-t', 'Create a git tag and push --tags to origin'
     option :quiet, '-q', 'Do not output status messages'
-    add_option('-k', '--key KEYNAME',
-      'Use the given API key from ~/.gem/credentials'){ |value, _| @pushargs += ["--key", value] }
-    add_option('-h', '--host HOST',
-      'Push to another gemcutter-compatible host'){ |value, _| @pushargs += ["--host", value] }
+    option :key,   '-k', 'Use the given API key from ~/.gem/credentials'
+    option :host,  '-h', 'Push to a gemcutter-compatible host other than rubygems.org'
 
     @arguments = "gemspec - optional gemspec file name, will use the first *.gemspec if not specified"
     @usage = "#{program_name} [gemspec]"
@@ -46,7 +45,13 @@ class Gem::Commands::ReleaseCommand < Gem::Command
     end
 
     def push
-      PushCommand.new.invoke(gem_filename, *@pushargs)
+      args = []
+      [:key, :host].each do |option|
+        args += ["--#{option}", options[option]] unless options[option] == ''
+      end
+      args += "--quiet" if quiet?
+
+      PushCommand.new.invoke(gem_filename, *args)
     end
 
     def remove
