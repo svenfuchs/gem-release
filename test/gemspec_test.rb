@@ -1,6 +1,5 @@
 require File.expand_path('../test_helper', __FILE__)
 
-require 'gem_release/version'
 require 'gem_release/gemspec'
 
 class GemspecTest < Test::Unit::TestCase
