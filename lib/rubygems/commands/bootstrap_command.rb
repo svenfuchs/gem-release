@@ -50,7 +50,7 @@ class Gem::Commands::BootstrapCommand < Gem::Command
     create_file Template.new('Gemfile')
     create_file Template.new('Rakefile')
     create_file Template.new('test/test_helper.rb')
-    create_file Version.new(options)
+    create_file VersionTemplate.new(options)
   end
 
   def create_lib

@@ -1,13 +1,13 @@
 require File.expand_path('../test_helper', __FILE__)
-
-require 'gem_release/gemspec'
+require 'rubygems/commands/bootstrap_command'
+require 'gem_release/gemspec_template'
 
 class GemspecTest < Test::Unit::TestCase
   include Gem::Commands
 
   def setup
     build_sandbox(:gemspec_dirs => true)
-    stub_exec(GemRelease::Gemspec,
+    stub_exec(GemRelease::GemspecTemplate,
       'git config --get user.name'   => 'John Doe',
       'git config --get user.email'  => 'john@example.org',
       'git config --get github.user' => 'johndoe'
@@ -19,7 +19,7 @@ class GemspecTest < Test::Unit::TestCase
   end
 
   test 'scaffolds a gemspec with default values' do
-    source  = GemRelease::Gemspec.new.send(:render)
+    source  = GemRelease::GemspecTemplate.new.send(:render)
     gemspec = eval(source)
 
     assert_equal 'foo-bar', gemspec.name
@@ -37,19 +37,19 @@ class GemspecTest < Test::Unit::TestCase
   end
 
   test 'scaffolds a gemspec with glob strategy' do
-    source  = GemRelease::Gemspec.new(:strategy => 'glob').send(:render)
+    source  = GemRelease::GemspecTemplate.new(:strategy => 'glob').send(:render)
     gemspec = eval(source)
     assert_match %r(files\s*=\s*Dir.glob\(), source
   end
 
   test 'scaffolds a gemspec with git strategy' do
-    source  = GemRelease::Gemspec.new(:strategy => 'git').send(:render)
+    source  = GemRelease::GemspecTemplate.new(:strategy => 'git').send(:render)
     gemspec = eval(source)
     assert_match %r(files\s*=[^$]*git ls\-files), source
   end
 
   test 'filename' do
-    assert_equal 'foo-bar.gemspec', GemRelease::Gemspec.new.filename
+    assert_equal 'foo-bar.gemspec', GemRelease::GemspecTemplate.new.filename
   end
 
 end

@@ -1,5 +1,4 @@
 require File.expand_path('../test_helper', __FILE__)
-
 require 'rubygems/commands/tag_command'
 
 class TagCommandTest < Test::Unit::TestCase

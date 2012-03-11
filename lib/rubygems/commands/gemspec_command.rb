@@ -17,7 +17,7 @@ class Gem::Commands::GemspecCommand < Gem::Command
   end
 
   def execute
-    gemspec = Gemspec.new(options)
+    gemspec = GemspecTemplate.new(options)
     if gemspec.exists?
       say "Skipping #{gemspec.filename}: already exists" unless quiet?
     else

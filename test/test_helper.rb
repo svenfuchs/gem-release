@@ -9,7 +9,6 @@ require 'test_declarative'
 require 'test/unit/testcase'
 require 'test/unit'
 require 'mocha'
-require 'rubygems/commands/bootstrap_command'
 
 class Test::Unit::TestCase
   include Gem::Commands

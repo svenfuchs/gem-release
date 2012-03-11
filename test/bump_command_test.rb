@@ -1,5 +1,4 @@
 require File.expand_path('../test_helper', __FILE__)
-
 require 'rubygems/commands/bootstrap_command'
 require 'rubygems/commands/bump_command'
 

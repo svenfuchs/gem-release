@@ -1,5 +1,5 @@
 module GemRelease
-  class Gemspec < Template
+  class GemspecTemplate < Template
     attr_reader :author, :email, :homepage, :summary, :description, :strategy
 
     def initialize(options = {})

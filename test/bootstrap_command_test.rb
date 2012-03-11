@@ -1,8 +1,5 @@
 require File.expand_path('../test_helper', __FILE__)
-
 require 'rubygems/commands/bootstrap_command'
-require 'gem_release/gemspec'
-require 'fileutils'
 
 class BootstrapCommandTest < Test::Unit::TestCase
   def setup
