@@ -8,11 +8,7 @@ class BumpCommandTest < Test::Unit::TestCase
   def setup
     build_sandbox(:gemspec_dirs => true)
     stub_command(BootstrapCommand, :say)
-    stub_command(TagCommand, :say)
     stub_command(BumpCommand, :say)
-    stub_command(ReleaseCommand, :say)
-    stub_command(BuildCommand, :execute)
-    stub_command(PushCommand, :execute)
     BootstrapCommand.new.send(:write_scaffold)
   end
 
@@ -89,92 +85,6 @@ class BumpCommandTest < Test::Unit::TestCase
     command.expects(:`).with('git commit -m "Bump to 0.0.2"')
     command.expects(:`).with('git push')
     command.invoke('--push')
-  end
-
-  test "gem bump --push --tag" do
-    command = BumpCommand.new
-    in_gemspec_dirs do
-      command.expects(:`).with("git add #{version.send(:filename)}")
-    end
-    command.expects(:`).with('git commit -m "Bump to 0.0.2"')
-    command.expects(:`).with('git push')
-    TagCommand.any_instance.stubs(:gem_version).returns('0.0.2')
-    TagCommand.any_instance.expects(:`).with("git tag -am 'tag v0.0.2' v0.0.2")
-    TagCommand.any_instance.expects(:`).with('git push --tags origin')
-    command.invoke('--push', '--tag')
-  end
-
-  test "gem bump --push --release" do
-    command = BumpCommand.new
-    in_gemspec_dirs do
-      command.expects(:`).with("git add #{version.send(:filename)}")
-    end
-    command.expects(:`).with('git commit -m "Bump to 0.0.2"')
-    command.expects(:`).with('git push')
-
-    count = gemspec_dirs.size
-    ReleaseCommand.any_instance.expects(:build).times(count)
-    ReleaseCommand.any_instance.expects(:push).times(count)
-    ReleaseCommand.any_instance.expects(:remove).times(count)
-
-    command.invoke('--push', '--release')
-  end
-
-  test "gem bump --push --tag --release" do
-    command = BumpCommand.new
-    in_gemspec_dirs do
-      command.expects(:`).with("git add #{version.send(:filename)}")
-    end
-    command.expects(:`).with('git commit -m "Bump to 0.0.2"')
-    command.expects(:`).with('git push')
-
-    count = gemspec_dirs.size
-    ReleaseCommand.any_instance.expects(:build).times(count)
-    ReleaseCommand.any_instance.expects(:push).times(count)
-    ReleaseCommand.any_instance.expects(:remove).times(count)
-
-    TagCommand.any_instance.expects(:tag)
-    TagCommand.any_instance.expects(:push)
-
-    command.invoke('--push', '--tag', '--release')
-  end
-
-  test "gem bump --release --key" do
-    command = BumpCommand.new
-    in_gemspec_dirs do
-      command.expects(:`).with("git add #{version.send(:filename)}")
-    end
-    command.expects(:`).with('git commit -m "Bump to 0.0.2"')
-
-    count = gemspec_dirs.size
-    ReleaseCommand.any_instance.expects(:build).times(count)
-    ReleaseCommand.any_instance.expects(:remove).times(count)
-
-    keyname = "keyname"
-    in_gemspec_dirs do
-      PushCommand.any_instance.expects(:invoke).with() { |_, a1, a2| a1 ==  "--key" && a2 == keyname }
-    end
-
-    command.invoke('--release', '--key', keyname)
-  end
-
-  test "gem bump --release --host" do
-    command = BumpCommand.new
-    in_gemspec_dirs do
-      command.expects(:`).with("git add #{version.send(:filename)}")
-    end
-    command.expects(:`).with('git commit -m "Bump to 0.0.2"')
-
-    count = gemspec_dirs.size
-    ReleaseCommand.any_instance.expects(:build).times(count)
-    ReleaseCommand.any_instance.expects(:remove).times(count)
-
-    hostname = "http://hostname.example.com"
-    in_gemspec_dirs do
-      PushCommand.any_instance.expects(:invoke).with() { |_, a1, a2| a1 ==  "--host" && a2 == hostname }
-    end
-
-    command.invoke('--release', '--host', hostname)
   end
 
   test "old_number" do

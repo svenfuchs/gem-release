@@ -12,11 +12,7 @@ class Gem::Commands::BumpCommand < Gem::Command
     :version  => 'patch',
     :commit   => true,
     :push     => false,
-    :tag      => false,
-    :release  => false,
-    :quiet    => false,
-    :key      => '',
-    :host     => ''
+    :quiet    => false
   }
 
   def initialize(options = {})
@@ -25,19 +21,14 @@ class Gem::Commands::BumpCommand < Gem::Command
     option :version, '-v', 'Target version: next [major|minor|patch] or a given version number [x.x.x]'
     option :commit,  '-c', 'Perform a commit after incrementing gem version'
     option :push,    '-p', 'Push to origin'
-    option :tag,     '-t', 'Create a git tag and push --tags to origin'
-    option :release, '-r', 'Build gem from a gemspec and push to rubygems.org'
-    option :quiet,   '-q', 'When releasing: Do not output status messages'
-    option :key,     '-k', 'When releasing: Use the given API key from ~/.gem/credentials'
-    option :host,    '-h', 'When releasing: Push to a gemcutter-compatible host other than rubygems.org'
+    option :quiet,   '-q', 'Do not output status messages'
   end
 
   def execute
     @new_version_number = nil
 
     # enforce option dependencies
-    options[:push] = options[:push] || options[:tag]
-    options[:commit] = options[:commit] || options[:push] || options[:release]
+    options[:commit] = options[:commit] || options[:push]
 
     in_gemspec_dirs do
       bump
@@ -48,8 +39,6 @@ class Gem::Commands::BumpCommand < Gem::Command
     else
       commit  if options[:commit]
       push    if options[:push]
-      release if options[:release]
-      tag     if options[:tag]
     end
   end
 
@@ -75,19 +64,5 @@ class Gem::Commands::BumpCommand < Gem::Command
     def push
       say "Pushing to origin" unless quiet?
       `git push`
-    end
-
-    def release
-      args = []
-      [:key, :host].each do |option|
-        args += ["--#{option}", options[option]] unless options[option] == ''
-      end
-      args += "--quiet" if quiet?
-
-      ReleaseCommand.new.invoke(*args)
-    end
-
-    def tag
-      TagCommand.new.invoke
     end
 end
