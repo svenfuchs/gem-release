@@ -27,7 +27,10 @@ class Gem::Commands::TagCommand < Gem::Command
     end
 
     def push
-      say "Pushing --tags to origin git repository" unless quiet?
+      say "Pushing to the origin git repository" unless quiet?
+      `git push origin`
+
+      say "Pushing --tags to the origin git repository" unless quiet?
       `git push --tags origin`
     end
 

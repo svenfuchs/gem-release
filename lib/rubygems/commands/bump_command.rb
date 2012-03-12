@@ -20,7 +20,7 @@ class Gem::Commands::BumpCommand < Gem::Command
 
     option :version, '-v', 'Target version: next [major|minor|patch] or a given version number [x.x.x]'
     option :commit,  '-c', 'Perform a commit after incrementing gem version'
-    option :push,    '-p', 'Push to origin'
+    option :push,    '-p', 'Push to the origin git repository'
     option :quiet,   '-q', 'Do not output status messages'
   end
 
@@ -62,7 +62,7 @@ class Gem::Commands::BumpCommand < Gem::Command
     end
 
     def push
-      say "Pushing to origin" unless quiet?
-      `git push`
+      say "Pushing to the origin git repository" unless quiet?
+      `git push origin`
     end
 end

@@ -83,7 +83,7 @@ class BumpCommandTest < Test::Unit::TestCase
       command.expects(:`).with("git add #{version.send(:filename)}")
     end
     command.expects(:`).with('git commit -m "Bump to 0.0.2"')
-    command.expects(:`).with('git push')
+    command.expects(:`).with('git push origin')
     command.invoke('--push')
   end
 

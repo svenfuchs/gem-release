@@ -5,10 +5,12 @@ This gem plugin adds a `bootstrap`, `bump`, `tag` and a `release` command to the
 The `bump` command
 
  * bumps the version number defined in `lib/[gem_name]/version.rb` to the next major, minor or patch level or to a given, particular version number
+ * optionally executes `git push origin`
 
 The `tag` command
 
  * executes `git tag -am "tag [tag_name]" [tag_name]` and
+ * executes `git push origin`
  * executes `git push --tags origin`
 
 ... with `tag_name` being the version number as specified in your .gemspec preceded  by `v` (e.g. `v0.0.1`).
@@ -44,7 +46,7 @@ Obviously ...
     $ gem release --host HOST        # push to a gemcutter-compatible host other than rubygems.org
     $ gem release --quiet            # suppress output status messages
 
-    $ gem tag                        # creates a git tag and pushes tags to the origin repository
+    $ gem tag                        # creates a git tag and pushes to the origin git repository
 
     $ gem gemspec                    # generates a [gem_name].gemspec using  Dir["{lib/**/*,[A-Z]*}"]
     $ gem gemspec --strategy git     # uses s.files = `git ls-files app lib`.split("\n")
@@ -60,7 +62,7 @@ Obviously ...
     $ gem bump --version major       # Bump the gem version to the next major level (e.g. 0.0.1 to 1.0.0)
     $ gem bump --version minor       # Bump the gem version to the next minor level (e.g. 0.0.1 to 0.1.0)
     $ gem bump --version patch       # Bump the gem version to the next patch level (e.g. 0.0.1 to 0.0.2)
-    $ gem bump --push                # Bump and git push to origin
+    $ gem bump --push                # Bump and push to the origin git repository
     $ gem bump --no-commit           # Bump the gem version but don't git commit
                                      #  (will be ignored if combined with push)
 
