@@ -16,7 +16,7 @@ The `tag` command
 The `release` command
 
  * builds a gem from your gemspec and
- * pushes it to rubygems.org
+ * pushes it to rubygems.org (or another gemcutter-compatible host)
  * deletes the gem file
  * optionally invokes the `tag` command
 
@@ -40,11 +40,14 @@ Obviously ...
     $ gem release your.gemspec       # builds the gem and pushes it to rubygems.org
     $ gem release                    # uses the first *.gemspec in the current working directory
     $ gem release --tag              # also executes gem tag
+    $ gem release --key KEY          # use the specified API key from ~/.gem/credentials
+    $ gem release --host HOST        # push to a gemcutter-compatible host other than rubygems.org
+    $ gem release --quiet            # suppress output status messages
 
     $ gem tag                        # creates a git tag and pushes tags to the origin repository
 
     $ gem gemspec                    # generates a [gem_name].gemspec using  Dir["{lib/**/*,[A-Z]*}"]
-    $ gem gemspec --strategy gig     # uses s.files = `git ls-files app lib`.split("\n")
+    $ gem gemspec --strategy git     # uses s.files = `git ls-files app lib`.split("\n")
 
     $ gem bootstrap                  # generates a [gem_name].gemspec using the current directory name
                                      #  and scaffolds lib/[gem_name]/version.rb, README, test/
@@ -60,6 +63,9 @@ Obviously ...
     $ gem bump --push                # Bump and git push to origin
     $ gem bump --tag                 # Bump and tag gem and pushes tags to the origin repository
     $ gem bump --release             # Bump and release gem
+    $ gem bump --release --key KEY   # Bump and release the gem, using the specified API key from ~/.gem/credentials
+    $ gem bump --release --host HOST # Bump and release the gem to a gemcutter-compatible host other than rubygems.org
+    $ gem bump --release --quiet     # Bump and release the gem, suppressing output status messages
     $ gem bump --tag --release       # Bump, tag, push and release gem
     $ gem bump --no-commit           # Bump the gem version but don't git commit
                                      #  (will be ignored if combined with push, tag or release)
