@@ -9,7 +9,6 @@ class BumpCommandTest < Test::Unit::TestCase
     build_sandbox(:gemspec_dirs => true)
     stub_command(BootstrapCommand, :say)
     stub_command(BumpCommand, :say)
-    BootstrapCommand.new.send(:write_scaffold)
   end
 
   def teardown
