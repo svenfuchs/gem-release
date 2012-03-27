@@ -38,7 +38,7 @@ class Gem::Commands::BootstrapCommand < Gem::Command
   end
 
   def write_gemspec
-    GemspecCommand.new(:quiet => quiet?).invoke
+    GemspecCommand.new(:quiet => quiet?, :strategy => options[:strategy]).execute
   end
 
   def write_scaffold
