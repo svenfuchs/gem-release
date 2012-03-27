@@ -62,7 +62,7 @@ module GemRelease
 
     def in_bootstrapped_dir
       dir = Array(options[:args]).first rescue nil
-      if dir
+      if dir && dir.kind_of?(String) && dir[0] != '-'
         Dir.mkdir dir
         Dir.chdir(dir) { yield }
       else
