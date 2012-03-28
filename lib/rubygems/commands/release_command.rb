@@ -28,13 +28,14 @@ class Gem::Commands::ReleaseCommand < Gem::Command
   end
 
   def execute
+    tag if options[:tag]
+
     in_gemspec_dirs do
       build
       push
       remove
     end
 
-    tag if options[:tag]
     say "All is good, thanks my friend.\n"
   end
 
@@ -60,6 +61,6 @@ class Gem::Commands::ReleaseCommand < Gem::Command
     end
 
     def tag
-      TagCommand.new.invoke
+      TagCommand.new(:quiet => quiet?).invoke
     end
 end

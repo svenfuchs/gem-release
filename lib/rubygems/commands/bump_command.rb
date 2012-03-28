@@ -12,6 +12,10 @@ class Gem::Commands::BumpCommand < Gem::Command
     :version  => 'patch',
     :commit   => true,
     :push     => false,
+    :tag      => false,
+    :release  => false,
+    :key      => '',
+    :host     => '',
     :quiet    => false
   }
 
@@ -21,6 +25,10 @@ class Gem::Commands::BumpCommand < Gem::Command
     option :version, '-v', 'Target version: next [major|minor|patch] or a given version number [x.x.x]'
     option :commit,  '-c', 'Perform a commit after incrementing gem version'
     option :push,    '-p', 'Push to the origin git repository'
+    option :tag,     '-t', 'Create a git tag and push --tags to origin'
+    option :release, '-r', 'Build gem from a gemspec and push to rubygems.org'
+    option :key,     '-k', 'When releasing: Use the given API key from ~/.gem/credentials'
+    option :host,    '-h', 'When releasing: Push to a gemcutter-compatible host other than rubygems.org'
     option :quiet,   '-q', 'Do not output status messages'
   end
 
@@ -28,7 +36,8 @@ class Gem::Commands::BumpCommand < Gem::Command
     @new_version_number = nil
 
     # enforce option dependencies
-    options[:commit] = options[:commit] || options[:push]
+    options[:push] = false if options[:tag] # push is performed as part of tag
+    options[:commit] = options[:commit] || options[:push] || options[:tag] || options[:release]
 
     in_gemspec_dirs do
       bump
@@ -39,6 +48,8 @@ class Gem::Commands::BumpCommand < Gem::Command
     else
       commit  if options[:commit]
       push    if options[:push]
+      tag     if options[:tag]
+      release if options[:release]
     end
   end
 
@@ -64,5 +75,20 @@ class Gem::Commands::BumpCommand < Gem::Command
     def push
       say "Pushing to the origin git repository" unless quiet?
       `git push origin`
+    end
+
+    def release
+      cmd = ReleaseCommand.new
+      [:key, :host].each do |option|
+        cmd.options[option] = options[option]
+      end
+      cmd.options[:quiet] = options[:quiet]
+      cmd.execute
+    end
+
+    def tag
+      cmd = TagCommand.new
+      cmd.options[:quiet] = options[:quiet]
+      cmd.execute
     end
 end

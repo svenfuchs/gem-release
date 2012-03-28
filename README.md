@@ -6,6 +6,7 @@ The `bump` command
 
  * bumps the version number defined in `lib/[gem_name]/version.rb` to the next major, minor or patch level or to a given, particular version number
  * optionally executes `git push origin`
+ * optionally invokes the `tag` and/or `release` commands (see below)
 
 The `tag` command
 
@@ -63,8 +64,14 @@ Obviously ...
     $ gem bump --version minor       # Bump the gem version to the next minor level (e.g. 0.0.1 to 0.1.0)
     $ gem bump --version patch       # Bump the gem version to the next patch level (e.g. 0.0.1 to 0.0.2)
     $ gem bump --push                # Bump and push to the origin git repository
+    $ gem bump --tag                 # Bump and tag gem and pushes tags to the origin repository
+    $ gem bump --release             # Bump and release gem
+    $ gem bump --release --key KEY   # Bump and release the gem, using the specified API key from ~/.gem/credentials
+    $ gem bump --release --host HOST # Bump and release the gem to a gemcutter-compatible host other than rubygems.org
+    $ gem bump --release --quiet     # Bump and release the gem, suppressing output status messages
+    $ gem bump --tag --release       # Bump, tag, push and release gem
     $ gem bump --no-commit           # Bump the gem version but don't git commit
-                                     #  (will be ignored if combined with push)
+                                     #  (will be ignored if combined with push, tag or release)
 
 When bumping versions for a gem named `foo-bar`, the following paths will be searched in order for `version.rb`:
 

@@ -15,7 +15,7 @@ module GemRelease
 
     def bump!
       File.open(filename, 'w+') { |f| f.write(bumped_content) }
-      require_version
+      reload_version
     end
 
     def new_number
@@ -42,8 +42,8 @@ module GemRelease
         "lib/#{path}/version.rb"
       end
 
-      def require_version
-        silence { require(filename) }
+      def reload_version
+        silently { load(filename) }
       end
 
       def major(major, minor, patch)
@@ -64,6 +64,17 @@ module GemRelease
 
       def bumped_content
         content.sub(VERSION_PATTERN) { "#{$1}#{new_number}#{$3}" }
+      end
+
+      def silently(&block)
+        warn_level = $VERBOSE
+        $VERBOSE = nil
+        begin
+          result = block.call
+        ensure
+          $VERBOSE = warn_level
+        end
+        result
       end
   end
 end
