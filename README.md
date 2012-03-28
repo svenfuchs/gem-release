@@ -10,16 +10,14 @@ The `bump` command
 
 The `tag` command
 
- * executes `git tag -am "tag [tag_name]" [tag_name]` and
+ * executes `git tag -am "tag [tag_name]" [tag_name]`, with `tag_name` being the version number as specified in your .gemspec preceded  by `v` (e.g. `v0.0.1`)
  * executes `git push origin`
  * executes `git push --tags origin`
 
-... with `tag_name` being the version number as specified in your .gemspec preceded  by `v` (e.g. `v0.0.1`).
-
 The `release` command
 
- * builds a gem from your gemspec and
- * pushes it to rubygems.org (or another gemcutter-compatible host)
+ * builds a gem from your gemspec
+ * pushes the gem to rubygems.org (or another gemcutter-compatible host)
  * deletes the gem file
  * optionally invokes the `tag` command
 
