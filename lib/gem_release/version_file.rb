@@ -4,8 +4,8 @@ module GemRelease
   class VersionFile
     include GemRelease::Helpers
 
-    VERSION_PATTERN = /(VERSION\s*=\s*(?:"|'))(\d+\.\d+\.\d+)("|')/
-    NUMBER_PATTERN  = /(\d+)\.(\d+)\.(\d+)/
+    VERSION_PATTERN = /(VERSION\s*=\s*(?:"|'))((?:(?!"|').)*)("|')/
+    NUMBER_PATTERN  = /(\d+)\.(\d+)\.(\d+)(.*)/
 
     attr_reader :target
 

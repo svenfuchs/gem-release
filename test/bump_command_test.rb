@@ -78,6 +78,22 @@ class BumpCommandTest < Test::Unit::TestCase
     command.invoke('--version', '0.1.0')
   end
 
+  test "`gem bump --version 0.1.0.pre1`, followed by `gem bump`" do
+    command = BumpCommand.new
+    in_gemspec_dirs do
+      command.expects(:`).with("git add #{version.send(:filename)}")
+    end
+    command.expects(:`).with('git commit -m "Bump to 0.1.0.pre1"')
+    command.invoke('--version', '0.1.0.pre1')
+
+    command = BumpCommand.new
+    in_gemspec_dirs do
+      command.expects(:`).with("git add #{version.send(:filename)}")
+    end
+    command.expects(:`).with('git commit -m "Bump to 0.1.1"')
+    command.invoke()
+  end
+
   test "gem bump --push" do
     command = BumpCommand.new
     in_gemspec_dirs do
