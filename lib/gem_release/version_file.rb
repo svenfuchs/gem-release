@@ -35,7 +35,9 @@ module GemRelease
             prerelease($1, $2, $3, $4, $5)
           end
         else
-          "#{old_number}.#{target}1"
+          old_number.sub(NUMBER_PATTERN) do
+            "#{patch($1, $2, $3)}.#{target}1"
+          end
         end
     end
 

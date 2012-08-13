@@ -83,14 +83,14 @@ class BumpCommandTest < Test::Unit::TestCase
     in_gemspec_dirs do
       command.expects(:`).with("git add #{version.send(:filename)}")
     end
-    command.expects(:`).with('git commit -m "Bump to 0.0.1.pre1"')
+    command.expects(:`).with('git commit -m "Bump to 0.0.2.pre1"')
     command.invoke('--version', 'pre')
 
     command = BumpCommand.new
     in_gemspec_dirs do
       command.expects(:`).with("git add #{version.send(:filename)}")
     end
-    command.expects(:`).with('git commit -m "Bump to 0.0.1.pre2"')
+    command.expects(:`).with('git commit -m "Bump to 0.0.2.pre2"')
     command.invoke()
   end
 
@@ -258,15 +258,15 @@ class BumpCommandTest < Test::Unit::TestCase
   end
 
   test "new_number w/ :pre target" do
-    assert_equal '0.0.1.pre1', version(:target => :pre).new_number
+    assert_equal '0.0.2.pre1', version(:target => :pre).new_number
   end
 
   test "new_number w/ :rc target" do
-    assert_equal '0.0.1.rc1', version(:target => :rc).new_number
+    assert_equal '0.0.2.rc1', version(:target => :rc).new_number
   end
 
   test "new_number w/ :beta target" do
-    assert_equal '0.0.1.beta1', version(:target => :beta).new_number
+    assert_equal '0.0.2.beta1', version(:target => :beta).new_number
   end
 
   test "new_number w/ given version number" do
