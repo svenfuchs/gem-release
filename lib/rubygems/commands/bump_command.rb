@@ -9,7 +9,7 @@ class Gem::Commands::BumpCommand < Gem::Command
   attr_reader :arguments, :usage
 
   DEFAULTS = {
-    :version  => 'patch',
+    :version  => '',
     :commit   => true,
     :push     => false,
     :tag      => false,
@@ -22,13 +22,13 @@ class Gem::Commands::BumpCommand < Gem::Command
   def initialize(options = {})
     super 'bump', 'Bump the gem version', DEFAULTS.merge(options)
 
-    option :version, '-v', 'Target version: next [major|minor|patch] or a given version number [x.x.x]'
+    option :version, '-v', 'Target version: next [major|minor|patch|pre] or a given version number [x.x.x]'
     option :commit,  '-c', 'Perform a commit after incrementing gem version'
     option :push,    '-p', 'Push to the origin git repository'
     option :tag,     '-t', 'Create a git tag and push --tags to origin'
     option :release, '-r', 'Build gem from a gemspec and push to rubygems.org'
-    option :key,     '-k', 'When releasing: Use the given API key from ~/.gem/credentials'
-    option :host,    '-h', 'When releasing: Push to a gemcutter-compatible host other than rubygems.org'
+    option :key,     '-k', 'When releasing: use the given API key from ~/.gem/credentials'
+    option :host,    '-h', 'When releasing: push to a gemcutter-compatible host other than rubygems.org'
     option :quiet,   '-q', 'Do not output status messages'
   end
 

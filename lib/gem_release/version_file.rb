@@ -6,11 +6,15 @@ module GemRelease
 
     VERSION_PATTERN = /(VERSION\s*=\s*(?:"|'))((?:(?!"|').)*)("|')/
     NUMBER_PATTERN  = /(\d+)\.(\d+)\.(\d+)(.*)/
+    PRERELEASE_NUMBER_PATTERN  = /(\d+)\.(\d+)\.(\d+)\.(.*)(\d+)/
 
     attr_reader :target
 
     def initialize(options = {})
-      @target = options[:target] || :patch
+      @target = options[:target]
+      if @target == nil || @target == ''
+        @target = is_prerelease_version_number?(old_number) ? :pre : :patch
+      end
     end
 
     def bump!
@@ -19,9 +23,20 @@ module GemRelease
     end
 
     def new_number
-      @new_number ||= old_number.sub(NUMBER_PATTERN) do
-        respond_to?(target) ? send(target, $1, $2, $3) : target
-      end
+      @new_number ||=
+        if is_version_number?(target)
+          target
+        elsif [:major, :minor, :patch].include?(target.to_sym)
+          old_number.sub(NUMBER_PATTERN) do
+            send(target, $1, $2, $3)
+          end
+        elsif is_prerelease_version_number?(old_number)
+          old_number.sub(PRERELEASE_NUMBER_PATTERN) do
+            prerelease($1, $2, $3, $4, $5)
+          end
+        else
+          "#{old_number}.#{target}1"
+        end
     end
 
     def old_number
@@ -58,6 +73,10 @@ module GemRelease
         "#{major}.#{minor}.#{patch.to_i + 1}"
       end
 
+      def prerelease(major, minor, patch, prereleasePrefix, prereleaseNumber)
+        "#{major}.#{minor}.#{patch}.#{prereleasePrefix || 'pre'}#{prereleaseNumber.to_i + 1}"
+      end
+
       def content
         @content ||= File.read(filename)
       end
@@ -75,6 +94,14 @@ module GemRelease
           $VERBOSE = warn_level
         end
         result
+      end
+
+      def is_version_number?(v)
+        v.to_s.match(NUMBER_PATTERN) != nil
+      end
+
+      def is_prerelease_version_number?(v)
+        v.to_s.match(PRERELEASE_NUMBER_PATTERN) != nil
       end
   end
 end
