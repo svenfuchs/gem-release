@@ -69,5 +69,10 @@ module GemRelease
         yield
       end
     end
+
+    def run_cmd(command)
+      send(command)
+      abort if $?.exitstatus != 0
+    end
   end
 end

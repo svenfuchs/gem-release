@@ -28,12 +28,13 @@ class Gem::Commands::ReleaseCommand < Gem::Command
   end
 
   def execute
-    tag if options[:tag]
+    tasks = [:build, :push, :remove]
+    tasks.unshift(:tag) if options[:tag]
 
     in_gemspec_dirs do
-      build
-      push
-      remove
+      tasks.each do |task|
+        run_cmd(task)
+      end
     end
 
     say "All is good, thanks my friend.\n"

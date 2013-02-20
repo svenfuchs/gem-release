@@ -15,8 +15,9 @@ class Gem::Commands::TagCommand < Gem::Command
   end
 
   def execute
-    tag
-    push
+    [:tag, :push].each do |task|
+      run_cmd(task)
+    end
   end
 
   protected
