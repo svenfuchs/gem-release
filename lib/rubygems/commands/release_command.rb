@@ -44,6 +44,7 @@ class Gem::Commands::ReleaseCommand < Gem::Command
 
     def build
       BuildCommand.new.invoke(gemspec_filename)
+      true
     end
 
     def push
@@ -54,11 +55,12 @@ class Gem::Commands::ReleaseCommand < Gem::Command
       args += "--quiet" if quiet?
 
       PushCommand.new.invoke(gem_filename, *args)
+      true
     end
 
     def remove
       say "Deleting left over gem file #{gem_filename}" unless quiet?
-      `rm #{gem_filename}`
+      system('rm #{gem_filename}')
     end
 
     def tag

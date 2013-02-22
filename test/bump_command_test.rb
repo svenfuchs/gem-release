@@ -24,9 +24,9 @@ class BumpCommandTest < Test::Unit::TestCase
   test "gem bump" do
     command = BumpCommand.new
     in_gemspec_dirs do
-      command.expects(:`).with("git add #{version.send(:filename)}")
+      command.expects(:system).with("git add #{version.send(:filename)}").returns(true)
     end
-    command.expects(:`).with('git commit -m "Bump to 0.0.2"')
+    command.expects(:system).with('git commit -m "Bump to 0.0.2"').returns(true)
     command.invoke
   end
 
@@ -72,111 +72,111 @@ class BumpCommandTest < Test::Unit::TestCase
   test "gem bump --version 0.1.0" do
     command = BumpCommand.new
     in_gemspec_dirs do
-      command.expects(:`).with("git add #{version.send(:filename)}")
+      command.expects(:system).with("git add #{version.send(:filename)}").returns(true)
     end
-    command.expects(:`).with('git commit -m "Bump to 0.1.0"')
+    command.expects(:system).with('git commit -m "Bump to 0.1.0"').returns(true)
     command.invoke('--version', '0.1.0')
   end
 
   test "`gem bump --version pre`, followed by `gem bump`" do
     command = BumpCommand.new
     in_gemspec_dirs do
-      command.expects(:`).with("git add #{version.send(:filename)}")
+      command.expects(:system).with("git add #{version.send(:filename)}").returns(true)
     end
-    command.expects(:`).with('git commit -m "Bump to 0.0.2.pre1"')
+    command.expects(:system).with('git commit -m "Bump to 0.0.2.pre1"').returns(true)
     command.invoke('--version', 'pre')
 
     command = BumpCommand.new
     in_gemspec_dirs do
-      command.expects(:`).with("git add #{version.send(:filename)}")
+      command.expects(:system).with("git add #{version.send(:filename)}").returns(true)
     end
-    command.expects(:`).with('git commit -m "Bump to 0.0.2.pre2"')
+    command.expects(:system).with('git commit -m "Bump to 0.0.2.pre2"').returns(true)
     command.invoke()
   end
 
   test "`gem bump --version 0.1.0.beta1`, followed by `gem bump`" do
     command = BumpCommand.new
     in_gemspec_dirs do
-      command.expects(:`).with("git add #{version.send(:filename)}")
+      command.expects(:system).with("git add #{version.send(:filename)}").returns(true)
     end
-    command.expects(:`).with('git commit -m "Bump to 0.1.0.beta1"')
+    command.expects(:system).with('git commit -m "Bump to 0.1.0.beta1"').returns(true)
     command.invoke('--version', '0.1.0.beta1')
 
     command = BumpCommand.new
     in_gemspec_dirs do
-      command.expects(:`).with("git add #{version.send(:filename)}")
+      command.expects(:system).with("git add #{version.send(:filename)}").returns(true)
     end
-    command.expects(:`).with('git commit -m "Bump to 0.1.0.beta2"')
+    command.expects(:system).with('git commit -m "Bump to 0.1.0.beta2"').returns(true)
     command.invoke()
   end
 
   test "`gem bump --version 0.1.0.1`, followed by `gem bump`" do
     command = BumpCommand.new
     in_gemspec_dirs do
-      command.expects(:`).with("git add #{version.send(:filename)}")
+      command.expects(:system).with("git add #{version.send(:filename)}").returns(true)
     end
-    command.expects(:`).with('git commit -m "Bump to 0.1.0.1"')
+    command.expects(:system).with('git commit -m "Bump to 0.1.0.1"').returns(true)
     command.invoke('--version', '0.1.0.1')
 
     command = BumpCommand.new
     in_gemspec_dirs do
-      command.expects(:`).with("git add #{version.send(:filename)}")
+      command.expects(:system).with("git add #{version.send(:filename)}").returns(true)
     end
-    command.expects(:`).with('git commit -m "Bump to 0.1.0.2"')
+    command.expects(:system).with('git commit -m "Bump to 0.1.0.2"').returns(true)
     command.invoke()
   end
 
   test "`gem bump --version 0.1.0.beta1`, followed by `gem bump --version patch`" do
     command = BumpCommand.new
     in_gemspec_dirs do
-      command.expects(:`).with("git add #{version.send(:filename)}")
+      command.expects(:system).with("git add #{version.send(:filename)}").returns(true)
     end
-    command.expects(:`).with('git commit -m "Bump to 0.1.0.beta1"')
+    command.expects(:system).with('git commit -m "Bump to 0.1.0.beta1"').returns(true)
     command.invoke('--version', '0.1.0.beta1')
 
     command = BumpCommand.new
     in_gemspec_dirs do
-      command.expects(:`).with("git add #{version.send(:filename)}")
+      command.expects(:system).with("git add #{version.send(:filename)}").returns(true)
     end
-    command.expects(:`).with('git commit -m "Bump to 0.1.1"')
+    command.expects(:system).with('git commit -m "Bump to 0.1.1"').returns(true)
     command.invoke('--version', 'patch')
   end
 
   test "gem bump --push" do
     command = BumpCommand.new
     in_gemspec_dirs do
-      command.expects(:`).with("git add #{version.send(:filename)}")
+      command.expects(:system).with("git add #{version.send(:filename)}").returns(true)
     end
-    command.expects(:`).with('git commit -m "Bump to 0.0.2"')
-    command.expects(:`).with('git push origin')
+    command.expects(:system).with('git commit -m "Bump to 0.0.2"').returns(true)
+    command.expects(:system).with('git push origin').returns(true)
     command.invoke('--push')
   end
 
   test "gem bump --tag" do
     command = BumpCommand.new
     in_gemspec_dirs do
-      command.expects(:`).with("git add #{version.send(:filename)}")
+      command.expects(:system).with("git add #{version.send(:filename)}").returns(true)
     end
-    command.expects(:`).with('git commit -m "Bump to 0.0.2"')
+    command.expects(:system).with('git commit -m "Bump to 0.0.2"').returns(true)
 
-    TagCommand.new.expects(:`).with("git tag -am 'tag v0.0.2' v0.0.2")
-    TagCommand.new.expects(:`).with('git push origin')
-    TagCommand.new.expects(:`).with('git push --tags origin')
+    TagCommand.new.expects(:system).with("git tag -am 'tag v0.0.2' v0.0.2").returns(true)
+    TagCommand.new.expects(:system).with('git push origin').returns(true)
+    TagCommand.new.expects(:system).with('git push --tags origin').returns(true)
     command.invoke('--tag')
   end
 
   test "gem bump --push --release" do
     command = BumpCommand.new
     in_gemspec_dirs do
-      command.expects(:`).with("git add #{version.send(:filename)}")
+      command.expects(:system).with("git add #{version.send(:filename)}").returns(true)
     end
-    command.expects(:`).with('git commit -m "Bump to 0.0.2"')
-    command.expects(:`).with('git push origin')
+    command.expects(:system).with('git commit -m "Bump to 0.0.2"').returns(true)
+    command.expects(:system).with('git push origin').returns(true)
 
     count = gemspec_dirs.size
-    ReleaseCommand.any_instance.expects(:build).times(count)
-    ReleaseCommand.any_instance.expects(:push).times(count)
-    ReleaseCommand.any_instance.expects(:remove).times(count)
+    ReleaseCommand.any_instance.expects(:build).times(count).returns(true)
+    ReleaseCommand.any_instance.expects(:push).times(count).returns(true)
+    ReleaseCommand.any_instance.expects(:remove).times(count).returns(true)
 
     command.invoke('--push', '--release')
   end
@@ -184,17 +184,17 @@ class BumpCommandTest < Test::Unit::TestCase
   test "gem bump --tag --release" do
     command = BumpCommand.new
     in_gemspec_dirs do
-      command.expects(:`).with("git add #{version.send(:filename)}")
+      command.expects(:system).with("git add #{version.send(:filename)}").returns(true)
     end
-    command.expects(:`).with('git commit -m "Bump to 0.0.2"')
+    command.expects(:system).with('git commit -m "Bump to 0.0.2"').returns(true)
 
     count = gemspec_dirs.size
-    ReleaseCommand.any_instance.expects(:build).times(count)
-    ReleaseCommand.any_instance.expects(:push).times(count)
-    ReleaseCommand.any_instance.expects(:remove).times(count)
+    ReleaseCommand.any_instance.expects(:build).times(count).returns(true)
+    ReleaseCommand.any_instance.expects(:push).times(count).returns(true)
+    ReleaseCommand.any_instance.expects(:remove).times(count).returns(true)
 
-    TagCommand.any_instance.expects(:tag)
-    TagCommand.any_instance.expects(:push)
+    TagCommand.any_instance.expects(:tag).returns(true)
+    TagCommand.any_instance.expects(:push).returns(true)
 
     command.invoke('--tag', '--release')
   end
@@ -202,17 +202,17 @@ class BumpCommandTest < Test::Unit::TestCase
   test "gem bump --release --key" do
     command = BumpCommand.new
     in_gemspec_dirs do
-      command.expects(:`).with("git add #{version.send(:filename)}")
+      command.expects(:system).with("git add #{version.send(:filename)}").returns(true)
     end
-    command.expects(:`).with('git commit -m "Bump to 0.0.2"')
+    command.expects(:system).with('git commit -m "Bump to 0.0.2"').returns(true)
 
     count = gemspec_dirs.size
-    ReleaseCommand.any_instance.expects(:build).times(count)
-    ReleaseCommand.any_instance.expects(:remove).times(count)
+    ReleaseCommand.any_instance.expects(:build).times(count).returns(true)
+    ReleaseCommand.any_instance.expects(:remove).times(count).returns(true)
 
     keyname = "keyname"
     in_gemspec_dirs do
-      PushCommand.any_instance.expects(:invoke).with() { |_, a1, a2| a1 ==  "--key" && a2 == keyname }
+      PushCommand.any_instance.expects(:invoke).with() { |_, a1, a2| a1 ==  "--key" && a2 == keyname }.returns(true)
     end
 
     command.invoke('--release', '--key', keyname)
@@ -221,17 +221,17 @@ class BumpCommandTest < Test::Unit::TestCase
   test "gem bump --release --host" do
     command = BumpCommand.new
     in_gemspec_dirs do
-      command.expects(:`).with("git add #{version.send(:filename)}")
+      command.expects(:system).with("git add #{version.send(:filename)}").returns(true)
     end
-    command.expects(:`).with('git commit -m "Bump to 0.0.2"')
+    command.expects(:system).with('git commit -m "Bump to 0.0.2"').returns(true)
 
     count = gemspec_dirs.size
-    ReleaseCommand.any_instance.expects(:build).times(count)
-    ReleaseCommand.any_instance.expects(:remove).times(count)
+    ReleaseCommand.any_instance.expects(:build).times(count).returns(true)
+    ReleaseCommand.any_instance.expects(:remove).times(count).returns(true)
 
     hostname = "http://hostname.example.com"
     in_gemspec_dirs do
-      PushCommand.any_instance.expects(:invoke).with() { |_, a1, a2| a1 ==  "--host" && a2 == hostname }
+      PushCommand.any_instance.expects(:invoke).with() { |_, a1, a2| a1 ==  "--host" && a2 == hostname }.returns(true)
     end
 
     command.invoke('--release', '--host', hostname)

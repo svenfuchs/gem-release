@@ -24,15 +24,15 @@ class Gem::Commands::TagCommand < Gem::Command
 
     def tag
       say "Creating git tag #{tag_name}" unless quiet?
-      `git tag -am 'tag #{tag_name}' #{tag_name}`
+      system("git tag -am 'tag #{tag_name}' #{tag_name}")
     end
 
     def push
       say "Pushing to the origin git repository" unless quiet?
-      `git push origin`
+      return false unless system('git push origin')
 
       say "Pushing --tags to the origin git repository" unless quiet?
-      `git push --tags origin`
+      system('git push --tags origin')
     end
 
     def tag_name
