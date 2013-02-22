@@ -28,12 +28,13 @@ class Gem::Commands::ReleaseCommand < Gem::Command
   end
 
   def execute
-    tag if options[:tag]
+    tasks = [:build, :push, :remove]
+    tasks.unshift(:tag) if options[:tag]
 
     in_gemspec_dirs do
-      build
-      push
-      remove
+      tasks.each do |task|
+        run_cmd(task)
+      end
     end
 
     say "All is good, thanks my friend.\n"
@@ -43,6 +44,7 @@ class Gem::Commands::ReleaseCommand < Gem::Command
 
     def build
       BuildCommand.new.invoke(gemspec_filename)
+      true
     end
 
     def push
@@ -53,11 +55,12 @@ class Gem::Commands::ReleaseCommand < Gem::Command
       args += "--quiet" if quiet?
 
       PushCommand.new.invoke(gem_filename, *args)
+      true
     end
 
     def remove
       say "Deleting left over gem file #{gem_filename}" unless quiet?
-      `rm #{gem_filename}`
+      system('rm #{gem_filename}')
     end
 
     def tag

@@ -38,14 +38,14 @@ class ReleaseCommandTest < Test::Unit::TestCase
   end
 
   test "tag executes TagCommand if --tag option was given" do
-    TagCommand.new.expects(:execute)
-    ReleaseCommand.new.invoke('--tag')
+    TagCommand.new.expects(:execute).returns(true)
+    assert_equal true, ReleaseCommand.new.invoke('--tag')
   end
 
   test "passes --key args to the push command" do
     key_name = "example"
     in_gemspec_dirs do
-      PushCommand.any_instance.expects(:invoke).with() { |_, a1, a2| a1 ==  "--key" && a2 == key_name }
+      PushCommand.any_instance.expects(:invoke).with() { |_, a1, a2| a1 ==  "--key" && a2 == key_name }.returns(true)
     end
     ReleaseCommand.new.invoke('--key', key_name)
   end
@@ -53,7 +53,7 @@ class ReleaseCommandTest < Test::Unit::TestCase
   test "passes --host args to the push command" do
     host_name = "http://hostname.example.com"
     in_gemspec_dirs do
-      PushCommand.any_instance.expects(:invoke).with() { |_, a1, a2| a1 ==  "--host" && a2 == host_name }
+      PushCommand.any_instance.expects(:invoke).with() { |_, a1, a2| a1 ==  "--host" && a2 == host_name }.returns(true)
     end
     ReleaseCommand.new.invoke('--host', host_name)
   end

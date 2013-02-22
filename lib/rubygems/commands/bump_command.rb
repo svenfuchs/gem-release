@@ -35,21 +35,22 @@ class Gem::Commands::BumpCommand < Gem::Command
   def execute
     @new_version_number = nil
 
+    tasks = [:commit, :push, :tag, :release]
+
     # enforce option dependencies
     options[:push] = false if options[:tag] # push is performed as part of tag
     options[:commit] = options[:commit] || options[:push] || options[:tag] || options[:release]
 
     in_gemspec_dirs do
-      bump
+      run_cmd(:bump)
     end
 
     if @new_version_number == nil
       say "No version files could be found, so no actions were performed." unless quiet?
     else
-      commit  if options[:commit]
-      push    if options[:push]
-      tag     if options[:tag]
-      release if options[:release]
+      tasks.each do |task|
+        run_cmd(task) if options[task]
+      end
     end
   end
 
@@ -61,20 +62,21 @@ class Gem::Commands::BumpCommand < Gem::Command
         @new_version_number ||= version.new_number
         say "Bumping #{gem_name} from #{version.old_number} to version #{version.new_number}" unless quiet?
         version.bump!
-        `git add #{version.filename}` if options[:commit]
+        return system("git add #{version.filename}") if options[:commit]
       else
         say "Ignoring #{gem_name}. Version file #{version.filename} not found" unless quiet?
       end
+      true
     end
 
     def commit
       say "Creating commit" unless quiet?
-      `git commit -m "Bump to #{@new_version_number}"`
+      system("git commit -m \"Bump to #{@new_version_number}\"")
     end
 
     def push
       say "Pushing to the origin git repository" unless quiet?
-      `git push origin`
+      system('git push origin')
     end
 
     def release

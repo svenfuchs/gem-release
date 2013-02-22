@@ -58,7 +58,7 @@ class Test::Unit::TestCase
 
   def stub_command(command_class, *methods)
     command = command_class.new
-    methods.each { |method| command.stubs(method) }
+    methods.each { |method| command.stubs(method).returns(true) }
     command_class.stubs(:new).returns(command)
   end
 
