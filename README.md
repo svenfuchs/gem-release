@@ -5,8 +5,9 @@ This gem plugin adds a `bootstrap`, `bump`, `tag` and a `release` command to the
 The `bump` command
 
  * bumps the version number defined in `lib/[gem_name]/version.rb` to the next major, minor or patch level or to a given, particular version number
- * optionally executes `git push origin`
- * optionally invokes the `tag` and/or `release` commands (see below)
+ * optionally invokes the `release` command (see below)
+ * optionally invokes the `tag` command (see below)
+ * if `tag` is not invoked, can optionally just push to git (i.e. `git push origin`) if the `--push` option is specified
 
 The `tag` command
 

@@ -29,7 +29,7 @@ class Gem::Commands::ReleaseCommand < Gem::Command
 
   def execute
     tasks = [:build, :push, :remove]
-    tasks.unshift(:tag) if options[:tag]
+    tasks.push(:tag) if options[:tag]
 
     in_gemspec_dirs do
       tasks.each do |task|
