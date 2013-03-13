@@ -71,7 +71,10 @@ module GemRelease
     end
 
     def run_cmd(command)
-      abort unless send(command)
+      unless send(command)
+        say "The task `#{command}` could not be completed. Subsequent tasks will not be attempted."
+        abort
+      end
     end
   end
 end

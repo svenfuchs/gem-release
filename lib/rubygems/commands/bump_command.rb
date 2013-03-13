@@ -86,11 +86,13 @@ class Gem::Commands::BumpCommand < Gem::Command
       end
       cmd.options[:quiet] = options[:quiet]
       cmd.execute
+      true
     end
 
     def tag
       cmd = TagCommand.new
       cmd.options[:quiet] = options[:quiet]
       cmd.execute
+      true
     end
 end

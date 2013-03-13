@@ -61,10 +61,10 @@ class Gem::Commands::ReleaseCommand < Gem::Command
     def cleanup
       say "Deleting left over gem file #{gem_filename}" unless quiet?
       system("rm #{gem_filename}")
-      true
     end
 
     def tag
       TagCommand.new(:quiet => quiet?).invoke
+      true
     end
 end
