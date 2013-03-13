@@ -35,7 +35,7 @@ class Gem::Commands::BumpCommand < Gem::Command
   def execute
     @new_version_number = nil
 
-    tasks = [:commit, :push, :release, :tag]
+    tasks = [:commit, :release, :push, :tag]
 
     # enforce option dependencies
     options[:push] = true if options[:tag]
