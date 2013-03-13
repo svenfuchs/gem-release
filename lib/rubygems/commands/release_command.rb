@@ -28,7 +28,7 @@ class Gem::Commands::ReleaseCommand < Gem::Command
   end
 
   def execute
-    tasks = [:build, :push, :remove]
+    tasks = [:build, :push, :cleanup]
     tasks.push(:tag) if options[:tag]
 
     in_gemspec_dirs do
@@ -58,9 +58,10 @@ class Gem::Commands::ReleaseCommand < Gem::Command
       true
     end
 
-    def remove
+    def cleanup
       say "Deleting left over gem file #{gem_filename}" unless quiet?
-      system('rm #{gem_filename}')
+      system("rm #{gem_filename}")
+      true
     end
 
     def tag

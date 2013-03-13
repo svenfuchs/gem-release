@@ -176,7 +176,7 @@ class BumpCommandTest < Test::Unit::TestCase
     count = gemspec_dirs.size
     ReleaseCommand.any_instance.expects(:build).times(count).returns(true)
     ReleaseCommand.any_instance.expects(:push).times(count).returns(true)
-    ReleaseCommand.any_instance.expects(:remove).times(count).returns(true)
+    ReleaseCommand.any_instance.expects(:cleanup).times(count).returns(true)
 
     command.invoke('--push', '--release')
   end
@@ -191,7 +191,7 @@ class BumpCommandTest < Test::Unit::TestCase
     count = gemspec_dirs.size
     ReleaseCommand.any_instance.expects(:build).times(count).returns(true)
     ReleaseCommand.any_instance.expects(:push).times(count).returns(true)
-    ReleaseCommand.any_instance.expects(:remove).times(count).returns(true)
+    ReleaseCommand.any_instance.expects(:cleanup).times(count).returns(true)
 
     TagCommand.any_instance.expects(:tag).returns(true)
     TagCommand.any_instance.expects(:push).returns(true)
@@ -208,7 +208,7 @@ class BumpCommandTest < Test::Unit::TestCase
 
     count = gemspec_dirs.size
     ReleaseCommand.any_instance.expects(:build).times(count).returns(true)
-    ReleaseCommand.any_instance.expects(:remove).times(count).returns(true)
+    ReleaseCommand.any_instance.expects(:cleanup).times(count).returns(true)
 
     keyname = "keyname"
     in_gemspec_dirs do
@@ -227,7 +227,7 @@ class BumpCommandTest < Test::Unit::TestCase
 
     count = gemspec_dirs.size
     ReleaseCommand.any_instance.expects(:build).times(count).returns(true)
-    ReleaseCommand.any_instance.expects(:remove).times(count).returns(true)
+    ReleaseCommand.any_instance.expects(:cleanup).times(count).returns(true)
 
     hostname = "http://hostname.example.com"
     in_gemspec_dirs do

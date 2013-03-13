@@ -11,7 +11,7 @@ class ReleaseCommandTest < Test::Unit::TestCase
     stub_command(BuildCommand, :execute)
     stub_command(PushCommand, :execute)
     stub_command(TagCommand, :execute)
-    stub_command(ReleaseCommand, :remove, :say)
+    stub_command(ReleaseCommand, :say, :system)
     BootstrapCommand.new.send(:write_scaffold)
   end
 
@@ -56,5 +56,13 @@ class ReleaseCommandTest < Test::Unit::TestCase
       PushCommand.any_instance.expects(:invoke).with() { |_, a1, a2| a1 ==  "--host" && a2 == host_name }.returns(true)
     end
     ReleaseCommand.new.invoke('--host', host_name)
+  end
+
+  test "removes the gem file" do
+    command = ReleaseCommand.new
+    in_gemspec_dirs do
+      command.expects(:system).with("rm #{command.gem_filename}").returns(true)
+    end
+    command.invoke()
   end
 end
