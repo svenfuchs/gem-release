@@ -18,6 +18,8 @@ class Gem::Commands::TagCommand < Gem::Command
     [:tag, :push].each do |task|
       run_cmd(task)
     end
+
+    success
   end
 
   protected

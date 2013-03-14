@@ -37,7 +37,7 @@ class Gem::Commands::ReleaseCommand < Gem::Command
       end
     end
 
-    say "All is good, thanks my friend.\n"
+    success
   end
 
   protected
@@ -64,7 +64,7 @@ class Gem::Commands::ReleaseCommand < Gem::Command
     end
 
     def tag
-      TagCommand.new(:quiet => quiet?).invoke
+      TagCommand.new(:quiet => quiet?, :quiet_success => true).invoke
       true
     end
 end

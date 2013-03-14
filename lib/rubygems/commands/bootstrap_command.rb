@@ -35,10 +35,12 @@ class Gem::Commands::BootstrapCommand < Gem::Command
       init_git       if options[:github] || options[:args] # safe to 'git init' in new dir
       create_repo    if options[:github]
     end
+
+    success
   end
 
   def write_gemspec
-    GemspecCommand.new(:quiet => quiet?, :strategy => options[:strategy]).execute
+    GemspecCommand.new(:quiet => quiet?, :strategy => options[:strategy], :quiet_success => true).execute
   end
 
   def write_scaffold

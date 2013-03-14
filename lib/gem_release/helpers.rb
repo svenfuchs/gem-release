@@ -76,5 +76,11 @@ module GemRelease
         abort
       end
     end
+
+    def success
+      unless quiet? || options[:quiet_success]
+        say "All is good, thanks my friend.\n"
+      end
+    end
   end
 end

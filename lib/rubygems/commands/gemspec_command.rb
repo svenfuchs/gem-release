@@ -23,6 +23,8 @@ class Gem::Commands::GemspecCommand < Gem::Command
     else
       say "Creating #{gemspec.filename}" unless quiet?
       gemspec.write
+
+      success
     end
   end
 end

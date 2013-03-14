@@ -51,6 +51,8 @@ class Gem::Commands::BumpCommand < Gem::Command
       tasks.each do |task|
         run_cmd(task) if options[task]
       end
+
+      success
     end
   end
 
@@ -85,6 +87,7 @@ class Gem::Commands::BumpCommand < Gem::Command
         cmd.options[option] = options[option]
       end
       cmd.options[:quiet] = options[:quiet]
+      cmd.options[:quiet_success] = true
       cmd.execute
       true
     end
@@ -92,6 +95,7 @@ class Gem::Commands::BumpCommand < Gem::Command
     def tag
       cmd = TagCommand.new
       cmd.options[:quiet] = options[:quiet]
+      cmd.options[:quiet_success] = true
       cmd.execute
       true
     end
