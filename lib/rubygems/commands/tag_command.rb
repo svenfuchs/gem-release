@@ -30,6 +30,11 @@ class Gem::Commands::TagCommand < Gem::Command
     end
 
     def push
+      unless options[:push_tags_only]
+        say "Pushing to the origin git repository" unless quiet?
+        return false unless system('git push origin')
+      end
+
       say "Pushing --tags to the origin git repository" unless quiet?
       system('git push --tags origin')
     end

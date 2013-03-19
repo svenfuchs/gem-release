@@ -96,6 +96,7 @@ class Gem::Commands::BumpCommand < Gem::Command
       cmd = TagCommand.new
       cmd.options[:quiet] = options[:quiet]
       cmd.options[:quiet_success] = true
+      cmd.options[:push_tags_only] = true
       cmd.execute
       true
     end
