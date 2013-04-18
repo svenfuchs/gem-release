@@ -26,7 +26,7 @@ class Gem::Commands::TagCommand < Gem::Command
 
     def tag
       say "Creating git tag #{tag_name}" unless quiet?
-      system("git tag -am 'tag #{tag_name}' #{tag_name}")
+      system("git tag -am \"tag #{tag_name}\" #{tag_name}")
     end
 
     def push

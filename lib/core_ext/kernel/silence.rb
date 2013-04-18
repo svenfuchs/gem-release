@@ -6,7 +6,7 @@ module Kernel
   def silence_stream(*streams)
     on_hold = streams.collect{ |stream| stream.dup }
     streams.each do |stream|
-      stream.reopen(RUBY_PLATFORM =~ /mswin/ ? 'NUL:' : '/dev/null')
+      stream.reopen(RUBY_PLATFORM =~ /mswin|mingw/ ? 'NUL:' : '/dev/null')
       stream.sync = true
     end
     yield
