@@ -45,7 +45,7 @@ class BootstrapCommandTest < Test::Unit::TestCase
     command.stubs(:github_token).returns('token')
 
     command.expects(:`).with("git add .")
-    command.expects(:`).with("git commit -m 'initial commit'")
+    command.expects(:`).with("git commit -m \"initial commit\"")
     command.expects(:`).with("git remote add origin git@github.com:svenfuchs/foo-bar.git")
     command.expects(:`).with("git push origin master")
     command.expects(:`).with do |cmd|

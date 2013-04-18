@@ -81,7 +81,7 @@ class Gem::Commands::BootstrapCommand < Gem::Command
     `git add .`
 
     say 'Creating initial commit'
-    `git commit -m 'initial commit'`
+    `git commit -m "initial commit"`
 
     say "Adding remote origin git@github.com:#{github_user}/#{gem_name}.git"
     `git remote add origin git@github.com:#{github_user}/#{gem_name}.git`
