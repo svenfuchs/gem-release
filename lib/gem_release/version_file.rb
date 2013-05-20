@@ -14,6 +14,8 @@ module GemRelease
       @target = options[:target]
       if @target == nil || @target == ''
         @target = is_prerelease_version_number?(old_number) ? :pre : :patch
+      elsif @target.to_sym == :release
+        @target = :patch if(!is_prerelease_version_number?(old_number))
       end
     end
 
@@ -32,7 +34,7 @@ module GemRelease
           end
         elsif is_prerelease_version_number?(old_number)
           old_number.sub(PRERELEASE_NUMBER_PATTERN) do
-            prerelease($1, $2, $3, $4, $5)
+            (target.to_sym == :release) ? release($1, $2, $3) : prerelease($1, $2, $3, $4, $5)
           end
         else
           old_number.sub(NUMBER_PATTERN) do
@@ -73,6 +75,10 @@ module GemRelease
 
       def patch(major, minor, patch)
         "#{major}.#{minor}.#{patch.to_i + 1}"
+      end
+
+      def release(major, minor, patch)
+        "#{major}.#{minor}.#{patch}"
       end
 
       def prerelease(major, minor, patch, prereleasePrefix, prereleaseNumber)
