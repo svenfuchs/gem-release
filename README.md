@@ -66,6 +66,9 @@ Obviously ...
     $ gem bump --version pre|rc|etc  # Bump the gem version to the next pre-release level
                                      #  (e.g. `pre`: 1.0.0.pre1 to 1.0.0.pre2, 0.0.1 to 0.0.2.pre1;
                                      #        `beta`: 1.0.0.beta1 to 1.0.0.beta2, 0.0.1 to 0.0.2.beta1)
+    $ gem bump --version release     # Remove any pre-release versioning
+                                     #  (e.g. 1.0.0.pre2 to 1.0.0, 1.0.0.beta to 1.0.0)
+                                     #  (if no pre-release versions are present, the patch level will be bumped)
     $ gem bump --push                # Bump and push to the origin git repository
     $ gem bump --tag                 # Bump and tag gem and pushes tags to the origin repository
     $ gem bump --release             # Bump and release gem
