@@ -15,7 +15,7 @@ module GemRelease
       if @target == nil || @target == ''
         @target = is_prerelease_version_number?(old_number) ? :pre : :patch
       elsif @target.to_sym == :release
-        @target = :patch if(!is_prerelease_version_number?(old_number))
+        @target = :patch unless is_prerelease_version_number?(old_number)
       end
     end
 
