@@ -16,7 +16,7 @@ class Gem::Commands::BootstrapCommand < Gem::Command
   attr_reader :arguments, :usage
 
   def initialize(options = {})
-    super 'bootstrap', 'Bootstrap a new gem source repository', DEFAULTS.merge(options)
+    super 'bootstrap', 'Bootstrap a new gem source repository', default_options_with(options)
 
     option :gemspec,  '-g', 'Generate a .gemspec'
     option :scaffold, '-s', 'Scaffold lib/[gem_name]/version.rb README test/'

@@ -5,8 +5,12 @@ module GemRelease
       super
     end
 
+    def default_options_with(passed_opts)
+      self.class::DEFAULTS.merge(Configuration.options).merge(passed_opts)
+    end
+
     def option(key, short, description)
-      default = self.class::DEFAULTS[key]
+      default = Configuration[key] || self.class::DEFAULTS[key]
 
       if default.is_a?(String)
         long = "--#{key} #{key.to_s.upcase}"

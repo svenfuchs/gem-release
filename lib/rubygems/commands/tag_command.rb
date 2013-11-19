@@ -9,7 +9,7 @@ class Gem::Commands::TagCommand < Gem::Command
   attr_reader :arguments, :usage
 
   def initialize(options = {})
-    super 'tag', 'Create a git tag and push --tags to origin', DEFAULTS.merge(options)
+    super 'tag', 'Create a git tag and push --tags to origin', default_options_with(options)
 
     option :quiet, '-q', 'Do not output status messages'
   end

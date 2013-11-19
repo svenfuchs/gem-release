@@ -16,7 +16,7 @@ class Gem::Commands::ReleaseCommand < Gem::Command
   attr_reader :arguments, :usage
 
   def initialize(options = {})
-    super 'release', 'Build gem from a gemspec and push to rubygems.org', DEFAULTS.merge(options)
+    super 'release', 'Build gem from a gemspec and push to rubygems.org', default_options_with(options)
 
     option :tag,   '-t', 'Create a git tag and push --tags to origin'
     option :quiet, '-q', 'Do not output status messages'
