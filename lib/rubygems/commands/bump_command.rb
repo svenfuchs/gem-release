@@ -6,7 +6,7 @@ class Gem::Commands::BumpCommand < Gem::Command
   include GemRelease, Gem::Commands
   include Helpers, CommandOptions
 
-  attr_reader :arguments, :usage
+  attr_reader :arguments, :usage, :name
 
   DEFAULTS = {
     :version  => '',
@@ -20,7 +20,8 @@ class Gem::Commands::BumpCommand < Gem::Command
   }
 
   def initialize(options = {})
-    super 'bump', 'Bump the gem version', DEFAULTS.merge(options)
+    @name = 'bump'
+    super @name, 'Bump the gem version', default_options_with(options)
 
     option :version, '-v', 'Target version: next [major|minor|patch|pre|release] or a given version number [x.x.x]'
     option :commit,  '-c', 'Perform a commit after incrementing gem version'

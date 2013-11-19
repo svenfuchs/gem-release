@@ -7,10 +7,11 @@ class Gem::Commands::GemspecCommand < Gem::Command
     :quiet    => false
   }
 
-  attr_reader :arguments, :usage
+  attr_reader :arguments, :usage, :name
 
   def initialize(options = {})
-    super 'bootstrap', 'Bootstrap a new gem source repository', DEFAULTS.merge(options)
+    @name = 'bootstrap'
+    super @name, 'Bootstrap a new gem source repository', default_options_with(options)
 
     option :strategy, '-f', 'Strategy for collecting files [glob|git] in .gemspec'
     option :quiet,    '-q', 'Do not output status messages'
