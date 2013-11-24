@@ -6,10 +6,11 @@ class Gem::Commands::TagCommand < Gem::Command
     :quiet => false
   }
 
-  attr_reader :arguments, :usage
+  attr_reader :arguments, :usage, :name
 
   def initialize(options = {})
-    super 'tag', 'Create a git tag and push --tags to origin', default_options_with(options)
+    @name = 'tag'
+    super @name, 'Create a git tag and push --tags to origin', default_options_with(options)
 
     option :quiet, '-q', 'Do not output status messages'
   end

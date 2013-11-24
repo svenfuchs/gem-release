@@ -13,10 +13,11 @@ class Gem::Commands::ReleaseCommand < Gem::Command
     :host  => ''
   }
 
-  attr_reader :arguments, :usage
+  attr_reader :arguments, :usage, :name
 
   def initialize(options = {})
-    super 'release', 'Build gem from a gemspec and push to rubygems.org', default_options_with(options)
+    @name = 'release'
+    super @name, 'Build gem from a gemspec and push to rubygems.org', default_options_with(options)
 
     option :tag,   '-t', 'Create a git tag and push --tags to origin'
     option :quiet, '-q', 'Do not output status messages'
