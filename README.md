@@ -92,6 +92,26 @@ to the same version. gem-release will search the above paths, relative to the di
 matching `version.rb` files and bump the version in each of them. The version will either be the version specified with
 the `--version` option or the next patch level for the first `version.rb` file encountered.
 
+## Configuration file
+
+Configuration options can be stored in a `.gemrelease` file in the root of your
+project. This configuration file should be in [YAML](http://www.yaml.org/) 
+format, and should group options according to command.
+
+For instance, the following entries will ensure that the `tag` option is used
+with the `bump` command, and will also use a custom host name with `release`:
+
+```yaml
+bump:
+  tag: true
+  
+release:
+  host: https://example.com 
+```
+
+The defaults specified in `.gemrelease` can be overridden when issuing `gem` 
+commands.
+
 ## License
 
 [MIT License](https://github.com/svenfuchs/gem-release/blob/master/MIT-LICENSE)
