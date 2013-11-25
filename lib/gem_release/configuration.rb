@@ -13,7 +13,9 @@ class Configuration
     @options = Hash.new { |hash, key| hash[key] = {} }
     if File.exist?(conf_path.to_s) && !File.directory?(conf_path.to_s)
       config_hash = YAML.load(File.read(conf_path))
-      @options.merge!(config_hash.deep_symbolize_keys!)
+      if config_hash
+        @options.merge!(config_hash.deep_symbolize_keys!)
+      end
     end
   end
 
