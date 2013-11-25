@@ -1,4 +1,5 @@
 require 'yaml'
+require 'core_ext/hash/symbolize_keys'
 
 class Configuration
 
@@ -11,12 +12,13 @@ class Configuration
   def load_options!
     @options = Hash.new { |hash, key| hash[key] = {} }
     if File.exist?(conf_path.to_s) && !File.directory?(conf_path.to_s)
-      @options.merge!(YAML.load(File.read(conf_path))) 
+      config_hash = YAML.load(File.read(conf_path))
+      @options.merge!(config_hash.deep_symbolize_keys!)
     end
   end
 
   def conf_path
-    File.expand_path(Dir.glob('**/.gem-release').first.to_s)
+    File.expand_path(Dir.glob('**/.gemrelease').first.to_s)
   end
 
   def []=(key,val)
