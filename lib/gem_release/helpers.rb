@@ -35,7 +35,7 @@ module GemRelease
     end
 
     def gem_version
-      gemspec.version.to_s
+      options[:version_number] || gemspec.version.to_s
     end
 
     def gemspec
