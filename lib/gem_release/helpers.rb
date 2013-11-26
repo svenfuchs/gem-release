@@ -35,7 +35,7 @@ module GemRelease
     end
 
     def gem_version
-      options[:version_number] || gemspec.version.to_s
+      gemspec.version.to_s
     end
 
     def gemspec
@@ -70,7 +70,21 @@ module GemRelease
       end
     end
 
+    def reset_gemspec_cache
+      # Gemspecs are cached in rubygems >= 2.1, so we need to clear the cache
+      # in case gem versions have changed.
+      #
+      # Note: This is not needed or supported with older rubygems, which is
+      # why exceptions are swallowed.
+      begin
+        Gem::Specification.reset
+      rescue
+      end
+    end
+
     def run_cmd(command)
+      reset_gemspec_cache
+
       unless send(command)
         say "The task `#{command}` could not be completed. Subsequent tasks will not be attempted."
         abort
