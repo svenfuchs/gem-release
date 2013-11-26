@@ -1,7 +1,7 @@
 branches:
   only:
     - master
-script: "ruby -Ilib:test test/all.rb"
+script: "COVERAGE=true ruby -Ilib:test test/all.rb"
 rvm:
   - 1.9.3
   - 2.0.0
