@@ -2,6 +2,20 @@
 
 This gem plugin adds a `bootstrap`, `bump`, `tag` and a `release` command to the rubygems `gem` command.
 
+| Project                 |  Gem Release      |
+|------------------------ | ----------------- |
+| gem name                |  gem-release      |
+| license                 |  [MIT][license]   |
+| version                 |  [![Gem Version](https://badge.fury.io/rb/gem-release.png)](http://badge.fury.io/rb/gem-release) |
+| dependencies            |  [![Dependency Status](https://gemnasium.com/svenfuchs/gem-release.png)](https://gemnasium.com/svenfuchs/gem-release) |
+| code quality            |  [![Code Climate](https://codeclimate.com/github/svenfuchs/gem-release.png)](https://codeclimate.com/github/svenfuchs/gem-release) |
+| continuous integration  |  [![Build Status](https://secure.travis-ci.org/svenfuchs/gem-release.png?branch=master)](https://travis-ci.org/svenfuchs/gem-release) |
+| test coverage           |  [![Coverage Status](https://coveralls.io/repos/svenfuchs/gem-release/badge.png)](https://coveralls.io/r/svenfuchs/gem-release) |
+| homepage                |  [https://github.com/svenfuchs/gem-release][homepage] |
+| documentation           |  [http://rdoc.info/github/svenfuchs/gem-release/frames][documentation] |
+
+## Basic Commands
+
 The `bump` command
 
  * bumps the version number defined in `lib/[gem_name]/version.rb` to the next major, minor or patch level or to a given, particular version number
@@ -95,7 +109,7 @@ the `--version` option or the next patch level for the first `version.rb` file e
 ## Configuration file
 
 Configuration options can be stored in a `.gemrelease` file in the root of your
-project. This configuration file should be in [YAML](http://www.yaml.org/) 
+project. This configuration file should be in [YAML](http://www.yaml.org/)
 format, and should group options according to command.
 
 For instance, the following entries will ensure that the `tag` option is used
@@ -104,14 +118,18 @@ with the `bump` command, and will also use a custom host name with `release`:
 ```yaml
 bump:
   tag: true
-  
+
 release:
-  host: https://example.com 
+  host: https://example.com
 ```
 
-The defaults specified in `.gemrelease` can be overridden when issuing `gem` 
+The defaults specified in `.gemrelease` can be overridden when issuing `gem`
 commands.
 
 ## License
 
-[MIT License](https://github.com/svenfuchs/gem-release/blob/master/MIT-LICENSE)
+[MIT License][license]
+
+[license]: https://github.com/svenfuchs/gem-release/blob/master/MIT-LICENSE
+[homepage]: https://github.com/svenfuchs/gem-release
+[documentation]: http://rdoc.info/github/svenfuchs/gem-release/frames
