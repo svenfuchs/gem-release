@@ -18,6 +18,7 @@ spec/reports
 test/tmp
 test/version_tmp
 tmp
+gemfiles/*.lock
 
 # YARD artifacts
 .yardoc

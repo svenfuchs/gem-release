@@ -6,3 +6,10 @@ rvm:
   - 1.9.3
   - 2.0.0
   - jruby-19mode
+  - rbx
+gemfile:
+  - gemfiles/Gemfile.rbx
+matrix:
+  include:
+    - rvm: rbx
+      gemfile: gemfiles/Gemfile.rbx
