@@ -1,4 +1,4 @@
-# gem release [![Build Status](https://secure.travis-ci.org/svenfuchs/gem-release.png)](http://travis-ci.org/svenfuchs/gem-release)
+# gem release
 
 This gem plugin adds a `bootstrap`, `bump`, `tag` and a `release` command to the rubygems `gem` command.
 
