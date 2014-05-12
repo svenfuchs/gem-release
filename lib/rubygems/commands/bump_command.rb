@@ -1,6 +1,7 @@
 require 'gem_release'
 require 'rubygems/commands/tag_command'
 require 'rubygems/commands/release_command'
+require 'shellwords'
 
 class Gem::Commands::BumpCommand < Gem::Command
   include GemRelease, Gem::Commands
@@ -65,11 +66,15 @@ class Gem::Commands::BumpCommand < Gem::Command
         @new_version_number ||= version.new_number
         say "Bumping #{gem_name} from #{version.old_number} to version #{version.new_number}" unless quiet?
         version.bump!
-        return system("git add #{version.filename}") if options[:commit]
+        return system("git add #{escape(version.filename)}") if options[:commit]
       else
         say "Ignoring #{gem_name}. Version file #{version.filename} not found" unless quiet?
       end
       true
+    end
+
+    def escape(string)
+      Shellwords.escape(string)
     end
 
     def commit
