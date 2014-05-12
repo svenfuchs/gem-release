@@ -57,6 +57,20 @@ class BumpCommandTest < Test::Unit::TestCase
     assert version_1.include?('0.0.2')
   end
 
+  test "gem bump with with space in path" do
+    path_with_space = "lib/foo bar"
+    expected = 'lib/foo\\ bar'
+    path = BumpCommand.new.send(:escape, path_with_space)
+    assert_equal expected, path
+  end
+
+  test "gem bump without space in path" do
+    path_without_space = "lib/foo_bar"
+    expected = 'lib/foo_bar'
+    path = BumpCommand.new.send(:escape, path_without_space)
+    assert_equal expected, path
+  end
+
   test "gem bump with version in lib/foo_bar/" do
     # move version.rb to the alternate dir: /lib/foo_bar
     FileUtils.mkdir('lib/foo_bar')
