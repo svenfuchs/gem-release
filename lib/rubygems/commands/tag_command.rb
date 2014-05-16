@@ -3,7 +3,8 @@ class Gem::Commands::TagCommand < Gem::Command
   include Helpers, CommandOptions
 
   DEFAULTS = {
-    :quiet => false
+    :quiet => false,
+    :sign  => false
   }
 
   attr_reader :arguments, :usage, :name
@@ -12,6 +13,7 @@ class Gem::Commands::TagCommand < Gem::Command
     @name = 'tag'
     super @name, 'Create a git tag and push --tags to origin', default_options_with(options)
 
+    option :sign, '-s',  'GPG sign the tag'
     option :quiet, '-q', 'Do not output status messages'
   end
 
@@ -26,8 +28,13 @@ class Gem::Commands::TagCommand < Gem::Command
   protected
 
     def tag
-      say "Creating git tag #{tag_name}" unless quiet?
-      system("git tag -am \"tag #{tag_name}\" #{tag_name}")
+      if options[:sign]
+        say "Creating signed git tag #{tag_name}" unless quiet?
+        system("git tag -m \"tag #{tag_name}\" -s #{tag_name}")
+      else
+        say "Creating git tag #{tag_name}" unless quiet?
+        system("git tag -am \"tag #{tag_name}\" #{tag_name}")
+      end
     end
 
     def push

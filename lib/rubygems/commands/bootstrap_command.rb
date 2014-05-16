@@ -10,7 +10,8 @@ class Gem::Commands::BootstrapCommand < Gem::Command
     :strategy => 'git',
     :scaffold => true,
     :github   => false,
-    :quiet    => false
+    :quiet    => false,
+    :sign     => false
   }
 
   attr_reader :arguments, :usage, :name
@@ -23,7 +24,8 @@ class Gem::Commands::BootstrapCommand < Gem::Command
     option :scaffold, '-s', 'Scaffold lib/[gem_name]/version.rb README test/'
     option :strategy, '-f', 'Strategy for collecting files [glob|git] in .gemspec'
     option :github,   '-h', 'Bootstrap a git repo, create on github and push'
-    option :quiet,    '-q', 'Do not output status messages'
+    option :quiet,    '-q', 'Do not output status messages',
+    option :sign,    '-s', 'GPG sign commits'
 
     @arguments = "gemname - option name of the gem, will use the current directory if not specified"
     @usage = "#{program_name} [gemname]"
@@ -81,10 +83,15 @@ class Gem::Commands::BootstrapCommand < Gem::Command
     say 'Staging files'
     `git add .`
 
-    say 'Creating initial commit'
-    `git commit -m "initial commit"`
+    if options[:sign]
+      say 'Creating initial commit'
+      `git commit -S -m "initial commit"`
+    else
+      say 'Creating initial commit'
+      `git commit -m "initial commit"`
+    end
 
-    say "Adding remote origin git@github.com:#{github_user}/#{gem_name}.git"
+   say "Adding remote origin git@github.com:#{github_user}/#{gem_name}.git"
     `git remote add origin git@github.com:#{github_user}/#{gem_name}.git`
 
     say 'Creating repository on Github'
