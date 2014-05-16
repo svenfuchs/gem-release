@@ -81,8 +81,10 @@ Obviously ...
     $ gem bump --version release     # Remove any pre-release versioning
                                      #  (e.g. 1.0.0.pre2 to 1.0.0, 1.0.0.beta to 1.0.0)
                                      #  (if no pre-release versions are present, the patch level will be bumped)
+    $ gem bump --sign                # Bump and GPG sign the commit
     $ gem bump --push                # Bump and push to the origin git repository
     $ gem bump --tag                 # Bump and tag gem and pushes tags to the origin repository
+    $ gem bump --tag --sign          # Bump and tag gem with GPG signature and pushes tags to the origin repository
     $ gem bump --release             # Bump and release gem
     $ gem bump --release --key KEY   # Bump and release the gem, using the specified API key from ~/.gem/credentials
     $ gem bump --release --host HOST # Bump and release the gem to a gemcutter-compatible host other than rubygems.org
