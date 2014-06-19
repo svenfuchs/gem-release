@@ -57,6 +57,19 @@ class BumpCommandTest < Test::Unit::TestCase
     assert version_1.include?('0.0.2')
   end
 
+  test "gem bump with custom version file location" do
+    # move version.rb to the alternate dir: /app/foo
+    FileUtils.mkdir('app')
+    FileUtils.mkdir('app/foo')
+    FileUtils.copy('lib/foo-bar/version.rb', 'app/foo')
+
+    command = BumpCommand.new
+    command.invoke('--no-commit', '--quiet', '--versionfile', 'app/foo/version.rb')
+
+    version_1 = File.read('app/foo/version.rb')
+    assert version_1.include?('0.0.2')
+  end
+
   test "gem bump with with space in path" do
     path_with_space = "lib/foo bar"
     expected = 'lib/foo\\ bar'
