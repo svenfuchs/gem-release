@@ -11,7 +11,7 @@ class Gem::Commands::TagCommand < Gem::Command
   def initialize(options = {})
     @name = 'tag'
     super @name, 'Create a git tag and push --tags to origin', default_options_with(options)
-
+    @new_version_number = options[:new_version_number]
     option :quiet, '-q', 'Do not output status messages'
   end
 
@@ -41,6 +41,6 @@ class Gem::Commands::TagCommand < Gem::Command
     end
 
     def tag_name
-      "v#{gem_version}"
+      options[:new_version_number] || "v#{gem_version}"
     end
 end

@@ -104,6 +104,7 @@ class Gem::Commands::BumpCommand < Gem::Command
       cmd.options[:quiet] = options[:quiet]
       cmd.options[:quiet_success] = true
       cmd.options[:push_tags_only] = true
+      cmd.options[:new_version_number] = @new_version_number
       cmd.execute
       true
     end
