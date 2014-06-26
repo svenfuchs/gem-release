@@ -31,6 +31,7 @@ class Gem::Commands::BumpCommand < Gem::Command
     option :release, '-r', 'Build gem from a gemspec and push to rubygems.org'
     option :key,     '-k', 'When releasing: use the given API key from ~/.gem/credentials'
     option :host,    '-h', 'When releasing: push to a gemcutter-compatible host other than rubygems.org'
+    option :versionfile, '-vf', 'Give custom location for version file'
     option :quiet,   '-q', 'Do not output status messages'
   end
 
@@ -61,7 +62,7 @@ class Gem::Commands::BumpCommand < Gem::Command
   protected
 
     def bump
-      version = VersionFile.new(:target => (@new_version_number || options[:version]))
+      version = VersionFile.new(:target => (@new_version_number || options[:version]), :versionfile => options[:versionfile])
       if File.exist?(version.filename)
         @new_version_number ||= version.new_number
         say "Bumping #{gem_name} from #{version.old_number} to version #{version.new_number}" unless quiet?
@@ -103,6 +104,7 @@ class Gem::Commands::BumpCommand < Gem::Command
       cmd.options[:quiet] = options[:quiet]
       cmd.options[:quiet_success] = true
       cmd.options[:push_tags_only] = true
+      cmd.options[:new_version_number] = @new_version_number
       cmd.execute
       true
     end

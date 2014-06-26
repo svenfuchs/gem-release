@@ -54,6 +54,7 @@ module GemRelease
       gemspec_dirs.each do |dir|
         Dir.chdir(dir) { yield }
       end
+       Dir.chdir(Dir.getwd) { yield } if gemspec_dirs.empty?
     end
 
     def gemspec_dirs

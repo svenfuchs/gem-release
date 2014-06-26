@@ -11,6 +11,7 @@ module GemRelease
     attr_reader :target
 
     def initialize(options = {})
+      @custom_filename = options[:versionfile]
       @target = options[:target]
       if @target == nil || @target == ''
         @target = is_prerelease_version_number?(old_number) ? :pre : :patch
@@ -48,11 +49,15 @@ module GemRelease
     end
 
     def filename
-      path = gem_name
-      path = path.gsub('-', '/') unless File.exists?(path_to_version_file(path))
-      path = path.gsub('/', '_') unless File.exists?(path_to_version_file(path))
+      if @custom_filename
+        File.expand_path(@custom_filename)
+      else
+        path = gem_name
+        path = path.gsub('-', '/') unless File.exists?(path_to_version_file(path))
+        path = path.gsub('/', '_') unless File.exists?(path_to_version_file(path))
 
-      File.expand_path(path_to_version_file(path))
+        File.expand_path(path_to_version_file(path))
+      end
     end
 
     protected
