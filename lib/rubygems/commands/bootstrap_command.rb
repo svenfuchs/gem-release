@@ -24,7 +24,7 @@ class Gem::Commands::BootstrapCommand < Gem::Command
     option :scaffold, '-s', 'Scaffold lib/[gem_name]/version.rb README test/'
     option :strategy, '-f', 'Strategy for collecting files [glob|git] in .gemspec'
     option :github,   '-h', 'Bootstrap a git repo, create on github and push'
-    option :quiet,    '-q', 'Do not output status messages',
+    option :quiet,    '-q', 'Do not output status messages'
     option :sign,    '-s', 'GPG sign commits'
 
     @arguments = "gemname - option name of the gem, will use the current directory if not specified"
@@ -83,15 +83,10 @@ class Gem::Commands::BootstrapCommand < Gem::Command
     say 'Staging files'
     `git add .`
 
-    if options[:sign]
-      say 'Creating initial commit'
-      `git commit -S -m "initial commit"`
-    else
-      say 'Creating initial commit'
-      `git commit -m "initial commit"`
-    end
+    say 'Creating initial commit'
+    options[:sign] ?  `git commit -S -m "initial commit"` :   `git commit -m "initial commit"`
 
-   say "Adding remote origin git@github.com:#{github_user}/#{gem_name}.git"
+    say "Adding remote origin git@github.com:#{github_user}/#{gem_name}.git"
     `git remote add origin git@github.com:#{github_user}/#{gem_name}.git`
 
     say 'Creating repository on Github'
