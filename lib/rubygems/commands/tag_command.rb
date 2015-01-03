@@ -28,13 +28,8 @@ class Gem::Commands::TagCommand < Gem::Command
   protected
 
     def tag
-      if options[:sign]
-        say "Creating signed git tag #{tag_name}" unless quiet?
-        system("git tag -m \"tag #{tag_name}\" -s #{tag_name}")
-      else
-        say "Creating git tag #{tag_name}" unless quiet?
-        system("git tag -am \"tag #{tag_name}\" #{tag_name}")
-      end
+      say "Creating git tag #{tag_name}" unless quiet?
+      options[:sign] ?  system("git tag -m \"tag #{tag_name}\" -s #{tag_name}") : system("git tag -am \"tag #{tag_name}\" #{tag_name}")
     end
 
     def push

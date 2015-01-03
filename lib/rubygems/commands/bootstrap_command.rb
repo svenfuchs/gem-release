@@ -25,7 +25,7 @@ class Gem::Commands::BootstrapCommand < Gem::Command
     option :strategy, '-f', 'Strategy for collecting files [glob|git] in .gemspec'
     option :github,   '-h', 'Bootstrap a git repo, create on github and push'
     option :quiet,    '-q', 'Do not output status messages'
-    option :sign,    '-s', 'GPG sign commits'
+    option :sign,     '-s', 'GPG sign commits'
 
     @arguments = "gemname - option name of the gem, will use the current directory if not specified"
     @usage = "#{program_name} [gemname]"

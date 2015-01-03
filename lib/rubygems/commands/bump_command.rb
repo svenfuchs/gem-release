@@ -80,13 +80,8 @@ class Gem::Commands::BumpCommand < Gem::Command
     end
 
     def commit
-      if options[:sign]
-        say "Creating signed commit" unless quiet?
-        system("git commit -S -m \"Bump to #{@new_version_number}\"")
-      else
-        say "Creating commit" unless quiet?
-        system("git commit -m \"Bump to #{@new_version_number}\"")
-      end
+      say "Creating commit" unless quiet?
+      options[:sign] ? system("git commit -S -m \"Bump to #{@new_version_number}\"") : system("git commit -m \"Bump to #{@new_version_number}\"")
     end
 
     def push
