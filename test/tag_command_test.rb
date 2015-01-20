@@ -25,4 +25,14 @@ class TagCommandTest < Test::Unit::TestCase
     command.expects(:system).with("git push --tags origin").returns(:true)
     command.execute
   end
+
+  test "tag_command pushes to a specific git remote" do
+    command = TagCommand.new
+    command.options[:push_tags_only] = true
+    command.options[:destination] = "fork"
+    command.stubs(:gem_version).returns('1.0.0')
+    command.expects(:system).with("git tag -am \"tag v1.0.0\" v1.0.0").returns(:true)
+    command.expects(:system).with("git push --tags fork").returns(:true)
+    command.execute
+  end
 end

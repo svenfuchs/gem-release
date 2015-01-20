@@ -198,6 +198,16 @@ class BumpCommandTest < Test::Unit::TestCase
     command.invoke('--push')
   end
 
+  test "gem bump --push -d fork" do
+    command = BumpCommand.new
+    in_gemspec_dirs do
+      command.expects(:system).with("git add #{version.send(:filename)}").returns(true)
+    end
+    command.expects(:system).with('git commit -m "Bump to 0.0.2"').returns(true)
+    command.expects(:system).with('git push fork').returns(true)
+    command.invoke('--push', '-d', 'fork')
+  end
+
   test "gem bump --tag" do
     command = BumpCommand.new
     in_gemspec_dirs do
@@ -244,6 +254,25 @@ class BumpCommandTest < Test::Unit::TestCase
     TagCommand.any_instance.expects(:push).returns(true)
 
     command.invoke('--tag', '--release')
+  end
+
+  test "gem bump --tag --release --destination fork" do
+    command = BumpCommand.new
+    in_gemspec_dirs do
+      command.expects(:system).with("git add #{version.send(:filename)}").returns(true)
+    end
+    command.expects(:system).with('git commit -m "Bump to 0.0.2"').returns(true)
+    command.expects(:system).with('git push fork').returns(true)
+
+    count = gemspec_dirs.size
+    ReleaseCommand.any_instance.expects(:build).times(count).returns(true)
+    ReleaseCommand.any_instance.expects(:push).times(count).returns(true)
+    ReleaseCommand.any_instance.expects(:cleanup).times(count).returns(true)
+
+    TagCommand.any_instance.expects(:tag).returns(true)
+    TagCommand.any_instance.expects(:push).returns(true)
+
+    command.invoke('--tag', '--release', '--destination', 'fork')
   end
 
   test "gem bump --release --key" do
