@@ -221,6 +221,19 @@ class BumpCommandTest < Test::Unit::TestCase
     command.invoke('--tag')
   end
 
+  test "gem bump --tag -d fork" do
+    command = BumpCommand.new
+    in_gemspec_dirs do
+      command.expects(:system).with("git add #{version.send(:filename)}").returns(true)
+    end
+    command.expects(:system).with('git commit -m "Bump to 0.0.2"').returns(true)
+    command.expects(:system).with('git push fork').returns(true)
+
+    TagCommand.new.expects(:system).with("git tag -am \"tag v0.0.2\" v0.0.2").returns(true)
+    TagCommand.new.expects(:system).with('git push --tags fork').returns(true)
+    command.invoke('--tag', '-d', 'fork')
+  end
+
   test "gem bump --push --release" do
     command = BumpCommand.new
     in_gemspec_dirs do
