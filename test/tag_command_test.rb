@@ -13,7 +13,7 @@ class TagCommandTest < Test::Unit::TestCase
     command.stubs(:gem_version).returns('1.0.0')
     command.expects(:system).with("git tag -am \"tag v1.0.0\" v1.0.0").returns(:true)
     command.expects(:system).with("git push origin").returns(:true)
-    command.expects(:system).with("git push --tags origin").returns(:true)
+    command.expects(:system).with("git push origin v1.0.0").returns(:true)
     command.execute
   end
 
@@ -22,7 +22,7 @@ class TagCommandTest < Test::Unit::TestCase
     command.options[:push_tags_only] = true
     command.stubs(:gem_version).returns('1.0.0')
     command.expects(:system).with("git tag -am \"tag v1.0.0\" v1.0.0").returns(:true)
-    command.expects(:system).with("git push --tags origin").returns(:true)
+    command.expects(:system).with("git push origin v1.0.0").returns(:true)
     command.execute
   end
 
@@ -32,7 +32,7 @@ class TagCommandTest < Test::Unit::TestCase
     command.options[:destination] = "fork"
     command.stubs(:gem_version).returns('1.0.0')
     command.expects(:system).with("git tag -am \"tag v1.0.0\" v1.0.0").returns(:true)
-    command.expects(:system).with("git push --tags fork").returns(:true)
+    command.expects(:system).with("git push fork v1.0.0").returns(:true)
     command.execute
   end
 end

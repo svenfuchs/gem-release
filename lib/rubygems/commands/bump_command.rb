@@ -29,7 +29,7 @@ class Gem::Commands::BumpCommand < Gem::Command
     option :commit,      '-c', 'Perform a commit after incrementing gem version'
     option :push,        '-p', 'Push to the git destination'
     option :destination, '-d', 'destination git repository'
-    option :tag,         '-t', 'Create a git tag and push --tags to git destination'
+    option :tag,         '-t', 'Create a git tag and push it to the git destination'
     option :release,     '-r', 'Build gem from a gemspec and push to rubygems.org'
     option :key,         '-k', 'When releasing: use the given API key from ~/.gem/credentials'
     option :host,        '-h', 'When releasing: push to a gemcutter-compatible host other than rubygems.org'

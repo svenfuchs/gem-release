@@ -217,7 +217,7 @@ class BumpCommandTest < Test::Unit::TestCase
     command.expects(:system).with('git push origin').returns(true)
 
     TagCommand.new.expects(:system).with("git tag -am \"tag v0.0.2\" v0.0.2").returns(true)
-    TagCommand.new.expects(:system).with('git push --tags origin').returns(true)
+    TagCommand.new.expects(:system).with('git push origin v0.0.2').returns(true)
     command.invoke('--tag')
   end
 
@@ -230,7 +230,7 @@ class BumpCommandTest < Test::Unit::TestCase
     command.expects(:system).with('git push fork').returns(true)
 
     TagCommand.new.expects(:system).with("git tag -am \"tag v0.0.2\" v0.0.2").returns(true)
-    TagCommand.new.expects(:system).with('git push --tags fork').returns(true)
+    TagCommand.new.expects(:system).with('git push fork v0.0.2').returns(true)
     command.invoke('--tag', '-d', 'fork')
   end
 

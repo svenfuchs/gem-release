@@ -11,7 +11,7 @@ class Gem::Commands::TagCommand < Gem::Command
 
   def initialize(options = {})
     @name = 'tag'
-    super @name, 'Create a git tag and push --tags to destination', default_options_with(options)
+    super @name, 'Create a git tag and push it to the destination', default_options_with(options)
 
     option :quiet,       '-q', 'Do not output status messages'
     option :destination, '-d', 'Git destination'
@@ -38,8 +38,8 @@ class Gem::Commands::TagCommand < Gem::Command
         return false unless system("git push #{options[:destination]}")
       end
 
-      say "Pushing --tags to the #{options[:destination]} git repository" unless quiet?
-      system("git push --tags #{options[:destination]}")
+      say "Pushing #{tag_name} to the #{options[:destination]} repository" unless quiet?
+      system("git push #{options[:destination]} #{tag_name}")
     end
 
     def tag_name

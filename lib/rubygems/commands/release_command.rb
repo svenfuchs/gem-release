@@ -20,7 +20,7 @@ class Gem::Commands::ReleaseCommand < Gem::Command
     @name = 'release'
     super @name, 'Build gem from a gemspec and push to rubygems.org', default_options_with(options)
 
-    option :tag,         '-t', 'Create a git tag and push --tags to destination'
+    option :tag,         '-t', 'Create a git tag and push it to the destination'
     option :destination, '-d', 'Destination git repository'
     option :quiet,       '-q', 'Do not output status messages'
     option :key,         '-k', 'Use the given API key from ~/.gem/credentials'
