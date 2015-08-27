@@ -15,7 +15,6 @@ Gem::Specification.new do |s|
   s.files        = `git ls-files {app,lib}`.split("\n")
   s.require_path = 'lib'
   s.platform     = Gem::Platform::RUBY
-  s.rubyforge_project = '[none]'
 
   s.add_development_dependency 'test_declarative', '>=0.0.2'
   s.add_development_dependency 'mocha', '>=0.14'

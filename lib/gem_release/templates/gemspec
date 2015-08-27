@@ -15,5 +15,4 @@ Gem::Specification.new do |s|
   s.files         = <%= files %>
   s.platform      = Gem::Platform::RUBY
   s.require_paths = ['lib']
-  s.rubyforge_project = '[none]'
 end
