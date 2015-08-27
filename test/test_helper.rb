@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'rubygems_plugin'
+require 'bundler/setup'
 
 require 'test/unit'
 require 'fileutils'
