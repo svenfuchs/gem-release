@@ -18,22 +18,32 @@ class Gem::Commands::BumpCommand < Gem::Command
     :key      => '',
     :host     => '',
     :quiet    => false,
-    :sign     => false
+    :version => '',
+    :commit  => true,
+    :push    => false,
+    :tag     => false,
+    :release => false,
+    :key     => '',
+    :host    => '',
+    :quiet   => false,
+    :sign     => false,
+    :destination  => "origin",
   }
 
   def initialize(options = {})
     @name = 'bump'
     super @name, 'Bump the gem version', default_options_with(options)
 
-    option :version, '-v', 'Target version: next [major|minor|patch|pre|release] or a given version number [x.x.x]'
-    option :commit,  '-c', 'Perform a commit after incrementing gem version'
-    option :push,    '-p', 'Push to the origin git repository'
-    option :tag,     '-t', 'Create a git tag and push --tags to origin'
-    option :release, '-r', 'Build gem from a gemspec and push to rubygems.org'
-    option :key,     '-k', 'When releasing: use the given API key from ~/.gem/credentials'
-    option :host,    '-h', 'When releasing: push to a gemcutter-compatible host other than rubygems.org'
-    option :quiet,   '-q', 'Do not output status messages'
-    option :sign,    '-s', 'GPG sign commit message'
+    option :version,     '-v', 'Target version: next [major|minor|patch|pre|release] or a given version number [x.x.x]'
+    option :commit,      '-c', 'Perform a commit after incrementing gem version'
+    option :push,        '-p', 'Push to the git destination'
+    option :destination, '-d', 'destination git repository'
+    option :tag,         '-t', 'Create a git tag and push it to the git destination'
+    option :release,     '-r', 'Build gem from a gemspec and push to rubygems.org'
+    option :key,         '-k', 'When releasing: use the given API key from ~/.gem/credentials'
+    option :host,        '-h', 'When releasing: push to a gemcutter-compatible host other than rubygems.org'
+    option :quiet,       '-q', 'Do not output status messages'
+    option :sign,        '-s', 'GPG sign commit message'
   end
 
   def execute
@@ -85,8 +95,9 @@ class Gem::Commands::BumpCommand < Gem::Command
     end
 
     def push
-      say "Pushing to the origin git repository" unless quiet?
-      system('git push origin')
+      destination = options[:destination]
+      say "Pushing to the #{destination} git repository" unless quiet?
+      system("git push #{destination}")
     end
 
     def release
@@ -105,6 +116,7 @@ class Gem::Commands::BumpCommand < Gem::Command
       cmd.options[:quiet] = options[:quiet]
       cmd.options[:quiet_success] = true
       cmd.options[:push_tags_only] = true
+      cmd.options[:destination] = options[:destination]
       cmd.execute
       true
     end

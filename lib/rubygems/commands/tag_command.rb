@@ -4,17 +4,19 @@ class Gem::Commands::TagCommand < Gem::Command
 
   DEFAULTS = {
     :quiet => false,
-    :sign  => false
+    :sign  => false,
+    :destination => "origin"
   }
 
   attr_reader :arguments, :usage, :name
 
   def initialize(options = {})
     @name = 'tag'
-    super @name, 'Create a git tag and push --tags to origin', default_options_with(options)
+    super @name, 'Create a git tag and push it to the destination', default_options_with(options)
 
-    option :sign, '-s',  'GPG sign the tag'
-    option :quiet, '-q', 'Do not output status messages'
+    option :sign,        '-s',  'GPG sign the tag'
+    option :quiet,       '-q', 'Do not output status messages'
+    option :destination, '-d', 'Git destination'
   end
 
   def execute
@@ -35,11 +37,11 @@ class Gem::Commands::TagCommand < Gem::Command
     def push
       unless options[:push_tags_only]
         say "Pushing to the origin git repository" unless quiet?
-        return false unless system('git push origin')
+        return false unless system("git push #{options[:destination]}")
       end
 
-      say "Pushing --tags to the origin git repository" unless quiet?
-      system('git push --tags origin')
+      say "Pushing #{tag_name} to the #{options[:destination]} repository" unless quiet?
+      system("git push #{options[:destination]} #{tag_name}")
     end
 
     def tag_name

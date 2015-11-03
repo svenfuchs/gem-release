@@ -7,10 +7,11 @@ class Gem::Commands::ReleaseCommand < Gem::Command
   include Helpers, CommandOptions
 
   DEFAULTS = {
-    :tag   => false,
-    :quiet => false,
-    :key   => '',
-    :host  => ''
+    :tag         => false,
+    :quiet       => false,
+    :key         => '',
+    :host        => '',
+    :destination => "origin",
   }
 
   attr_reader :arguments, :usage, :name
@@ -19,10 +20,11 @@ class Gem::Commands::ReleaseCommand < Gem::Command
     @name = 'release'
     super @name, 'Build gem from a gemspec and push to rubygems.org', default_options_with(options)
 
-    option :tag,   '-t', 'Create a git tag and push --tags to origin'
-    option :quiet, '-q', 'Do not output status messages'
-    option :key,   '-k', 'Use the given API key from ~/.gem/credentials'
-    option :host,  '-h', 'Push to a gemcutter-compatible host other than rubygems.org'
+    option :tag,         '-t', 'Create a git tag and push it to the destination'
+    option :destination, '-d', 'Destination git repository'
+    option :quiet,       '-q', 'Do not output status messages'
+    option :key,         '-k', 'Use the given API key from ~/.gem/credentials'
+    option :host,        '-h', 'Push to a gemcutter-compatible host other than rubygems.org'
 
     @arguments = "gemspec - optional gemspec file name, will use the first *.gemspec if not specified"
     @usage = "#{program_name} [gemspec]"
