@@ -10,8 +10,7 @@ class Gem::Commands::BootstrapCommand < Gem::Command
     :strategy => 'git',
     :scaffold => true,
     :github   => false,
-    :quiet    => false,
-    :sign     => false
+    :quiet    => false
   }
 
   attr_reader :arguments, :usage, :name
@@ -25,7 +24,6 @@ class Gem::Commands::BootstrapCommand < Gem::Command
     option :strategy, '-f', 'Strategy for collecting files [glob|git] in .gemspec'
     option :github,   '-h', 'Bootstrap a git repo, create on github and push'
     option :quiet,    '-q', 'Do not output status messages'
-    option :sign,     '-s', 'GPG sign commits'
 
     @arguments = "gemname - option name of the gem, will use the current directory if not specified"
     @usage = "#{program_name} [gemname]"
@@ -84,7 +82,7 @@ class Gem::Commands::BootstrapCommand < Gem::Command
     `git add .`
 
     say 'Creating initial commit'
-    options[:sign] ?  `git commit -S -m "initial commit"` :   `git commit -m "initial commit"`
+    `git commit -m "initial commit"`
 
     say "Adding remote origin git@github.com:#{github_user}/#{gem_name}.git"
     `git remote add origin git@github.com:#{github_user}/#{gem_name}.git`
