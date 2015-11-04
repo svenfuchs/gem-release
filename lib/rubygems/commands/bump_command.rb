@@ -13,21 +13,13 @@ class Gem::Commands::BumpCommand < Gem::Command
     :version  => '',
     :commit   => true,
     :push     => false,
+    :destination  => "origin",
     :tag      => false,
     :release  => false,
     :key      => '',
     :host     => '',
     :quiet    => false,
-    :version => '',
-    :commit  => true,
-    :push    => false,
-    :tag     => false,
-    :release => false,
-    :key     => '',
-    :host    => '',
-    :quiet   => false,
     :sign     => false,
-    :destination  => "origin",
   }
 
   def initialize(options = {})
