@@ -47,15 +47,33 @@ module GemRelease
       @old_number ||= content =~ VERSION_PATTERN && $2
     end
 
+    # Search precedence is:
+    #
+    #   lib/foo-bar/version.rb
+    #   lib/foo/bar/version.rb
+    #   lib/foo_bar/version.rb
+    #
     def filename
-      path = gem_name
-      path = path.gsub('-', '/') unless File.exists?(path_to_version_file(path))
-      path = path.gsub('/', '_') unless File.exists?(path_to_version_file(path))
-
+      path = search_for_version_file(gem_name)
+      path ||= search_for_version_file(gem_name.sub(/[-_]rb$/, '')) if gem_name[/[-_]rb$/]
+      raise "Could not find find version file for gem: #{gem_name}" if path.nil?
       File.expand_path(path_to_version_file(path))
     end
 
     protected
+
+      def search_for_version_file(gem_name)
+        path = gem_name
+        return path if File.exists?(path_to_version_file(path))
+
+        path = path.gsub('-', '/')
+        return path if File.exists?(path_to_version_file(path))
+
+        path = path.gsub('/', '_')
+        return path if File.exists?(path_to_version_file(path))
+
+        nil
+      end
 
       def path_to_version_file(path)
         "lib/#{path}/version.rb"
