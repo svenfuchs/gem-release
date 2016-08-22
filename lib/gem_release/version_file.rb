@@ -49,8 +49,8 @@ module GemRelease
 
     def filename
       path = gem_name
-      path = path.gsub('-', '/') unless File.exists?(path_to_version_file(path))
-      path = path.gsub('/', '_') unless File.exists?(path_to_version_file(path))
+      path = path.gsub('-', '/') unless File.exist?(path_to_version_file(path))
+      path = path.gsub('/', '_') unless File.exist?(path_to_version_file(path))
 
       File.expand_path(path_to_version_file(path))
     end

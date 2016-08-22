@@ -363,6 +363,6 @@ class BumpCommandTest < Test::Unit::TestCase
   end
 
   test "bumped_content" do
-    assert_equal "module Foo\n  module Bar\n    VERSION = \"0.0.2\"\n  end\nend\n", version.send(:bumped_content)
+    assert_equal "module Foo\n  module Bar\n    VERSION = \"0.0.2\"\n  end\nend\n\n", version.send(:bumped_content)
   end
 end
