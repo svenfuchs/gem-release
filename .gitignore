@@ -25,3 +25,5 @@ gemfiles/*.lock
 _yardoc
 doc/
 vendor
+
+/.idea/

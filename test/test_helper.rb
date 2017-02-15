@@ -23,7 +23,7 @@ class Test::Unit::TestCase
   attr_reader :base_dir, :gemspec_dirs
 
   def build_sandbox(options = {})
-    FileUtils.rm_r('tmp') if File.exists?('tmp')
+    FileUtils.rm_r('tmp') if File.exist?('tmp')
 
     @cwd       = Dir.pwd
     @base_dir  = Pathname.new('tmp/foo-bar')
