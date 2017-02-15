@@ -92,13 +92,13 @@ class BumpCommandTest < Test::Unit::TestCase
     command.invoke('--version', '0.1.0')
   end
 
-  test "gem bump --append \"[CI SKIP]\"" do
+  test "gem bump --message \"[CI SKIP]\"" do
     command = BumpCommand.new
     in_gemspec_dirs do
       command.expects(:system).with("git add #{version.send(:filename)}").returns(true)
     end
     command.expects(:system).with('git commit -m "Bump to 0.0.2 - [CI SKIP]"').returns(true)
-    command.invoke('--append', '[CI SKIP]')
+    command.invoke('--message', '[CI SKIP]')
   end
 
   test "`gem bump --version pre`, followed by `gem bump`" do

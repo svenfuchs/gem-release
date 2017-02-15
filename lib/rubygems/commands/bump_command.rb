@@ -12,7 +12,7 @@ class Gem::Commands::BumpCommand < Gem::Command
   DEFAULTS = {
     :version => '',
     :commit  => true,
-    :append_message => nil,
+    :message => nil,
     :push    => false,
     :tag     => false,
     :release => false,
@@ -36,9 +36,9 @@ class Gem::Commands::BumpCommand < Gem::Command
     option :host,         '-h', 'When releasing: push to a gemcutter-compatible host other than rubygems.org'
     option :quiet,        '-q', 'Do not output status messages'
 
-    add_option('--append MESSAGE',
+    add_option('--message MESSAGE',
                'Append to the commit message after incrementing gem version') do |value, opts|
-      opts[:append] = value
+      opts[:message] = value
     end
   end
 
@@ -88,7 +88,7 @@ class Gem::Commands::BumpCommand < Gem::Command
     def commit
       say "Creating commit" unless quiet?
       message = "Bump to #{@new_version_number}"
-      message = "#{message} - #{options[:append]}" if options[:append]
+      message = "#{message} - #{options[:message]}" if options[:message]
       system("git commit -m \"#{message}\"")
     end
 
