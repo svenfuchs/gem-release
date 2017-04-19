@@ -1,6 +1,13 @@
-source "https://rubygems.org"
-gemspec
+source 'https://rubygems.org'
+
+gem 'gem-release', path: '.'
 
 group :development do
-  gem 'test-unit'
+  gem 'geminabox'
+end
+
+group :test do
+  gem 'rspec'
+  gem 'simplecov'
+  gem 'coveralls'
 end

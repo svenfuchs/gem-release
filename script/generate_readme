@@ -1,0 +1,66 @@
+#!/usr/bin/env ruby
+
+$: << 'lib'
+
+require 'bundler'
+require 'erb'
+require 'stringio'
+load './lib/rubygems_plugin.rb'
+
+Bundler.setup
+
+def camelize(str)
+  str.to_s.split(/[^a-z0-9]/i).map { |str| str.capitalize }.join
+end
+
+def opts(cmd)
+  out = StringIO.new
+  cmd = Gem::Commands::const_get("#{camelize(cmd)}Command").new
+  cmd.ui = Gem::StreamUI.new(nil, out)
+  cmd.invoke('--help')
+  parse_opts(out.string)
+end
+
+PARTS = {
+  arguments: /(?:Arguments:)(.*?)(?:Arguments|Summary|Description|\z)/m,
+  options:   /(?:Options:)(.*?)(?:Common Options)/m,
+}
+
+def parse_opts(help)
+  help = PARTS.map { |key, pattern| [key, help =~ pattern && $1] }.to_h
+  help.map { |key, help| [key, strip(help)] }.to_h
+end
+
+def help(cmd)
+  const = Gem::Release::Cmds[cmd]
+  summary = const.summary.strip if const.summary
+  description = const.description.strip if const.description
+  opts(cmd).merge(summary: summary, description: description)
+end
+
+def strip(str)
+  return unless str
+  lines = str.split("\n").map(&:rstrip).reject(&:empty?)
+  width = lines.map { |line| line =~ /^(\s+)/ && $1 && $1.size }.compact.min.to_i
+  lines = lines.map { |line| line.sub(' ' * width, '') }
+  lines.join("\n")
+end
+
+def scenarios
+  Dir['scenarios/*'].map do |path|
+    num   = File.basename(path).split('-').first.to_i
+    text  = ERB.new(File.read(path)).result(binding)
+    title = text =~ /# (Scenario.*:.*)$/ && $1
+    id    = title.gsub(' ', '-').gsub(/[^\w-]/, '').downcase
+    title = title =~ /Scenario.*:\s+(.*)$/ && $1
+    { id: id, title: title, text: text }
+  end
+end
+
+cmds = %i(bootstrap bump gemspec release tag)
+cmds = cmds.map { |cmd| [cmd, help(cmd)] }
+erb  = ERB.new(File.read('README.md.erb'), nil, '-')
+readme = erb.result(binding)
+
+puts readme
+File.write('README.md', readme)

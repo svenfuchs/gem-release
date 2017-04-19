@@ -1,0 +1,31 @@
+# Todo
+
+* Add a changelog
+
+* Release and tag should fail if there are uncommitted changes
+  https://github.com/svenfuchs/gem-release/issues/34
+
+* Make sure we don't double tag the same repo when several args are given
+
+# Fix
+
+* Misleading success message
+  https://github.com/svenfuchs/gem-release/issues/60
+
+# Double check
+
+- Issues with in-repo gems [1]
+  https://github.com/svenfuchs/gem-release/issues/58
+
+x bump fails when there is a space in the path to project done:2017-05-01 [2]
+  https://github.com/svenfuchs/gem-release/issues/33
+  looks like this is fixed. this did not result in any errors:
+    cd /tmp
+    mkdir -p '/tmp/seanmackesey/Google Drive/code/lib/ruby'
+    cd /tmp/seanmackesey/Google\ Drive/code/lib/ruby
+    gem bootstrap foo
+    gem bump --no-push
+
+- gem bump --tag --release pushes the wrong version [3]
+  https://github.com/svenfuchs/gem-release/issues/36
+

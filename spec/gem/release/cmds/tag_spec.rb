@@ -1,0 +1,46 @@
+describe Gem::Release::Cmds::Tag do
+  let(:args) { [] }
+  let(:opts) { {} }
+
+  cwd 'foo-bar'
+  gemspec 'foo-bar'
+
+  describe 'by default' do
+    run_cmd
+
+    it { should run_cmd 'git tag -am "tag v1.0.0" v1.0.0' }
+    it { should run_cmd 'git push --tags origin' }
+
+    it { should output  'Tagging foo-bar as version 1.0.0' }
+    it { should output  'Creating git tag v1.0.0' }
+    it { should output  '$ git tag -am "tag v1.0.0" v1.0.0' }
+    it { should output  'Pushing tags to the origin git repository' }
+    it { should output  '$ git push --tags origin' }
+    it { should output 'All is good, thanks my friend.' }
+  end
+
+  describe 'given --no-push' do
+    let(:opts) { { push: false } }
+    run_cmd
+
+    it { should_not run_cmd 'git push --tags origin' }
+    it { should_not output  'Pushing tags to the origin git repository' }
+    it { should_not output  '$ git push --tags origin' }
+  end
+
+  describe 'given --remote foo' do
+    let(:opts) { { remote: :foo } }
+    run_cmd
+
+    it { should run_cmd 'git push --tags foo' }
+    it { should output  'Pushing tags to the foo git repository' }
+    it { should output  '$ git push --tags foo' }
+  end
+
+  describe 'given --quiet' do
+    let(:opts) { { quiet: true } }
+    run_cmd
+
+    it { expect(out).to be_empty }
+  end
+end
