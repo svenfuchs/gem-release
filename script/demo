@@ -1,0 +1,49 @@
+#!/bin/bash
+
+shopt -s expand_aliases
+
+name=test-gem-release
+prompt="/tmp $ "
+
+function run() {
+  clear
+  alias gem="bundle exec gem"
+  local cmd="$1"
+  local pause="$2"
+
+  echo "$prompt$cmd"
+  eval $cmd
+
+  printf "$prompt"
+  sleep $pause
+}
+
+git config --global github.user svenfuchs
+
+export BUNDLE_GEMFILE=/Users/sven/Development/projects/gem-release/Gemfile
+# export GEM_RELEASE_PUSH=false
+export GEM_RELEASE_HOST=http://localhost:9292
+export GEM_RELEASE_KEY=localhost
+
+rm -rf "$name"
+clear
+
+run "gem bootstrap $name --github --push" 4
+run "cd $name && ls -al ." 2
+
+run "gem bump -v pre" 2
+run "gem bump -v patch --no-push" 2
+run "gem bump -v minor --no-push" 2
+run "gem bump -v major --no-push" 2
+run "gem bump -v 1.2.3 --no-push" 2
+
+run "gem tag" 2
+run "gem release" 3
+
+run "gem bump -v major --tag --release" 4
+
+# echo "$ gem bootstrap --help | less"
+# bundle exec gem bootstrap --help | less
+sleep 5
+echo
+

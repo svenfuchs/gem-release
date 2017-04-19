@@ -1,8 +1,10 @@
-branches:
-  only:
-    - master
-script: "COVERAGE=true ruby -Ilib:test test/all.rb"
+sudo: false
+dist: trusty
+
+cache: bundler
+
 rvm:
-  - 1.9.3
-  - 2.0.0
-  - jruby-19mode
+  - 2.3
+  - 2.4
+
+script: COVERAGE=true bundle exec rspec
