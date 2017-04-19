@@ -1,0 +1,194 @@
+# Todo
+
+* Make it so that if no arg is given, we fallback to the first gemspec file
+  first. only if there's no gemspec file we use the dirname?
+
+* Add a changelog
+
+* Release and tag should fail if there are uncommitted changes
+  https://github.com/svenfuchs/gem-release/issues/34
+
+* Make sure we don't double tag the same repo when several args are given
+
+# Fix
+
+* Misleading success message
+  https://github.com/svenfuchs/gem-release/issues/60
+
+# Double check
+
+- Issues with in-repo gems [1]
+  https://github.com/svenfuchs/gem-release/issues/58
+
+x bump fails when there is a space in the path to project done:2017-05-01 [2]
+  https://github.com/svenfuchs/gem-release/issues/33
+  looks like this is fixed. this did not result in any errors:
+    cd /tmp
+    mkdir -p '/tmp/seanmackesey/Google Drive/code/lib/ruby'
+    cd /tmp/seanmackesey/Google\ Drive/code/lib/ruby
+    gem bootstrap foo
+    gem bump --no-push
+
+- gem bump --tag --release pushes the wrong version [3]
+  https://github.com/svenfuchs/gem-release/issues/36
+
+# Refactor
+
+should create the directory foo, and cd into it
+
+  cd tmp
+  gem bootstrap foo
+
+
+should bootstrap a gem foo
+
+  cd foo
+  gem bootstrap
+
+should fail, as there's no foo.gemspec
+
+  cd tmp
+  gem bump foo
+
+should bump the first gemspec's gem, no matter the dir name
+
+  cd foo
+  gem bump
+
+# Scenario: Nested gem with conventional directory name
+
+### Setup
+
+```
+export GEM_RELEASE_PUSH=false
+cd /tmp
+rm -rf sinja
+gem bootstrap sinja
+cd sinja
+mkdir extensions
+cd extensions
+gem bootstrap sinja-sequel
+cd /tmp/sinja
+tree
+```
+
+### Directory structure
+
+```
+.
+├── Gemfile
+├── LICENSE.md
+├── extensions
+│   └── sinja-sequel
+│       ├── Gemfile
+│       ├── LICENSE.md
+│       ├── lib
+│       │   └── sinja
+│       │       ├── sequel
+│       │       │   └── version.rb
+│       │       └── sequel.rb
+│       └── sinja-sequel.gemspec
+├── lib
+│   ├── sinja
+│   │   └── version.rb
+│   └── sinja.rb
+└── sinja.gemspec
+```
+
+### Behaviour
+
+```
+# this bumps both sinja and sinja-sequel
+cd /tmp/sinja
+gem bump --recurse
+
+# this bumps sinja
+cd /tmp/sinja
+gem bump
+
+# this also bumps sinja
+cd /tmp/sinja
+gem bump sinja
+
+# this bumps sinja-sequel only
+cd /tmp/sinja
+gem bump sinja-sequel
+
+# this also bumps sinja-sequel only
+cd /tmp/sinja/extensions/sinja-sequel
+gem bump
+
+# this also bumps sinja-sequel only
+cd /tmp/sinja/extensions/sinja-sequel
+gem bump sinja-sequel
+```
+
+## Nested gem with irregular directory name
+
+### Setup
+
+```
+export GEM_RELEASE_PUSH=false
+cd /tmp
+rm -rf sinja
+gem bootstrap sinja
+cd sinja
+mkdir -p extensions
+cd extensions
+gem bootstrap sinja-sequel
+mv sinja-sequel sequel
+cd /tmp/sinja
+tree
+```
+
+### Directory structure
+
+```
+.
+├── Gemfile
+├── LICENSE.md
+├── extensions
+│   └── sequel
+│       ├── Gemfile
+│       ├── LICENSE.md
+│       ├── lib
+│       │   └── sinja
+│       │       ├── sequel
+│       │       │   └── version.rb
+│       │       └── sequel.rb
+│       └── sinja-sequel.gemspec
+├── lib
+│   ├── sinja
+│   │   └── version.rb
+│   └── sinja.rb
+└── sinja.gemspec
+```
+
+### Behaviour
+
+```
+# this bumps both sinja and sinja-sequel
+cd /tmp/sinja
+gem bump --recurse
+
+# this bumps sinja
+cd /tmp/sinja
+gem bump
+
+# this also bumps sinja
+cd /tmp/sinja
+gem bump sinja
+
+# this bumps sinja-sequel only
+cd /tmp/sinja
+gem bump sinja-sequel
+
+# this also bumps sinja-sequel only
+cd /tmp/sinja/extensions/sinja-sequel
+gem bump
+
+# this also bumps sinja-sequel only
+cd /tmp/sinja/extensions/sinja-sequel
+gem bump sinja-sequel
+```
+
