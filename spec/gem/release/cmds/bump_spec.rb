@@ -9,12 +9,10 @@ describe Gem::Release::Cmds::Bump do
 
     it { should output "Bumping foo-bar from version 1.0.0 to 1.0.1" }
     it { should output 'Creating commit' }
-    it { should output 'Pushing to the origin git repository' }
     it { should output 'All is good, thanks my friend.' }
 
     it { should run_cmd "git add lib/foo/bar/version.rb" }
     it { should run_cmd "git commit -m \"Bump to 1.0.1\"" }
-    it { should run_cmd 'git push origin' }
     it { should have_version 'lib/foo/bar', "1.0.1" }
   end
 
@@ -82,36 +80,28 @@ describe Gem::Release::Cmds::Bump do
     end
   end
 
-  describe 'given --no-push' do
-    let(:opts) { { push: false } }
-    version 'lib/tmp'
-    run_cmd
-
-    it { should_not output 'Pushing to the origin git repository' }
-    it { should_not run_cmd 'git push origin' }
-  end
-
   describe 'given --no-commit' do
     let(:opts) { { commit: false } }
     version 'lib/tmp'
     run_cmd
 
-    it { expect(out).to_not  include 'Pushing to the origin git repository' }
-    it { expect(cmds).to_not include 'git push origin' }
+    it { expect(out).to_not  include 'Creating commit' }
+    it { expect(cmds).to_not include 'git commit -m "Bump to 1.0.1"' }
   end
 
-  describe 'given --no-push' do
-    let(:opts) { { push: false } }
+  describe 'given --push' do
+    let(:opts) { { push: true } }
     version 'lib/tmp'
     run_cmd
 
-    it { should output 'Creating commit' }
-    it { should run_cmd 'git commit -m "Bump to 1.0.1"' }
+    it { should output 'Pushing to the origin git repository' }
+    it { should run_cmd 'git push origin' }
   end
 
   describe 'given --remote foo' do
-    let(:opts) { { remote: :foo } }
+    let(:opts) { { push: true, remote: 'foo' } }
     version 'lib/tmp'
+    remotes 'foo'
     run_cmd
 
     it { should output 'Pushing to the foo git repository' }
@@ -125,9 +115,22 @@ describe Gem::Release::Cmds::Bump do
     run_cmd
 
     it { should output 'Creating git tag v1.0.1' }
-    it { should output 'Pushing tags to the origin git repository' }
-
     it { should run_cmd 'git tag -am "tag v1.0.1" v1.0.1' }
+
+    it { should_not output 'Pushing tags to the origin git repository' }
+    it { should_not run_cmd 'git push --tags origin' }
+  end
+
+  describe 'given --tag and --push' do
+    let(:opts) { { tag: true, push: true } }
+    version 'lib/tmp'
+    gemspec 'tmp', '1.0.1' # TODO make the gemspec load the version dynamically
+    run_cmd
+
+    it { should output 'Creating git tag v1.0.1' }
+    it { should run_cmd 'git tag -am "tag v1.0.1" v1.0.1' }
+
+    it { should output 'Pushing tags to the origin git repository' }
     it { should run_cmd 'git push --tags origin' }
   end
 
@@ -146,5 +149,10 @@ describe Gem::Release::Cmds::Bump do
     version 'lib/tmp'
     run_cmd
     it { expect(out).to be_empty }
+  end
+
+  describe 'fails if there are uncommitted changes' do
+    before { allow(system).to receive(:git_clean?).and_return(false) }
+    it { expect { run }.to raise_error('Uncommitted changes found. Please commit or stash. Aborting.') }
   end
 end

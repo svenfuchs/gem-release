@@ -12,7 +12,7 @@ module Gem
         private
 
           def run_cmd
-            const.new(context.class.new, args, opts).run
+            const.new(context, args, opts).run
           end
 
           def const

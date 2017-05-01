@@ -46,10 +46,11 @@ module Gem
         end
 
         MSGS = {
-          release: 'Releasing %s with version %s',
-          build:   'Building %s',
-          push:    'Pushing %s',
-          cleanup: 'Deleting left over gem file %s'
+          release:   'Releasing %s with version %s',
+          build:     'Building %s',
+          push:      'Pushing %s',
+          cleanup:   'Deleting left over gem file %s',
+          git_dirty: 'Uncommitted changes found. Please commit or stash.',
         }
 
         CMDS = {
@@ -58,12 +59,17 @@ module Gem
 
         def run
           in_gem_dirs do
+            validate
             release
           end
           tag if opts[:tag]
         end
 
         private
+
+          def validate
+            abort :git_dirty unless git_clean?
+          end
 
           def release
             announce :release, gem.name, gem.version

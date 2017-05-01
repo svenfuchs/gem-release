@@ -12,6 +12,10 @@ module Gem
           true
         end
 
+        def git_clean?
+          system 'git diff-index --quiet HEAD'
+        end
+
         def git_remotes
           `git remote`.split("\n")
         end

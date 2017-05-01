@@ -29,7 +29,8 @@ describe Gem::Release::Cmds::Tag do
   end
 
   describe 'given --remote foo' do
-    let(:opts) { { remote: :foo } }
+    let(:opts) { { remote: 'foo' } }
+    remotes 'foo'
     run_cmd
 
     it { should run_cmd 'git push --tags foo' }
@@ -42,5 +43,10 @@ describe Gem::Release::Cmds::Tag do
     run_cmd
 
     it { expect(out).to be_empty }
+  end
+
+  describe 'fails if there are uncommitted changes' do
+    before { allow(system).to receive(:git_clean?).and_return(false) }
+    it { expect { run }.to raise_error('Uncommitted changes found. Please commit or stash. Aborting.') }
   end
 end

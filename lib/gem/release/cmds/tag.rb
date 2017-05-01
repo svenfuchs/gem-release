@@ -46,6 +46,7 @@ module Gem
           git_tag:   'Creating git tag %s',
           git_push:  'Pushing tags to the %s git repository',
           no_remote: 'Cannot push to missing git remote %s',
+          git_dirty: 'Uncommitted changes found. Please commit or stash.',
         }
 
         CMDS = {
@@ -65,6 +66,7 @@ module Gem
         private
 
           def validate
+            abort :git_dirty unless git_clean?
             abort :no_remote, remote if push? && !git_remotes.include?(remote)
           end
 

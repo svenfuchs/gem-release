@@ -53,7 +53,7 @@ module Gem
 
         DEFAULTS = {
           commit: true,
-          push:   true,
+          push:   false,
           remote: 'origin'
         }
 
@@ -86,13 +86,14 @@ module Gem
         end
 
         MSGS = {
-          not_found:  'Ignoring %s. Version file %s not found.',
-          no_remote:  'Cannot push to missing git remote %s.',
-          bump:       'Bumping %s from version %s to %s',
-          version:    'Changing version in %s from %s to %s',
-          git_add:    'Staging %s',
-          git_commit: 'Creating commit',
-          git_push:   'Pushing to the %s git repository'
+          bump:          'Bumping %s from version %s to %s',
+          version:       'Changing version in %s from %s to %s',
+          git_add:       'Staging %s',
+          git_commit:    'Creating commit',
+          git_push:      'Pushing to the %s git repository',
+          git_dirty:     'Uncommitted changes found. Please commit or stash.',
+          not_found:     'Ignoring %s. Version file %s not found.',
+          no_git_remote: 'Cannot push to missing git remote %s.'
         }
 
         CMDS = {
@@ -116,8 +117,9 @@ module Gem
         private
 
           def validate
-            abort :not_found, gem.name, version.path unless version.exists?
-            abort :no_remote, remote if push? && !git_remotes.include?(remote)
+            abort :git_dirty unless git_clean?
+            abort :not_found, gem.name, version.path || '?' unless version.exists?
+            abort :no_git_remote, remote if push? && !git_remotes.include?(remote.to_s)
           end
 
           def bump

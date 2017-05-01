@@ -1,6 +1,7 @@
 module Support
   module Context
     def self.included(base)
+      base.send(:extend, ClassMethods)
       base.let(:context)  { Context.new }
       base.let(:system)   { context.system }
       base.let(:cmds)     { Context.cmds }
@@ -9,9 +10,19 @@ module Support
       base.before { Context.reset }
     end
 
+    module ClassMethods
+      def remotes(*args)
+        before { allow(system).to receive(:git_remotes).and_return(['foo']) }
+      end
+    end
+
     class System
       class << self
         attr_accessor :git_remotes
+      end
+
+      def git_clean?
+        true
       end
 
       def git_remotes(remotes = nil)
@@ -71,6 +82,7 @@ module Support
 
       def abort(str)
         error(str)
+        fail str
       end
     end
   end

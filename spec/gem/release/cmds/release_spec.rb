@@ -73,4 +73,9 @@ describe Gem::Release::Cmds::Release do
 
     it { expect(out).to be_empty }
   end
+
+  describe 'fails if there are uncommitted changes' do
+    before { allow(system).to receive(:git_clean?).and_return(false) }
+    it { expect { run }.to raise_error('Uncommitted changes found. Please commit or stash. Aborting.') }
+  end
 end
