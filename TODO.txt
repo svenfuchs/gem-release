@@ -6,10 +6,34 @@
 
 - Make sure we don't double tag the same repo when several args are given [9]
 
+- Port "Adding ability to GPG sign commits and tags" [10]
+  https://github.com/svenfuchs/gem-release/pull/44
+
+- Port "Add --message for BumpCommand", allow to use a config var for this [11]
+  https://github.com/svenfuchs/gem-release/pull/61
+
+- Port "Maintenance tasks" [12]
+  Port https://github.com/svenfuchs/gem-release/pull/57
+
+- Port "Support version files of gems with *rb suffix" [13]
+  https://github.com/svenfuchs/gem-release/pull/53
+
+# Done
+
+x Check "bump any version file" done:2017-05-02 [14]
+  https://github.com/svenfuchs/gem-release/pull/45
+  Ported
+
+x Consider "gem bootstrap --private for private gems" done:2017-05-01 [15]
+  https://github.com/svenfuchs/gem-release/issues/51
+  Already covered via custom templates
+
+x See if we can remove unused common options from `help` done:2017-05-01 [16]
+  https://github.com/svenfuchs/gem-release/issues/55
+  Can't figure out how, without removing options globally for everyone/all other commands
+
 x Release and tag should fail if there are uncommitted changes done:2017-05-01 [8]
   https://github.com/svenfuchs/gem-release/issues/34
-
-# Double check
 
 x Misleading success message done:2017-05-01 [4]
   https://github.com/svenfuchs/gem-release/issues/60

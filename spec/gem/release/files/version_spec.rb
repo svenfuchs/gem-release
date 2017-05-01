@@ -1,5 +1,5 @@
 describe Gem::Release::Files::Version do
-  let(:version) { described_class.new('test', target) }
+  let(:version) { described_class.new('test', target, {}) }
 
   before  { write './lib/test/version.rb', %(VERSION = "#{current}") }
 

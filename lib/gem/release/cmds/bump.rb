@@ -48,7 +48,8 @@ module Gem
           remote:  'Git remote to push to (defaults to origin)',
           tag:     'Shortcut for running the `gem tag` command',
           recurse: 'Recurse into directories that contain gemspec files',
-          release: 'Shortcut for the `gem release` command'
+          release: 'Shortcut for the `gem release` command',
+          file:    'Full path to the version file'
         }
 
         DEFAULTS = {
@@ -83,6 +84,10 @@ module Gem
 
         opt '--recurse', DESCR[:recurse] do |value|
           opts[:recurse] = value
+        end
+
+        opt '--file', DESCR[:file] do |value|
+          opts[:file] = value
         end
 
         MSGS = {
@@ -151,7 +156,7 @@ module Gem
           end
 
           def version
-            @version ||= Files::Version.new(gem.name, opts[:version])
+            @version ||= Files::Version.new(gem.name, opts[:version], only(opts, :file))
           end
 
           def push?

@@ -25,8 +25,7 @@ describe Gem::Release::Cmds::Bump do
     run_cmd
 
     it { should output "Bumping foo from version 1.0.0 to 1.0.1" }
-    # include_examples 'bumps the version, commits, and pushes', 1, 'foo', 'foo'
-    # include_examples 'bumps the version, commits, and pushes', 2, 'bar', 'bar'
+    it { should output "Bumping bar from version 2.0.0 to 2.0.1" }
   end
 
   describe 'given a gem name of a nested gem' do
@@ -35,7 +34,7 @@ describe Gem::Release::Cmds::Bump do
     gemspec 'foo/bar/bar'
     run_cmd
 
-    # include_examples 'bumps the version, commits, and pushes', 1, 'bar', 'foo/bar'
+    it { should output "Bumping bar from version 1.0.0 to 1.0.1" }
   end
 
   describe 'given --recurse' do
@@ -46,8 +45,8 @@ describe Gem::Release::Cmds::Bump do
     gemspec 'bar/bar',     '2.0.0'
     run_cmd
 
-    # include_examples 'bumps the version, commits, and pushes', 1, 'foo', 'foo'
-    # include_examples 'bumps the version, commits, and pushes', 2, 'bar', 'bar'
+    it { should output "Bumping foo from version 1.0.0 to 1.0.1" }
+    it { should output "Bumping bar from version 2.0.0 to 2.0.1" }
   end
 
   describe 'given --version' do
@@ -78,6 +77,14 @@ describe Gem::Release::Cmds::Bump do
       let(:opts) { { version: :pre } }
       it { should have_version 'foo/bar', '1.1.0.pre.1' }
     end
+  end
+
+  describe 'given --file lib/foo/bar/version.rb' do
+    let(:opts) { { file: 'lib/foo/bar/version.rb' } }
+    version 'lib/foo/bar'
+    run_cmd
+
+    it { should have_version 'lib/foo/bar', '1.0.1' }
   end
 
   describe 'given --no-commit' do

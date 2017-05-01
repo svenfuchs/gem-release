@@ -3,7 +3,7 @@ require 'gem/release/version/number'
 module Gem
   module Release
     module Files
-      class Version < Struct.new(:name, :version)
+      class Version < Struct.new(:name, :version, :opts)
         VERSION      = /(VERSION\s*=\s*(?:"|'))((?:(?!"|').)*)("|')/
         RELEASE      = /^(\d+)\.(\d+)\.(\d+)(.*)$/
         PRE_RELEASE  = /^(\d+)\.(\d+)\.(\d+)\.?(.*)(\d+)$/
@@ -19,7 +19,7 @@ module Gem
         end
 
         def path
-          @path ||= paths.detect { |path| File.exists?(path) }
+          @path ||= opts[:file] || paths.detect { |path| File.exists?(path) }
         end
 
         def from

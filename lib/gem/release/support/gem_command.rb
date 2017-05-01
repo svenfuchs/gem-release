@@ -58,6 +58,13 @@ module Gem
         abort
       end
 
+      def show_help
+        p "KEKSE"
+        exit
+        parser.program_name = usage
+        say parser
+      end
+
       def cmd
         self.class.cmd
       end
