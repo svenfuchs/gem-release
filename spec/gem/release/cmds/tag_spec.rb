@@ -38,6 +38,13 @@ describe Gem::Release::Cmds::Tag do
     it { should output  '$ git push --tags foo' }
   end
 
+  describe 'given --sign' do
+    let(:opts) { { sign: true } }
+    run_cmd
+
+    it { should output  '$ git tag -am "tag v1.0.0" v1.0.0 --sign' }
+  end
+
   describe 'given --quiet' do
     let(:opts) { { quiet: true } }
     run_cmd

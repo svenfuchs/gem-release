@@ -105,6 +105,14 @@ describe Gem::Release::Cmds::Bump do
     it { expect(cmds).to_not include 'git commit -m "Bump to 1.0.1 [skip ci]"' }
   end
 
+  describe 'given --sign' do
+    let(:opts) { { sign: true } }
+    version 'lib/tmp'
+    run_cmd
+
+    it { should run_cmd "git commit -m \"Bump to 1.0.1 [skip ci]\" -S" }
+  end
+
   describe 'given --push' do
     let(:opts) { { push: true } }
     version 'lib/tmp'

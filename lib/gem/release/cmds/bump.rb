@@ -47,6 +47,7 @@ module Gem
           message: 'Commit message template',
           push:    'Push the new commit to the git remote repository',
           remote:  'Git remote to push to (defaults to origin)',
+          sign:    'GPG sign the commit message',
           tag:     'Shortcut for running the `gem tag` command',
           recurse: 'Recurse into directories that contain gemspec files',
           release: 'Shortcut for the `gem release` command',
@@ -80,6 +81,10 @@ module Gem
           opts[:remote] = value
         end
 
+        opt '-s', '--sign', DESCR[:sign] do |value|
+          opts[:sign] = value
+        end
+
         opt '-t', '--tag', DESCR[:tag] do |value|
           opts[:tag] = value
         end
@@ -109,7 +114,7 @@ module Gem
 
         CMDS = {
           git_add:    'git add %s',
-          git_commit: 'git commit -m %p',
+          git_commit: 'git commit -m %p %s',
           git_push:   'git push %s'
         }
 
@@ -142,7 +147,7 @@ module Gem
 
           def commit
             cmd :git_add, version.path
-            cmd :git_commit, message
+            cmd :git_commit, message, opts[:sign] ? '-S' : ''
           end
 
           def push

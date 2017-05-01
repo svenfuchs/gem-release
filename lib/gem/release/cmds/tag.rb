@@ -31,6 +31,7 @@ module Gem
         DESCR = {
           push:    'Push tag to the remote git repository',
           remote:  'Git remote to push to (defaults to origin)',
+          sign:    'GPG sign the tag',
         }
 
         opt '-p', '--[no]-push', DESCR[:push] do
@@ -50,7 +51,7 @@ module Gem
         }
 
         CMDS = {
-          git_tag:   'git tag -am "tag %s" %s',
+          git_tag:   'git tag -am "tag %s" %s %s',
           git_push:  'git push --tags %s'
         }
 
@@ -71,7 +72,7 @@ module Gem
           end
 
           def tag
-            cmd :git_tag, tag_name, tag_name
+            cmd :git_tag, tag_name, tag_name, opts[:sign] ? '--sign' : ''
           end
 
           def push

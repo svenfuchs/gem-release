@@ -17,6 +17,7 @@ module Gem
           info cmd, *args
           cmd = self.class::CMDS[cmd] % args
         end
+        cmd = cmd.strip
         notice "$ #{cmd}"
         result = pretend? ? true : system.run(cmd)
         abort "The command `#{cmd}` was unsuccessful." unless result
@@ -31,7 +32,7 @@ module Gem
       %w(announce notice info warn error).each do |level|
         define_method(level) do |msg, *args|
           msg = self.class::MSGS[msg] % args if msg.is_a?(Symbol)
-          context.send(level, msg) unless quiet?
+          context.send(level, msg.strip) unless quiet?
         end
       end
 
