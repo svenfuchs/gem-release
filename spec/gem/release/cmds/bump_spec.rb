@@ -12,7 +12,7 @@ describe Gem::Release::Cmds::Bump do
     it { should output 'All is good, thanks my friend.' }
 
     it { should run_cmd "git add lib/foo/bar/version.rb" }
-    it { should run_cmd "git commit -m \"Bump to 1.0.1\"" }
+    it { should run_cmd "git commit -m \"Bump to 1.0.1 [skip ci]\"" }
     it { should have_version 'lib/foo/bar', "1.0.1" }
   end
 
@@ -93,7 +93,7 @@ describe Gem::Release::Cmds::Bump do
     run_cmd
 
     it { expect(out).to_not  include 'Creating commit' }
-    it { expect(cmds).to_not include 'git commit -m "Bump to 1.0.1"' }
+    it { expect(cmds).to_not include 'git commit -m "Bump to 1.0.1 [skip ci]"' }
   end
 
   describe 'given --push' do

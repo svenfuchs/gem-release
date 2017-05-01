@@ -43,7 +43,8 @@ module Gem
 
         DESCR = {
           version: 'Target version: next [major|minor|patch|pre|release] or a given version number [x.x.x]',
-          commit:  'Perform a commit after incrementing gem version',
+          commit:  'Create a commit after incrementing gem version',
+          message: 'Commit message template',
           push:    'Push the new commit to the git remote repository',
           remote:  'Git remote to push to (defaults to origin)',
           tag:     'Shortcut for running the `gem tag` command',
@@ -53,10 +54,19 @@ module Gem
         }
 
         DEFAULTS = {
-          commit: true,
-          push:   false,
-          remote: 'origin'
+          commit:  true,
+          message: 'Bump to %{to} [skip ci]',
+          push:    false,
+          remote:  'origin'
         }
+
+        opt '-v', '--version VERSION', DESCR[:version] do |value|
+          opts[:version] = value
+        end
+
+        opt '-m', '--message', DESCR[:message] do |value|
+          opts[:message] = value
+        end
 
         opt '-c', '--[no-]commit', DESCR[:commit] do |value|
           opts[:commit] = value
@@ -68,10 +78,6 @@ module Gem
 
         opt '--remote REMOTE', DESCR[:remote] do |value|
           opts[:remote] = value
-        end
-
-        opt '-v', '--version VERSION', DESCR[:version] do |value|
-          opts[:version] = value
         end
 
         opt '-t', '--tag', DESCR[:tag] do |value|
@@ -103,7 +109,7 @@ module Gem
 
         CMDS = {
           git_add:    'git add %s',
-          git_commit: 'git commit -m "Bump to %s"',
+          git_commit: 'git commit -m %p',
           git_push:   'git push %s'
         }
 
@@ -136,7 +142,7 @@ module Gem
 
           def commit
             cmd :git_add, version.path
-            cmd :git_commit, version.to
+            cmd :git_commit, message
           end
 
           def push
@@ -153,6 +159,10 @@ module Gem
 
           def reset
             @version = nil
+          end
+
+          def message
+            opts[:message] % version.to_h
           end
 
           def version

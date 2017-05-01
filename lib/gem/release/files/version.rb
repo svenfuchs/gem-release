@@ -30,6 +30,10 @@ module Gem
           @to ||= number.bump
         end
 
+        def to_h
+          { from: from, to: to }
+        end
+
         private
 
           def paths
