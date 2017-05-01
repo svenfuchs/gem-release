@@ -32,7 +32,7 @@ module Gem
             def paths
               @paths ||= groups.map do |group|
                 paths = paths_for(group).map { |path| File.expand_path(*path) }
-                paths.detect { |path| File.exists?(path) }
+                paths.detect { |path| File.exist?(path) }
               end.compact
             end
 

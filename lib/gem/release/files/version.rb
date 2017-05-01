@@ -19,7 +19,7 @@ module Gem
         end
 
         def path
-          @path ||= opts[:file] || paths.detect { |path| File.exists?(path) }
+          @path ||= opts[:file] || paths.detect { |path| File.exist?(path) }
         end
 
         def from

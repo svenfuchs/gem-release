@@ -21,7 +21,7 @@ RSpec::Matchers.define :have_version do |path, version|
 
   failure_message do
     msg = "Expected the file #{version(path)} to define the version #{version}, but it does not. "
-    if File.exists?("#{version(path)}")
+    if File.exist?("#{version(path)}")
       msg += "Instead it is:\n\n#{File.read("#{version(path)}")}"
     else
       msg += "The file does not exist."

@@ -27,7 +27,7 @@ module Gem
 
           def paths
             paths = PATHS.map { |path| File.expand_path(path) }
-            paths.select { |path| File.exists?(path) }
+            paths.select { |path| File.exist?(path) }
           end
       end
     end

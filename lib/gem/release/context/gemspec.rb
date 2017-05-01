@@ -22,7 +22,7 @@ module Gem
         end
 
         def exists?
-          filename && File.exists?(filename)
+          filename && File.exist?(filename)
         end
 
         private
