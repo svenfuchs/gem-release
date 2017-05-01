@@ -66,6 +66,10 @@ module Gem
           def path_to(path)
             "lib/#{path}/version.rb"
           end
+
+          def name
+            @name ||= super.sub(/_rb$/, '')
+          end
       end
     end
   end

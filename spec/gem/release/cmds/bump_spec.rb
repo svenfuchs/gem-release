@@ -49,6 +49,15 @@ describe Gem::Release::Cmds::Bump do
     it { should output "Bumping bar from version 2.0.0 to 2.0.1" }
   end
 
+  describe 'given a gem name ending in *_rb' do
+    let(:args) { ['foo_rb'] }
+    version 'lib/foo'
+    gemspec 'foo_rb'
+    run_cmd
+
+    it { should output "Bumping foo_rb from version 1.0.0 to 1.0.1" }
+  end
+
   describe 'given --version' do
     cwd     'foo-bar'
     version 'lib/foo/bar'

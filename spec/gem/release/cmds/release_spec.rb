@@ -39,6 +39,15 @@ describe Gem::Release::Cmds::Release do
     it { should run_cmd 'gem build bar.gemspec' }
   end
 
+  describe 'given a gem name ending in *_rb' do
+    let(:args) { ['foo_rb'] }
+    version 'lib/foo'
+    gemspec 'foo_rb'
+    run_cmd
+
+    it { should run_cmd 'gem build foo_rb.gemspec' }
+  end
+
   describe 'given --host' do
     let(:opts) { { host: 'host' } }
 

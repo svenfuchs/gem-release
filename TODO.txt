@@ -10,10 +10,11 @@
 - Port "Adding ability to GPG sign commits and tags" [10]
   https://github.com/svenfuchs/gem-release/pull/44
 
-- Port "Support version files of gems with *rb suffix" [13]
-  https://github.com/svenfuchs/gem-release/pull/53
-
 # Done
+
+x Port "Support version files of gems with *rb suffix" done:2017-05-02 [13]
+  https://github.com/svenfuchs/gem-release/pull/53
+  Ported
 
 x Port "Add --message for BumpCommand", allow to use a config var for this done:2017-05-02 [11]
   https://github.com/svenfuchs/gem-release/pull/61

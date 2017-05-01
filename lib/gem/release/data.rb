@@ -10,7 +10,7 @@ module Gem
       def data
         {
           gem_name:     gem_name,
-          gem_path:     gem_name.gsub('-', '/'),
+          gem_path:     gem_path,
           module_names: module_names,
           author:       user_name,
           email:        user_email,
@@ -30,6 +30,10 @@ module Gem
 
         def gem_name
           gem.name || raise('No gem_name given.')
+        end
+
+        def gem_path
+          gem_name.gsub('-', '/').sub(/_rb$/, '')
         end
 
         def user_name

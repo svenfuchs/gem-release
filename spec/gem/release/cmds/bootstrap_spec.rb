@@ -48,6 +48,15 @@ describe Gem::Release::Cmds::Bootstrap do
     end
   end
 
+  describe 'given a gem name ending in *_rb' do
+    let(:args) { ['foo_rb'] }
+    run_cmd
+    cwd 'foo_rb'
+
+    it { should have_file 'lib/foo.rb' }
+    it { should have_file 'lib/foo/version.rb' }
+  end
+
   describe 'standard templates' do
     describe 'in ./.gem-release/default' do
       file './.gem-release/default/.gitignore', 'gitignore'
