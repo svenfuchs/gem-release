@@ -1,20 +1,25 @@
 # Todo
 
-* Add a changelog
+- Add defaults to options help output [5]
+- Add specs for all error conditions [6]
+- Add a changelog [7]
 
-* Release and tag should fail if there are uncommitted changes
+- Make sure we don't double tag the same repo when several args are given [9]
+
+x Release and tag should fail if there are uncommitted changes done:2017-05-01 [8]
   https://github.com/svenfuchs/gem-release/issues/34
-
-* Make sure we don't double tag the same repo when several args are given
-
-# Fix
-
-* Misleading success message
-  https://github.com/svenfuchs/gem-release/issues/60
 
 # Double check
 
-- Issues with in-repo gems [1]
+x Misleading success message done:2017-05-01 [4]
+  https://github.com/svenfuchs/gem-release/issues/60
+    Pushing foo-0.0.5.gem
+    Pushing gem to http://localhost:9292...
+    ...
+    ERROR:  While executing gem ... (Errno::ECONNREFUSED)
+        Failed to open TCP connection to localhost:9292 (Connection refused - connect(2) for "localhost" port 9292)
+
+x Issues with in-repo gems done:2017-05-01 [1]
   https://github.com/svenfuchs/gem-release/issues/58
 
 x bump fails when there is a space in the path to project done:2017-05-01 [2]
@@ -26,6 +31,9 @@ x bump fails when there is a space in the path to project done:2017-05-01 [2]
     gem bootstrap foo
     gem bump --no-push
 
-- gem bump --tag --release pushes the wrong version [3]
+x gem bump --tag --release pushes the wrong version done:2017-05-01 [3]
   https://github.com/svenfuchs/gem-release/issues/36
-
+    $ gem bump --tag --release
+      Bumping foo from version 0.0.3 to 0.0.4
+      ...
+      Pushing foo-0.0.4.gem
