@@ -10,15 +10,16 @@ class Gem::Commands::BumpCommand < Gem::Command
   attr_reader :arguments, :usage, :name
 
   DEFAULTS = {
-    :version => '',
-    :commit  => true,
-    :push    => false,
-    :tag     => false,
-    :release => false,
-    :key     => '',
-    :host    => '',
-    :quiet   => false,
+    :version  => '',
+    :commit   => true,
+    :push     => false,
     :destination  => "origin",
+    :tag      => false,
+    :release  => false,
+    :key      => '',
+    :host     => '',
+    :quiet    => false,
+    :sign     => false,
   }
 
   def initialize(options = {})
@@ -34,6 +35,7 @@ class Gem::Commands::BumpCommand < Gem::Command
     option :key,         '-k', 'When releasing: use the given API key from ~/.gem/credentials'
     option :host,        '-h', 'When releasing: push to a gemcutter-compatible host other than rubygems.org'
     option :quiet,       '-q', 'Do not output status messages'
+    option :sign,        '-s', 'GPG sign commit message'
   end
 
   def execute
@@ -81,7 +83,7 @@ class Gem::Commands::BumpCommand < Gem::Command
 
     def commit
       say "Creating commit" unless quiet?
-      system("git commit -m \"Bump to #{@new_version_number}\"")
+      options[:sign] ? system("git commit -S -m \"Bump to #{@new_version_number}\"") : system("git commit -m \"Bump to #{@new_version_number}\"")
     end
 
     def push
