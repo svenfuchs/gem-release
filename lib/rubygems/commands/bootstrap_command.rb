@@ -61,7 +61,7 @@ class Gem::Commands::BootstrapCommand < Gem::Command
   end
 
   def create_file(template)
-    if File.exists?(template.filename)
+    if File.exist?(template.filename)
       say "Skipping #{template.filename}: already exists" unless quiet?
     else
       say "Creating #{template.filename}" unless quiet?

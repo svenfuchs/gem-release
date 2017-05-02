@@ -25,7 +25,7 @@ module GemRelease
     end
 
     def exists?
-      File.exists?(filename)
+      File.exist?(filename)
     end
 
     def filename
