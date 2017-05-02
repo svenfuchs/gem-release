@@ -28,7 +28,7 @@ It adds the commands `bootstrap`, `gemspec`, `bump`, `tag` and a `release` to th
 
 This gif demos some of the things you can do with this plugin:
 
-![gem-relase-demo](https://cloud.githubusercontent.com/assets/2208/25568627/12a3b468-2e07-11e7-8d7b-055b5d7c71b9.gif)
+![gem-release-demo](https://cloud.githubusercontent.com/assets/2208/25634571/68b78080-2f7b-11e7-9eb2-c7d1df13c727.gif)
 
 ## Installation
 
