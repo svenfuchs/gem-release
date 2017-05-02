@@ -46,6 +46,11 @@ module Gem
         puts colored(:red, with_spacing(str, true))
       end
 
+      def success(str)
+        announce(str)
+        puts
+      end
+
       def abort(str)
         error(str)
         exit 1
@@ -66,7 +71,7 @@ module Gem
         end
 
         def with_spacing(str, space)
-          space = false if self.class.last.nil?
+          # space = false if self.class.last.nil?
           str = "\n#{str}" if space && !self.class.last
           self.class.last = space
           str

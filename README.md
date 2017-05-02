@@ -182,13 +182,17 @@ gem_name - name of the gem (optional, will use the directory name, or all gemspe
 ### Options
 
 ```
--c, --[no-]commit                Perform a commit after incrementing gem version
+-v, --version VERSION            Target version: next [major|minor|patch|pre|release] or a given version number [x.x.x]
+-c, --[no-]commit                Create a commit after incrementing gem version
+-m, --message                    Commit message template
+    --skip-ci                    Add the [skip ci] tag to the commit message
 -p, --[no-]push                  Push the new commit to the git remote repository
     --remote REMOTE              Git remote to push to (defaults to origin)
--v, --version VERSION            Target version: next [major|minor|patch|pre|release] or a given version number [x.x.x]
+-s, --sign                       GPG sign the commit message
 -t, --tag                        Shortcut for running the `gem tag` command
 -r, --release                    Shortcut for the `gem release` command
     --recurse                    Recurse into directories that contain gemspec files
+    --file                       Full path to the version file
     --pretend
 ```
 
@@ -334,11 +338,11 @@ version is `1.0.0`, then The tag is created using the command `git tag
 ### Setup
 
 ```
-export GEM_RELEASE_PUSH=false
 cd /tmp
 rm -rf foo
 gem bootstrap foo
-tree
+cd foo
+tree -a -I .git
 ```
 
 ### Directory structure
@@ -358,26 +362,28 @@ tree
 
 ```
 # this bumps foo
-cd /tmp/foo
-gem bump
+cd /tmp/foo; gem bump
 
 # this also bumps foo
-cd /tmp/foo
-gem bump foo
+cd /tmp/foo; gem bump foo
 ```
+
+### Demo
+
+![gem-release-scenario-1](https://cloud.githubusercontent.com/assets/2208/25634572/68d1fd20-2f7b-11e7-83bc-9e11f60438f3.gif)
+
 
 ## Scenario 2: Multiple gems in root
 
 ### Setup
 
 ```
-export GEM_RELEASE_PUSH=false
 cd /tmp
-rm -rf foo
+rm -rf foo bar
 gem bootstrap foo
 cd foo
 gem bootstrap bar --dir .
-tree
+tree -a -I .git
 ```
 
 ### Directory structure
@@ -401,39 +407,37 @@ tree
 
 ```
 # this bumps both foo and bar
-cd /tmp/foo
-gem bump --recurse
+cd /tmp/foo; gem bump --recurse
 
 # this also bumps both foo and bar
-cd /tmp/foo
-gem bump foo bar
+cd /tmp/foo; gem bump foo bar
 
 # this bumps foo (because it's the first gemspec found)
-cd /tmp/foo
-gem bump
+cd /tmp/foo; gem bump
 
 # this bumps foo
-cd /tmp/foo
-gem bump foo
+cd /tmp/foo; gem bump foo
 
 # this bumps bar
-cd /tmp/foo
-gem bump bar
+cd /tmp/foo; gem bump bar
 ```
+
+### Demo
+
+![gem-release-scenario-2](https://cloud.githubusercontent.com/assets/2208/25634575/68dcb670-2f7b-11e7-991e-901283164d21.gif)
 
 ## Scenario 3: Multiple gems in sub directories
 
 ### Setup
 
 ```
-export GEM_RELEASE_PUSH=false
 cd /tmp
 rm -rf root
 mkdir root
 cd root
 gem bootstrap foo
 gem bootstrap bar
-tree
+tree -a -I .git
 ```
 
 ### Directory structure
@@ -462,32 +466,31 @@ tree
 
 ```
 # this bumps both foo and bar
-cd /tmp/root
-gem bump --recurse
+cd /tmp/root; gem bump --recurse
 
 # this also bumps both foo and bar
-cd /tmp/root
-gem bump foo bar
+cd /tmp/root; gem bump foo bar
 
 # this does bumps both foo and bar
-cd /tmp/root
-gem bump
+cd /tmp/root; gem bump
 
 # this bumps foo
-cd /tmp/root
-gem bump foo
+cd /tmp/root; gem bump foo
 
 # this bumps bar
-cd /tmp/root
-gem bump bar
+cd /tmp/root; gem bump bar
 ```
+
+### Demo
+
+![gem-release-scenario-3](https://cloud.githubusercontent.com/assets/2208/25634573/68d51c3a-2f7b-11e7-8ec8-629bc8019d16.gif)
+
 
 ## Scenario 4: Nested gem with a conventional sub directory name
 
 ### Setup
 
 ```
-export GEM_RELEASE_PUSH=false
 cd /tmp
 rm -rf sinja
 gem bootstrap sinja
@@ -496,7 +499,7 @@ mkdir extensions
 cd extensions
 gem bootstrap sinja-sequel
 cd /tmp/sinja
-tree
+tree -a -I .git
 ```
 
 ### Directory structure
@@ -526,36 +529,33 @@ tree
 
 ```
 # this bumps both sinja and sinja-sequel
-cd /tmp/sinja
-gem bump --recurse
+cd /tmp/sinja; gem bump --recurse
 
 # this bumps sinja
-cd /tmp/sinja
-gem bump
+cd /tmp/sinja; gem bump
 
 # this also bumps sinja
-cd /tmp/sinja
-gem bump sinja
+cd /tmp/sinja; gem bump sinja
 
 # this bumps sinja-sequel
-cd /tmp/sinja
-gem bump sinja-sequel
+cd /tmp/sinja; gem bump sinja-sequel
 
 # this also bumps sinja-sequel
-cd /tmp/sinja/extensions/sinja-sequel
-gem bump
+cd /tmp/sinja/extensions/sinja-sequel; gem bump
 
 # this also bumps sinja-sequel
-cd /tmp/sinja/extensions/sinja-sequel
-gem bump sinja-sequel
+cd /tmp/sinja/extensions/sinja-sequel; gem bump sinja-sequel
 ```
+
+### Demo
+
+![gem-release-scenario-4](https://cloud.githubusercontent.com/assets/2208/25634576/68dce4a6-2f7b-11e7-9d6b-571d672e4998.gif)
 
 ## Scenario 5: Nested gem with an irregular sub directory name
 
 ### Setup
 
 ```
-export GEM_RELEASE_PUSH=false
 cd /tmp
 rm -rf sinja
 gem bootstrap sinja
@@ -565,7 +565,7 @@ cd extensions
 gem bootstrap sinja-sequel
 mv sinja-sequel sequel
 cd /tmp/sinja
-tree
+tree -a -I .git
 ```
 
 ### Directory structure
@@ -595,29 +595,27 @@ tree
 
 ```
 # this bumps both sinja and sinja-sequel
-cd /tmp/sinja
-gem bump --recurse
+cd /tmp/sinja; gem bump --recurse
 
 # this bumps sinja
-cd /tmp/sinja
-gem bump
+cd /tmp/sinja; gem bump
 
 # this also bumps sinja
-cd /tmp/sinja
-gem bump sinja
+cd /tmp/sinja; gem bump sinja
 
 # this bumps sinja-sequel only
-cd /tmp/sinja
-gem bump sinja-sequel
+cd /tmp/sinja; gem bump sinja-sequel
 
 # this also bumps sinja-sequel only
-cd /tmp/sinja/extensions/sequel
-gem bump
+cd /tmp/sinja/extensions/sequel; gem bump
 
 # this also bumps sinja-sequel only
-cd /tmp/sinja/extensions/sequel
-gem bump sinja-sequel
+cd /tmp/sinja/extensions/sequel; gem bump sinja-sequel
 ```
+
+### Demo
+
+![gem-release-scenario-5](https://cloud.githubusercontent.com/assets/2208/25634574/68d6d138-2f7b-11e7-9e64-e4c86cb85b9a.gif)
 
 
 # Development

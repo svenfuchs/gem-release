@@ -45,6 +45,7 @@ module Gem
           version: 'Target version: next [major|minor|patch|pre|release] or a given version number [x.x.x]',
           commit:  'Create a commit after incrementing gem version',
           message: 'Commit message template',
+          skip_ci: 'Add the [skip ci] tag to the commit message',
           push:    'Push the new commit to the git remote repository',
           remote:  'Git remote to push to (defaults to origin)',
           sign:    'GPG sign the commit message',
@@ -56,7 +57,7 @@ module Gem
 
         DEFAULTS = {
           commit:  true,
-          message: 'Bump to %{to} [skip ci]',
+          message: 'Bump to %{to} %{skip_ci}',
           push:    false,
           remote:  'origin'
         }
@@ -65,12 +66,16 @@ module Gem
           opts[:version] = value
         end
 
+        opt '-c', '--[no-]commit', DESCR[:commit] do |value|
+          opts[:commit] = value
+        end
+
         opt '-m', '--message', DESCR[:message] do |value|
           opts[:message] = value
         end
 
-        opt '-c', '--[no-]commit', DESCR[:commit] do |value|
-          opts[:commit] = value
+        opt '--skip-ci', DESCR[:skip_ci] do |value|
+          opts[:skip_ci] = value
         end
 
         opt '-p', '--[no-]push', DESCR[:push] do |value|
@@ -147,7 +152,7 @@ module Gem
 
           def commit
             cmd :git_add, version.path
-            cmd :git_commit, message, opts[:sign] ? '-S' : ''
+            cmd :git_commit, message.strip, opts[:sign] ? '-S' : ''
           end
 
           def push
@@ -167,7 +172,9 @@ module Gem
           end
 
           def message
-            opts[:message] % version.to_h
+            args = version.to_h
+            args = args.merge(skip_ci: opts[:skip_ci] ? '[skip ci]' : '')
+            opts[:message] % args
           end
 
           def version

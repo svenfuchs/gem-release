@@ -95,11 +95,11 @@ module Gem
         end
 
         opt '--rspec', DESCR[:rspec] do |value|
-          (opts[:templates] ||= []) << value
+          (opts[:templates] ||= []) << :rspec
         end
 
         opt '--travis', DESCR[:travis] do |value|
-          (opts[:templates] ||= []) << value
+          (opts[:templates] ||= []) << :travis
         end
 
         opt '-l', '--no-license NAME', DESCR[:license] do |value|

@@ -3,14 +3,13 @@
 ### Setup
 
 ```
-export GEM_RELEASE_PUSH=false
 cd /tmp
 rm -rf root
 mkdir root
 cd root
 gem bootstrap foo
 gem bootstrap bar
-tree
+tree -a -I .git
 ```
 
 ### Directory structure
@@ -39,22 +38,22 @@ tree
 
 ```
 # this bumps both foo and bar
-cd /tmp/root
-gem bump --recurse
+cd /tmp/root; gem bump --recurse
 
 # this also bumps both foo and bar
-cd /tmp/root
-gem bump foo bar
+cd /tmp/root; gem bump foo bar
 
 # this does bumps both foo and bar
-cd /tmp/root
-gem bump
+cd /tmp/root; gem bump
 
 # this bumps foo
-cd /tmp/root
-gem bump foo
+cd /tmp/root; gem bump foo
 
 # this bumps bar
-cd /tmp/root
-gem bump bar
+cd /tmp/root; gem bump bar
 ```
+
+### Demo
+
+![gem-release-scenario-3](https://cloud.githubusercontent.com/assets/2208/25634573/68d51c3a-2f7b-11e7-8ec8-629bc8019d16.gif)
+

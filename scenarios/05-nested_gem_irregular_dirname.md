@@ -3,7 +3,6 @@
 ### Setup
 
 ```
-export GEM_RELEASE_PUSH=false
 cd /tmp
 rm -rf sinja
 gem bootstrap sinja
@@ -13,7 +12,7 @@ cd extensions
 gem bootstrap sinja-sequel
 mv sinja-sequel sequel
 cd /tmp/sinja
-tree
+tree -a -I .git
 ```
 
 ### Directory structure
@@ -43,26 +42,24 @@ tree
 
 ```
 # this bumps both sinja and sinja-sequel
-cd /tmp/sinja
-gem bump --recurse
+cd /tmp/sinja; gem bump --recurse
 
 # this bumps sinja
-cd /tmp/sinja
-gem bump
+cd /tmp/sinja; gem bump
 
 # this also bumps sinja
-cd /tmp/sinja
-gem bump sinja
+cd /tmp/sinja; gem bump sinja
 
 # this bumps sinja-sequel only
-cd /tmp/sinja
-gem bump sinja-sequel
+cd /tmp/sinja; gem bump sinja-sequel
 
 # this also bumps sinja-sequel only
-cd /tmp/sinja/extensions/sequel
-gem bump
+cd /tmp/sinja/extensions/sequel; gem bump
 
 # this also bumps sinja-sequel only
-cd /tmp/sinja/extensions/sequel
-gem bump sinja-sequel
+cd /tmp/sinja/extensions/sequel; gem bump sinja-sequel
 ```
+
+### Demo
+
+![gem-release-scenario-5](https://cloud.githubusercontent.com/assets/2208/25634574/68d6d138-2f7b-11e7-9e64-e4c86cb85b9a.gif)

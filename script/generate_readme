@@ -48,13 +48,14 @@ end
 
 def scenarios
   Dir['scenarios/*'].map do |path|
+    next if path.include?('demo')
     num   = File.basename(path).split('-').first.to_i
     text  = ERB.new(File.read(path)).result(binding)
     title = text =~ /# (Scenario.*:.*)$/ && $1
     id    = title.gsub(' ', '-').gsub(/[^\w-]/, '').downcase
     title = title =~ /Scenario.*:\s+(.*)$/ && $1
     { id: id, title: title, text: text }
-  end
+  end.compact
 end
 
 cmds = %i(bootstrap bump gemspec release tag)

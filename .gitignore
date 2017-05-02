@@ -2,5 +2,6 @@ Gemfile.lock
 *.gem
 .bundle
 .config
+.env
 coverage
 tmp

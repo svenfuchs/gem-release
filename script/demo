@@ -2,48 +2,154 @@
 
 shopt -s expand_aliases
 
-name=test-gem-release
-prompt="/tmp $ "
+function white() {
+  echo -e "\033[97m$1\033[0m"
+}
+
+function green() {
+  echo -e "\033[32m$1\033[0m"
+}
+
+function blue() {
+  echo -e "\033[34m$1\033[0m"
+}
+
+function yellow() {
+  echo -e "\033[33m$1\033[0m"
+}
+
+function gray() {
+  echo -e "\033[37m$1\033[0m"
+}
 
 function run() {
+  local code=$(echo "$1" | grep -v '#' | awk 'NF')
+
+  while read -r line; do
+    run_cmd "$line"
+    if [[ $line =~ gem || $line =~ tree ]] && echo $line | grep -v "cd gem-release" | grep -v rm > /dev/null 2>&1; then
+      pause $interval
+    fi
+  done <<< "$code"
+}
+
+function run_cmd() {
   clear
   alias gem="bundle exec gem"
   local cmd="$1"
-  local pause="$2"
 
-  echo "$prompt$cmd"
+  echo -e "$prompt$cmd"
   eval $cmd
 
-  printf "$prompt"
-  sleep $pause
+  if [[ $cmd =~ tree ]]; then
+    echo
+  fi
 }
+
+function pause() {
+  local count=$1
+  for i in `seq 1 $count`; do
+    echo -en "$(gray "\r\033[KPausing for $count sec ... $i")"
+    sleep 1
+  done
+  echo -en "\r\033[K"
+}
+
+function banner() {
+  local title="$1"
+  echo -e "\n\n\n\n\n\n\n\n\n\n"
+  echo gem-release | figlet -w $width -c | lolcat -p 1
+  echo "$title" | figlet -w $width -c -f small | lolcat -p 1
+}
+
+function fin() {
+  local title="$1"
+  echo -e "\n\n\n\n\n\n\n\n\n\n"
+  echo "gem-release" | figlet -w $width -c -f big | lolcat -p 1
+  echo "with ease" | figlet -w $width -c -f small | lolcat -p 1
+}
+
+function extract() {
+  local path=$1
+  cat $path \
+    | sed -n '/```/,/```/p' \
+    | grep -v '```' \
+    | grep -v ├ \
+    | grep -v └ \
+    | sed 's/^\.//'
+}
+
+function print() {
+  local color="$1"
+  local code="$2"
+
+  while read -r line; do
+    if [[ -n $line ]]; then
+      echo $($color "\$ $line")
+    else
+      echo
+    fi
+  done <<< "$code"
+}
+
+function create_repo() {
+  local name="$1"
+  local token="$GITHUB_TOKEN"
+  local url="https://api.github.com/user/repos"
+  curl -H "Authorization: token $token" $url -d '{"name": "'$name'"}' > /dev/null 2>&1
+}
+
+function delete_repo() {
+  local name="$1"
+  local token="$GITHUB_TOKEN"
+  local url="https://api.github.com/repos/svenfuchs/$name"
+  curl -H "Authorization: token $token" -X DELETE $url > /dev/null 2>&1
+}
+
+dir=/Users/sven/Development/projects/gem-release
+width=100
+prompt="$ "
+interval=5
+num=$1
+repo=gem-release-demo
 
 git config --global github.user svenfuchs
 
-export BUNDLE_GEMFILE=/Users/sven/Development/projects/gem-release/Gemfile
-# export GEM_RELEASE_PUSH=false
+source $dir/.env
+
+export PROMPT=''
+export BUNDLE_GEMFILE=$dir/Gemfile
 export GEM_RELEASE_HOST=http://localhost:9292
 export GEM_RELEASE_KEY=localhost
 
-rm -rf "$name"
 clear
 
-run "gem bootstrap $name --github --push" 4
-run "cd $name && ls -al ." 2
+if [[ -n $num ]]; then
+  file=$(ls $dir/scenarios | grep $num)
+  banner "Scenario $num"
+else
+  file=99-demo.md
+  banner "Demo"
+  delete_repo $repo
+  create_repo $repo
+fi
+code=$(extract $dir/scenarios/$file)
 
-run "gem bump -v pre" 2
-run "gem bump -v patch --no-push" 2
-run "gem bump -v minor --no-push" 2
-run "gem bump -v major --no-push" 2
-run "gem bump -v 1.2.3 --no-push" 2
+sleep $interval
+clear
 
-run "gem tag" 2
-run "gem release" 3
-
-run "gem bump -v major --tag --release" 4
-
-# echo "$ gem bootstrap --help | less"
-# bundle exec gem bootstrap --help | less
-sleep 5
+echo -e "$(green "About to run the following ...\n")"
+print white "$code"
 echo
 
+pause $interval
+clear
+
+run "$code"
+
+clear
+fin
+if [[ -z $num ]]; then
+  delete_repo $repo
+fi
+sleep 5
