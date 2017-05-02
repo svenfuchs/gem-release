@@ -12,6 +12,7 @@ class Gem::Commands::BumpCommand < Gem::Command
   DEFAULTS = {
     :version => '',
     :commit  => true,
+    :message => nil,
     :push    => false,
     :tag     => false,
     :release => false,
@@ -25,15 +26,20 @@ class Gem::Commands::BumpCommand < Gem::Command
     @name = 'bump'
     super @name, 'Bump the gem version', default_options_with(options)
 
-    option :version,     '-v', 'Target version: next [major|minor|patch|pre|release] or a given version number [x.x.x]'
-    option :commit,      '-c', 'Perform a commit after incrementing gem version'
-    option :push,        '-p', 'Push to the git destination'
-    option :destination, '-d', 'destination git repository'
-    option :tag,         '-t', 'Create a git tag and push it to the git destination'
-    option :release,     '-r', 'Build gem from a gemspec and push to rubygems.org'
-    option :key,         '-k', 'When releasing: use the given API key from ~/.gem/credentials'
-    option :host,        '-h', 'When releasing: push to a gemcutter-compatible host other than rubygems.org'
-    option :quiet,       '-q', 'Do not output status messages'
+    option :version,      '-v', 'Target version: next [major|minor|patch|pre|release] or a given version number [x.x.x]'
+    option :commit,       '-c', 'Perform a commit after incrementing gem version'
+    option :push,         '-p', 'Push to the git destination'
+    option :destination,  '-d', 'destination git repository'
+    option :tag,          '-t', 'Create a git tag and push it to the git destination'
+    option :release,      '-r', 'Build gem from a gemspec and push to rubygems.org'
+    option :key,          '-k', 'When releasing: use the given API key from ~/.gem/credentials'
+    option :host,         '-h', 'When releasing: push to a gemcutter-compatible host other than rubygems.org'
+    option :quiet,        '-q', 'Do not output status messages'
+
+    add_option('--message MESSAGE',
+               'Append to the commit message after incrementing gem version') do |value, opts|
+      opts[:message] = value
+    end
   end
 
   def execute
@@ -81,7 +87,9 @@ class Gem::Commands::BumpCommand < Gem::Command
 
     def commit
       say "Creating commit" unless quiet?
-      system("git commit -m \"Bump to #{@new_version_number}\"")
+      message = "Bump to #{@new_version_number}"
+      message = "#{message} - #{options[:message]}" if options[:message]
+      system("git commit -m \"#{message}\"")
     end
 
     def push

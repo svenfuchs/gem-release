@@ -17,7 +17,7 @@ class GemspecCommandTest < Test::Unit::TestCase
     GemspecCommand.new.invoke
 
     filename = 'foo-bar.gemspec'
-    assert File.exists?(filename)
+    assert File.exist?(filename)
 
     BootstrapCommand.new.execute # so it can be required by .gemspec
     assert_equal 'foo-bar', eval(File.read(filename)).name

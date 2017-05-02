@@ -11,11 +11,11 @@ class HelpersTest < Test::Unit::TestCase
   end
 
   test "gems_filename" do
-    assert_match /gem-release-\d+\.\d+\.\d+\.gem/, command.gem_filename
+    assert_match(/gem-release-\d+\.\d+\.\d+\.gem/, command.gem_filename)
   end
 
   test "gems_version" do
-    assert_match /^\d+\.\d+\.\d+$/, command.gem_version
+    assert_match(/^\d+\.\d+\.\d+$/, command.gem_version)
   end
 
   test "gemspec_filename with an cmdline argument given" do

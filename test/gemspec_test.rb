@@ -38,13 +38,11 @@ class GemspecTest < Test::Unit::TestCase
 
   test 'scaffolds a gemspec with glob strategy' do
     source  = GemRelease::GemspecTemplate.new(:strategy => 'glob').send(:render)
-    gemspec = eval(source)
     assert_match %r(files\s*=\s*Dir.glob\(), source
   end
 
   test 'scaffolds a gemspec with git strategy' do
     source  = GemRelease::GemspecTemplate.new(:strategy => 'git').send(:render)
-    gemspec = eval(source)
     assert_match %r(files\s*=[^$]*git ls\-files), source
   end
 
