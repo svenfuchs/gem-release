@@ -1,59 +1,28 @@
 require 'gem/release/context/gem'
+require 'gem/release/context/git'
 require 'gem/release/context/paths'
-require 'gem/release/context/system'
+require 'gem/release/context/ui'
 
 module Gem
   module Release
     class Context
-      class << self
-        attr_accessor :last
-      end
-
-      attr_accessor :config, :gem, :system
-
-      COLORS = {
-        red:    "\e[31m",
-        green:  "\e[32m",
-        yellow: "\e[33m",
-        blue:   "\e[34m",
-        gray:   "\e[37m",
-        reset:  "\e[0m"
-      }
+      attr_accessor :config, :gem, :git, :ui
 
       def initialize(name = nil)
         @config = Config.new
         @gem    = Gem.new(name || File.basename(Dir.pwd))
-        @system = System.new
+        @git    = Git.new
+        @ui     = Ui::Terminal.new
       end
 
-      def announce(str)
-        puts colored(:green, with_spacing(str, true))
+      def run(cmd)
+        system(cmd)
       end
 
-      def info(str)
-        puts colored(:blue, with_spacing(str, true))
-      end
-
-      def notice(str)
-        puts colored(:gray, with_spacing(str, false))
-      end
-
-      def warn(str)
-        puts colored(:yellow, with_spacing(str, false))
-      end
-
-      def error(str)
-        puts colored(:red, with_spacing(str, true))
-      end
-
-      def success(str)
-        announce(str)
-        puts
-      end
-
-      def abort(str)
-        error(str)
-        exit 1
+      def gem_cmd(cmd, *args)
+        ::Gem::Commands.const_get("#{cmd.to_s.capitalize}Command").new.invoke(*args.flatten)
+        # TODO what's with the return value? maybe add our own abstraction that can check the result?
+        true
       end
 
       def in_dirs(args, opts, &block)
@@ -64,17 +33,10 @@ module Gem
         Paths::ByGemspecs.new(args, opts).in_dirs(&block)
       end
 
-      private
-
-        def colored(color, str)
-          [COLORS[color], str, COLORS[:reset]].join
-        end
-
-        def with_spacing(str, space)
-          str = "\n#{str}" if space && !self.class.last
-          self.class.last = space
-          str
-        end
+      def abort(str)
+        ui.error(str)
+        exit 1
+      end
     end
   end
 end

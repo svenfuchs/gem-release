@@ -72,8 +72,8 @@ module Gem
         private
 
           def validate
-            abort :git_dirty unless git_clean?
-            abort :no_remote, remote if push? && !git_remotes.include?(remote)
+            abort :git_dirty unless git.clean?
+            abort :no_remote, remote if push? && !git.remotes.include?(remote)
           end
 
           def tag_and_push
@@ -83,7 +83,7 @@ module Gem
           end
 
           def exists?
-            git_tags.include?(tag_name)
+            git.tags.include?(tag_name)
           end
 
           def tag

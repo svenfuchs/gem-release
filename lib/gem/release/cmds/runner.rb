@@ -28,7 +28,7 @@ module Gem
           end
 
           def success
-            context.success "All is good, thanks my friend." unless quiet?
+            context.ui.success "All is good, thanks my friend." unless quiet?
           end
 
           def quiet?

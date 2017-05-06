@@ -4,9 +4,7 @@ module Gem
   module Release
     module Helper
       extend Forwardable
-      def_delegators :context, :gem, :system
-      def_delegators :system, :git_clean?, :git_remotes, :git_tags,
-        :git_user_name, :git_user_email, :github_user_name
+      def_delegators :context, :gem, :git, :ui
 
       def run(cmd)
         return true if send(cmd)
@@ -19,20 +17,20 @@ module Gem
         end
         cmd = cmd.strip
         notice "$ #{cmd}"
-        result = pretend? ? true : system.run(cmd)
+        result = pretend? ? true : context.run(cmd)
         abort "The command `#{cmd}` was unsuccessful." unless result
       end
 
       def gem_cmd(cmd, *args)
         info cmd, *args if cmd.is_a?(Symbol)
         notice "$ gem #{cmd} #{args.join(' ')}"
-        pretend? ? true : system.gem_cmd(cmd, *args)
+        pretend? ? true : context.gem_cmd(cmd, *args)
       end
 
       %w(announce notice info warn error).each do |level|
         define_method(level) do |msg, *args|
           msg = self.class::MSGS[msg] % args if msg.is_a?(Symbol)
-          context.send(level, msg.strip) unless quiet?
+          ui.send(level, msg.strip) unless quiet?
         end
       end
 

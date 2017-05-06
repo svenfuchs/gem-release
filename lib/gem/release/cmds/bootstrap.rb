@@ -194,12 +194,12 @@ module Gem
           end
 
           def create_repo
-            cmd :git_remote, remote, "#{github_user_name}/#{gem.name}"
+            cmd :git_remote, remote, "#{git.user_login}/#{gem.name}"
             cmd :git_push, remote if opts[:push]
           end
 
           def data
-            Data.new(system, gem, opts).data
+            Data.new(git, gem, opts).data
           end
 
           def remote

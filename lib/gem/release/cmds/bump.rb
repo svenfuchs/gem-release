@@ -141,8 +141,8 @@ module Gem
         private
 
           def validate
-            abort :git_dirty unless git_clean?
-            abort :no_git_remote, remote if push? && !git_remotes.include?(remote.to_s)
+            abort :git_dirty unless git.clean?
+            abort :no_git_remote, remote if push? && !git.remotes.include?(remote.to_s)
             abort :not_found, gem.name, version.path || '?' unless version.exists?
           end
 

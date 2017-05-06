@@ -79,7 +79,7 @@ module Gem
         private
 
           def validate
-            abort :git_dirty unless git_clean?
+            abort :git_dirty unless git.clean?
           end
 
           def release

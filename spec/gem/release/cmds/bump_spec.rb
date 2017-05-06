@@ -184,7 +184,7 @@ describe Gem::Release::Cmds::Bump do
   end
 
   describe 'fails if there are uncommitted changes' do
-    before { allow(system).to receive(:git_clean?).and_return(false) }
+    before { allow(git).to receive(:clean?).and_return(false) }
     it { expect { run }.to raise_error('Uncommitted changes found. Please commit or stash. Aborting.') }
   end
 end

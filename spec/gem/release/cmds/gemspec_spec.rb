@@ -14,9 +14,9 @@ describe Gem::Release::Cmds::Gemspec do
 
     it { expect(spec).to specify :name,        'foo-bar' }
     it { expect(spec).to specify :version,     'Foo::Bar::VERSION' }
-    it { expect(spec).to specify :authors,     '[your name]' }
-    it { expect(spec).to specify :email,       '[your email]' }
-    it { expect(spec).to specify :homepage,    'https://github.com/[your name]/foo-bar' }
+    it { expect(spec).to specify :authors,     'Sven Fuchs' }
+    it { expect(spec).to specify :email,       'me@svenfuchs.com' }
+    it { expect(spec).to specify :homepage,    'https://github.com/svenfuchs/foo-bar' }
     it { expect(spec).to specify :summary,     '[summary]' }
     it { expect(spec).to specify :description, '[description]' }
   end

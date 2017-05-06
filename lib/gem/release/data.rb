@@ -4,7 +4,7 @@ require 'gem/release/helper/string'
 
 module Gem
   module Release
-    class Data < Struct.new(:system, :gem, :opts)
+    class Data < Struct.new(:git, :gem, :opts)
       include Helper::String
 
       def data
@@ -36,16 +36,20 @@ module Gem
           gem_name.gsub('-', '/').sub(/_rb$/, '')
         end
 
+        def user_login
+          git.user_login || '[your login]'
+        end
+
         def user_name
-          system.git_user_name || '[your name]'
+          git.user_name || '[your name]'
         end
 
         def user_email
-          system.git_user_email || '[your email]'
+          git.user_email || '[your email]'
         end
 
         def homepage
-          "https://github.com/#{user_name}/#{gem_name}"
+          "https://github.com/#{user_login}/#{gem_name}"
         end
 
         def licenses

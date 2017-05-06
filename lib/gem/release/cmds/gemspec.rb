@@ -77,7 +77,7 @@ module Gem
           end
 
           def data
-            Data.new(system, gem, opts).data
+            Data.new(git, gem, opts).data
           end
       end
     end

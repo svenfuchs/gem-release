@@ -1,95 +1,76 @@
+require 'forwardable'
+
 module Support
   module Context
     def self.included(base)
       base.send(:extend, ClassMethods)
-      base.let(:context)  { Context.new }
-      base.let(:system)   { context.system }
-      base.let(:cmds)     { Context.cmds }
-      base.let(:gem_cmds) { Context.gem_cmds }
-      base.let(:out)      { Context.out }
-      base.before { Context.reset }
+      base.let(:context) { Context.new }
+      base.let(:git)     { context.git }
+      base.let(:cmds)    { context.cmds }
+      base.let(:out)     { context.out }
     end
 
     module ClassMethods
       def remotes(*args)
-        before { allow(system).to receive(:git_remotes).and_return(['foo']) }
+        before { git.remotes = ['foo'] }
       end
     end
 
-    class System
-      class << self
-        attr_accessor :git_remotes, :git_tags
+    class Git
+      attr_accessor :clean, :remotes, :tags, :user_name,
+        :user_email, :user_login
+
+      def initialize
+        @clean = true
+        @remotes = ['origin']
+        @tags = []
+        @user_name = 'Sven Fuchs'
+        @user_email = 'me@svenfuchs.com'
+        @user_login = 'svenfuchs'
       end
 
-      def git_clean?
-        true
+      def clean?
+        !!@clean
+      end
+    end
+
+    class Ui
+      attr_reader :out
+
+      def initialize
+        @out = []
       end
 
-      def git_remotes(remotes = nil)
-        remotes ? self.class.git_remotes = remotes : self.class.git_remotes || ['origin']
-      end
-
-      def git_tags(tags = nil)
-        tags ? self.class.git_tags = tags : self.class.git_tags || []
-      end
-
-      def git_user_name
-      end
-
-      def git_user_email
-      end
-
-      def github_user_name
-        'svenfuchs'
-      end
-
-      def run(cmd)
-        Context.cmds << cmd
-      end
-
-      def gem_cmd(*args)
-        Context.cmds << "gem #{args.join(' ')}"
+      %w(announce notice info warn error success).each do |level|
+        define_method(level) do |msg|
+          out << msg
+        end
       end
     end
 
     class Context < Gem::Release::Context
-      class << self
-        def gem_cmds
-          @gem_cmds ||= []
-        end
+      extend Forwardable
 
-        def cmds
-          @cmds ||= []
-        end
-
-        def out
-          @out ||= []
-        end
-
-        def reset
-          @gem_cmds = []
-          @cmds = []
-          @out = []
-        end
-      end
+      attr_accessor :cmds
+      def_delegators :ui, :out
 
       def initialize(*args)
         super
-        @system = System.new
+        @cmds = []
+        @git = Git.new
+        @ui = Ui.new
       end
 
-      %w(announce notice info warn error).each do |level|
-        define_method(level) do |msg|
-          Context.out << msg
-        end
+      def run(cmd)
+        cmds << cmd
       end
 
-      def success(str)
-        announce(str)
+      def gem_cmd(*args)
+        cmds << "gem #{args.join(' ')}"
       end
 
       def abort(str)
-        error(str)
+        ui.error(str)
         fail str
       end
     end
