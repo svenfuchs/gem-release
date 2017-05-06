@@ -81,7 +81,7 @@ module Gem
           opts[:skip_ci] = value
         end
 
-        opt '-p', '--[no-]push', descr(:push) do |value|
+        opt '-p', '--push', descr(:push) do |value|
           opts[:push] = value
         end
 

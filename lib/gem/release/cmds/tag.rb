@@ -35,7 +35,7 @@ module Gem
           sign:   'GPG sign the tag',
         }
 
-        opt '-p', '--[no-]push', descr(:push) do |value|
+        opt '-p', '--push', descr(:push) do |value|
           opts[:push] = value
         end
 

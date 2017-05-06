@@ -24,6 +24,7 @@ module Gem
 
         DEFAULTS = {
           tag:     false,
+          push:    false,
           recurse: false
         }
 
@@ -31,6 +32,7 @@ module Gem
           host:    'Push to a compatible host other than rubygems.org',
           key:     'Use the API key from ~/.gem/credentials',
           tag:     'Shortcut for running the `gem tag` command',
+          push:   'Push tag to the remote git repository',
           recurse: 'Recurse into directories that contain gemspec files'
         }
 
@@ -44,6 +46,10 @@ module Gem
 
         opt '-t', '--tag', descr(:tag) do |value|
           opts[:tag] = value
+        end
+
+        opt '-p', '--push', descr(:push) do |value|
+          opts[:push] = value
         end
 
         opt '--recurse', descr(:recurse) do |value|
