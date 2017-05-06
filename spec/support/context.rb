@@ -18,7 +18,7 @@ module Support
 
     class System
       class << self
-        attr_accessor :git_remotes
+        attr_accessor :git_remotes, :git_tags
       end
 
       def git_clean?
@@ -27,6 +27,10 @@ module Support
 
       def git_remotes(remotes = nil)
         remotes ? self.class.git_remotes = remotes : self.class.git_remotes || ['origin']
+      end
+
+      def git_tags(tags = nil)
+        tags ? self.class.git_tags = tags : self.class.git_tags || []
       end
 
       def git_user_name
@@ -78,6 +82,10 @@ module Support
         define_method(level) do |msg|
           Context.out << msg
         end
+      end
+
+      def success(str)
+        announce(str)
       end
 
       def abort(str)

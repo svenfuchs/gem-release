@@ -24,26 +24,27 @@ module Gem
         str
 
         DEFAULTS = {
-          push: true,
+          push:   false,
           remote: 'origin'
         }
 
         DESCR = {
-          push:    'Push tag to the remote git repository',
-          remote:  'Git remote to push to (defaults to origin)',
-          sign:    'GPG sign the tag',
+          push:   'Push tag to the remote git repository',
+          remote: 'Git remote to push to',
+          sign:   'GPG sign the tag',
         }
 
-        opt '-p', '--[no]-push', DESCR[:push] do
-          opts[:push] = true
+        opt '-p', '--[no-]push', descr(:push) do |value|
+          opts[:push] = value
         end
 
-        opt '--remote REMOTE', DESCR[:remote] do |value|
+        opt '--remote REMOTE', descr(:remote) do |value|
           opts[:remote] = value
         end
 
         MSGS = {
           tag:       'Tagging %s as version %s',
+          exists:    'Skipping %s, tag already exists.',
           git_tag:   'Creating git tag %s',
           git_push:  'Pushing tags to the %s git repository',
           no_remote: 'Cannot push to missing git remote %s',
@@ -59,8 +60,7 @@ module Gem
           in_gem_dirs do
             announce :tag, gem.name, gem.version
             validate
-            tag
-            push if opts[:push]
+            tag_and_push
           end
         end
 
@@ -69,6 +69,16 @@ module Gem
           def validate
             abort :git_dirty unless git_clean?
             abort :no_remote, remote if push? && !git_remotes.include?(remote)
+          end
+
+          def tag_and_push
+            return info :exists, tag_name if exists?
+            tag
+            push if opts[:push]
+          end
+
+          def exists?
+            git_tags.include?(tag_name)
           end
 
           def tag

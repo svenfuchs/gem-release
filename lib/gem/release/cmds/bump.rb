@@ -57,52 +57,55 @@ module Gem
 
         DEFAULTS = {
           commit:  true,
-          message: 'Bump to %{to} %{skip_ci}',
+          message: 'Bump %{name} to %{version} %{skip_ci}',
           push:    false,
-          remote:  'origin'
+          remote:  'origin',
+          skip_ci: false,
+          sign:    false,
+          recurse: false
         }
 
-        opt '-v', '--version VERSION', DESCR[:version] do |value|
+        opt '-v', '--version VERSION', descr(:version) do |value|
           opts[:version] = value
         end
 
-        opt '-c', '--[no-]commit', DESCR[:commit] do |value|
+        opt '-c', '--[no-]commit', descr(:commit) do |value|
           opts[:commit] = value
         end
 
-        opt '-m', '--message', DESCR[:message] do |value|
+        opt '-m', '--message', descr(:message) do |value|
           opts[:message] = value
         end
 
-        opt '--skip-ci', DESCR[:skip_ci] do |value|
+        opt '--skip-ci', descr(:skip_ci) do |value|
           opts[:skip_ci] = value
         end
 
-        opt '-p', '--[no-]push', DESCR[:push] do |value|
+        opt '-p', '--[no-]push', descr(:push) do |value|
           opts[:push] = value
         end
 
-        opt '--remote REMOTE', DESCR[:remote] do |value|
+        opt '--remote REMOTE', descr(:remote) do |value|
           opts[:remote] = value
         end
 
-        opt '-s', '--sign', DESCR[:sign] do |value|
+        opt '-s', '--sign', descr(:sign) do |value|
           opts[:sign] = value
         end
 
-        opt '-t', '--tag', DESCR[:tag] do |value|
+        opt '-t', '--tag', descr(:tag) do |value|
           opts[:tag] = value
         end
 
-        opt '-r', '--release', DESCR[:release] do |value|
+        opt '-r', '--release', descr(:release) do |value|
           opts[:release] = value
         end
 
-        opt '--recurse', DESCR[:recurse] do |value|
+        opt '--recurse', descr(:recurse) do |value|
           opts[:recurse] = value
         end
 
-        opt '--file', DESCR[:file] do |value|
+        opt '--file', descr(:file) do |value|
           opts[:file] = value
         end
 
@@ -127,8 +130,8 @@ module Gem
           in_gem_dirs do
             validate
             bump
-            commit  if opts[:commit]
-            push    if opts[:commit] && opts[:push]
+            commit if opts[:commit]
+            push   if opts[:commit] && opts[:push]
             reset
           end
           tag     if opts[:tag]
@@ -139,8 +142,8 @@ module Gem
 
           def validate
             abort :git_dirty unless git_clean?
-            abort :not_found, gem.name, version.path || '?' unless version.exists?
             abort :no_git_remote, remote if push? && !git_remotes.include?(remote.to_s)
+            abort :not_found, gem.name, version.path || '?' unless version.exists?
           end
 
           def bump
@@ -167,18 +170,18 @@ module Gem
             Release.new(context, args, except(opts, :tag)).run
           end
 
-          def reset
-            @version = nil
-          end
-
           def message
-            args = version.to_h
-            args = args.merge(skip_ci: opts[:skip_ci] ? '[skip ci]' : '')
+            args = { name: gem.name, skip_ci: opts[:skip_ci] ? '[skip ci]' : '' }
+            args = args.merge(version.to_h)
             opts[:message] % args
           end
 
           def version
             @version ||= Files::Version.new(gem.name, opts[:version], only(opts, :file))
+          end
+
+          def reset
+            @version = nil
           end
 
           def push?

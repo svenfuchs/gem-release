@@ -20,6 +20,10 @@ module Gem
           `git remote`.split("\n")
         end
 
+        def git_tags
+          `git tag`.split("\n")
+        end
+
         def git_user_name
           str = `git config --get user.name`.strip
           str unless str.empty?

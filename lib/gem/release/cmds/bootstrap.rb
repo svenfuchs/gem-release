@@ -8,8 +8,6 @@ module Gem
       class Bootstrap < Base
         summary 'Scaffolds a new gem from template files.'
 
-        # TODO document license
-
         description <<~str
           #{summary} Optionally initialize a git repository, set a git remote, and push
           to the remote repository.
@@ -53,7 +51,8 @@ module Gem
           The license added by default is the MIT License. If `--license [name]` is given
           then this license will be added. The only other license file shipped is the
           Mozilla Public License v2.0. Other licenses must be present in the local or
-          global directory `.gem-release/licenses`.
+          global directory `.gem-release/licenses`. If `--no-license` is given then no
+          license will be added.
         str
 
         arg :gem_name, 'name of the gem (optional, will default to the current directory name if not specified)'
@@ -71,7 +70,7 @@ module Gem
         DESCR = {
           scaffold: 'Scaffold gem files',
           dir:      'Directory to place the gem in (defaults to the given name, or the current working dir)',
-          licenses: 'License(s) to add',
+          license:  'License(s) to add',
           template: 'Template groups to use for scaffolding',
           rspec:    'Use the rspec group (by default adds .rspec and spec/spec_helper.rb)',
           travis:   'Use the rspec group (by default adds .travis.yml)',
@@ -82,47 +81,47 @@ module Gem
           push:     'Push the git repo to github'
         }
 
-        opt '--[no]-scaffold', DESCR[:scaffold] do |value|
+        opt '--[no-]scaffold', descr(:scaffold) do |value|
           opts[:scaffold] = value
         end
 
-        opt '--dir DIR', DESCR[:dir] do |value|
+        opt '--dir DIR', descr(:dir) do |value|
           opts[:dir] = value
         end
 
-        opt '-t', '--template NAME', DESCR[:template] do |value|
+        opt '-t', '--template NAME', descr(:template) do |value|
           (opts[:templates] ||= []) << value
         end
 
-        opt '--rspec', DESCR[:rspec] do |value|
+        opt '--rspec', descr(:rspec) do |value|
           (opts[:templates] ||= []) << :rspec
         end
 
-        opt '--travis', DESCR[:travis] do |value|
+        opt '--travis', descr(:travis) do |value|
           (opts[:templates] ||= []) << :travis
         end
 
-        opt '-l', '--no-license NAME', DESCR[:license] do |value|
-          value ? (opts[:license] ||= []) << value : opts[:license] = []
+        opt '-l', '--[no-]license NAME', descr(:license) do |value|
+          opts[:license] = value
         end
 
-        opt '-s', '--strategy NAME', DESCR[:strategy] do |value|
+        opt '-s', '--strategy NAME', descr(:strategy) do |value|
           opts[:strategy] = value
         end
 
-        opt '--git', DESCR[:git] do |value|
+        opt '--[no-]git', descr(:git) do |value|
           opts[:git] = value
         end
 
-        opt '--github', DESCR[:github] do |value|
+        opt '--github', descr(:github) do |value|
           opts[:github] = value
         end
 
-        opt '--remote', DESCR[:remote] do |value|
+        opt '--remote', descr(:remote) do |value|
           opts[:remote] = value
         end
 
-        opt '--push', DESCR[:push] do |value|
+        opt '--push', descr(:push) do |value|
           opts[:push] = value
         end
 

@@ -34,15 +34,15 @@ module Gem
           strategy: 'Strategy for collecting files [glob|git] in gemspec'
         }
 
-        opt '--dir DIR', DESCR[:dir] do |value|
+        opt '--dir DIR', descr(:dir) do |value|
           opts[:dir] = value
         end
 
-        opt '-l', '--[no]-license[s] NAMES', DESCR[:license] do |value|
+        opt '-l', '--[no-]license NAMES', descr(:license) do |value|
           value ? (opts[:license] ||= []) << value : opts[:license] = []
         end
 
-        opt '-s', '--strategy', DESCR[:strategy] do |value|
+        opt '-s', '--strategy', descr(:strategy) do |value|
           opts[:strategy] = value
         end
 

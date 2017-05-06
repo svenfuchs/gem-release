@@ -71,7 +71,6 @@ module Gem
         end
 
         def with_spacing(str, space)
-          # space = false if self.class.last.nil?
           str = "\n#{str}" if space && !self.class.last
           self.class.last = space
           str

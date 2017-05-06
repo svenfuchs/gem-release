@@ -31,7 +31,7 @@ module Gem
         end
 
         def to_h
-          { from: from, to: to }
+          { from: from, version: to }
         end
 
         private

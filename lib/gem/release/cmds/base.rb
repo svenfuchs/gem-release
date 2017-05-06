@@ -32,6 +32,12 @@ module Gem
             @opts ||= superclass != self.class && superclass.respond_to?(:opts) ? superclass.opts.dup : []
           end
 
+          def descr(opt)
+            descr = self::DESCR[opt]
+            descr = "#{descr} (default: #{self::DEFAULTS[opt]})" if self::DEFAULTS.key?(opt)
+            descr
+          end
+
           def usage(usage = nil)
             usage ? @usage = usage : @usage || '[usage]'
           end

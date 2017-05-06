@@ -5,8 +5,8 @@ module Gem
     module Helper
       extend Forwardable
       def_delegators :context, :gem, :system
-      def_delegators :system, :git_clean?, :git_remotes, :git_user_name,
-        :git_user_email, :github_user_name
+      def_delegators :system, :git_clean?, :git_remotes, :git_tags,
+        :git_user_name, :git_user_email, :github_user_name
 
       def run(cmd)
         return true if send(cmd)

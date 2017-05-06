@@ -1,16 +1,15 @@
 # Todo
 
-- Add defaults to options help output [5]
+x Add defaults to options help output done:2017-05-06 [5]
+x Make sure we don't double tag the same repo when several args are given done:2017-05-06 [9]
+x Check for TODO tags done:2017-05-06 [17]
 - Add specs for all error conditions [6]
 - Add a changelog [7]
-- Check for TODO tags [17]
-
-- Make sure we don't double tag the same repo when several args are given [9]
-
-- Port "Adding ability to GPG sign commits and tags" [10]
-  https://github.com/svenfuchs/gem-release/pull/44
 
 # Done
+
+x Port "Adding ability to GPG sign commits and tags" done:2017-05-02 [10]
+  https://github.com/svenfuchs/gem-release/pull/44
 
 x Port "Support version files of gems with *rb suffix" done:2017-05-02 [13]
   https://github.com/svenfuchs/gem-release/pull/53

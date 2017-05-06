@@ -22,6 +22,11 @@ module Gem
 
         arg :gem_name, 'name of the gem (optional, will use the first gemspec, or all gemspecs if --recurse is given)'
 
+        DEFAULTS = {
+          tag:     false,
+          recurse: false
+        }
+
         DESCR = {
           host:    'Push to a compatible host other than rubygems.org',
           key:     'Use the API key from ~/.gem/credentials',
@@ -29,19 +34,19 @@ module Gem
           recurse: 'Recurse into directories that contain gemspec files'
         }
 
-        opt '-h', '--host HOST', DESCR[:host] do |value|
+        opt '-h', '--host HOST', descr(:host) do |value|
           opts[:host] = value
         end
 
-        opt '-k', '--key KEY', DESCR[:key] do |value|
+        opt '-k', '--key KEY', descr(:key) do |value|
           opts[:key] = value
         end
 
-        opt '-t', '--tag', DESCR[:tag] do |value|
+        opt '-t', '--tag', descr(:tag) do |value|
           opts[:tag] = value
         end
 
-        opt '--recurse', DESCR[:recurse] do |value|
+        opt '--recurse', descr(:recurse) do |value|
           opts[:recurse] = value
         end
 
