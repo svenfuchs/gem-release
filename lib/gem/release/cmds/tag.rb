@@ -25,7 +25,8 @@ module Gem
 
         DEFAULTS = {
           push:   false,
-          remote: 'origin'
+          remote: 'origin',
+          sign:   false
         }
 
         DESCR = {
@@ -40,6 +41,10 @@ module Gem
 
         opt '--remote REMOTE', descr(:remote) do |value|
           opts[:remote] = value
+        end
+
+        opt '-s', '--sign', descr(:sign) do |value|
+          opts[:sign] = value
         end
 
         MSGS = {
