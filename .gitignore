@@ -1,27 +1,7 @@
-# Because this is a gem, ignore Gemfile.lock:
-
 Gemfile.lock
-
-# And because this is Ruby, ignore the following
-#  (source: https://github.com/github/gitignore/blob/master/Ruby.gitignore):
-
 *.gem
-*.rbc
 .bundle
 .config
+.env
 coverage
-InstalledFiles
-lib/bundler/man
-pkg
-rdoc
-spec/reports
-test/tmp
-test/version_tmp
 tmp
-gemfiles/*.lock
-
-# YARD artifacts
-.yardoc
-_yardoc
-doc/
-vendor
