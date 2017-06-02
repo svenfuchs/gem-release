@@ -84,7 +84,7 @@ describe Gem::Release::Cmds::Bump do
 
     describe 'pre' do
       let(:opts) { { version: :pre } }
-      it { should have_version 'foo/bar', '1.1.0.pre.1' }
+      it { should have_version 'foo/bar', '1.1.0-pre.1' }
     end
   end
 

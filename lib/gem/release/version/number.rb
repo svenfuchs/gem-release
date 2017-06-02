@@ -2,14 +2,15 @@ module Gem
   module Release
     module Version
       class Number < Struct.new(:number, :target)
-        NUMBER = /^(\d+)\.(\d+).(\d+).?(\w+)?.?(\d+)?$/
+        NUMBER = /^(\d+)\.(\d+).(\d+)-?(\w+)?.?(\d+)?$/
 
         STAGES = %i(alpha beta pre rc)
 
         def bump
           return target if specific?
           validate_stage
-          [major, minor, patch, stage, num].compact.join('.')
+          [major, minor, patch].compact.join('.') +
+            (stage ? '-' + [stage, num].join('.') : '')
         end
 
         private

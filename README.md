@@ -219,7 +219,7 @@ major       # Bump to the next major level (e.g. 0.0.1 to 1.0.0)
 minor       # Bump to the next minor level (e.g. 0.0.1 to 0.1.0)
 patch       # Bump to the next patch level (e.g. 0.0.1 to 0.0.2)
 pre|rc|etc  # Bump to the next pre-release level (e.g. 0.0.1 to
-            #   0.1.0.pre.1, 1.0.0.pre.1 to 1.0.0.pre.2)
+            #   0.1.0-pre.1, 1.0.0-pre.1 to 1.0.0-pre.2)
 ```
 
 When searching for the version file for a gem named `gem-name`: the
