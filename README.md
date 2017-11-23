@@ -1,4 +1,4 @@
-# gem release [![Build Status](https://secure.travis-ci.org/svenfuchs/gem-release.png)](http://travis-ci.org/svenfuchs/gem-release)
+# gem release [![Build Status](https://secure.travis-ci.org/svenfuchs/gem-release.svg)](http://travis-ci.org/svenfuchs/gem-release)
 
 This gem plugin aims at making gem development easier by automating repetitive work based on conventions, configuration, and templates.
 
@@ -8,9 +8,9 @@ It adds the commands `bootstrap`, `gemspec`, `bump`, `tag` and a `release` to th
 | ---------------------- | ------------ |
 | Gem name               |  gem-release |
 | License                |  [MIT](https://github.com/svenfuchs/gem-release/blob/master/LICENSE.md) |
-| Version                |  [![Gem Version](https://badge.fury.io/rb/gem-release.png)](http://badge.fury.io/rb/gem-release) |
-| Continuous integration |  [![Build Status](https://secure.travis-ci.org/svenfuchs/gem-release.png?branch=master)](https://travis-ci.org/svenfuchs/gem-release) |
-| Test coverage          |  [![Coverage Status](https://coveralls.io/repos/svenfuchs/gem-release/badge.png)](https://coveralls.io/r/svenfuchs/gem-release) |
+| Version                |  [![Gem Version](https://badge.fury.io/rb/gem-release.svg)](http://badge.fury.io/rb/gem-release) |
+| Continuous integration |  [![Build Status](https://secure.travis-ci.org/svenfuchs/gem-release.svg?branch=master)](https://travis-ci.org/svenfuchs/gem-release) |
+| Test coverage          |  [![Coverage Status](https://coveralls.io/repos/svenfuchs/gem-release/badge.svg)](https://coveralls.io/r/svenfuchs/gem-release) |
 | Documentation          |  [Documentation](http://rdoc.info/github/svenfuchs/gem-release/frames) |
 | Credits                |  [Contributors](https://github.com/svenfuchs/gem-release/graphs/contributors) |
 
