@@ -4,7 +4,7 @@ module Support
   module Context
     def self.included(base)
       base.send(:extend, ClassMethods)
-      base.let(:context) { Context.new }
+      base.let(:context) { Context.new(respond_to?(:opts) ? opts : {}) }
       base.let(:git)     { context.git }
       base.let(:cmds)    { context.cmds }
       base.let(:out)     { context.out }
@@ -34,31 +34,20 @@ module Support
       end
     end
 
-    class Ui
-      attr_reader :out
-
-      def initialize
-        @out = []
-      end
-
-      %w(announce notice info warn error success).each do |level|
-        define_method(level) do |msg|
-          out << msg
-        end
-      end
-    end
-
     class Context < Gem::Release::Context
       extend Forwardable
 
       attr_accessor :cmds
-      def_delegators :ui, :out
 
       def initialize(*args)
         super
         @cmds = []
         @git = Git.new
-        @ui = Ui.new
+        ui.stdout = StringIO.new
+      end
+
+      def out
+        ui.stdout.string.split("\n")
       end
 
       def run(cmd)

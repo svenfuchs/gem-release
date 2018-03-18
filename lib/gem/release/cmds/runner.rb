@@ -3,13 +3,17 @@ require 'gem/release/context'
 module Gem
   module Release
     module Cmds
-      class Runner < Struct.new(:context, :name, :args, :opts)
+      class Runner < Struct.new(:name, :args, :opts, :context)
         def run
           run_cmd
           success
         end
 
         private
+
+          def success
+            context.ui.success "All is good, thanks my friend."
+          end
 
           def run_cmd
             const.new(context, args, opts).run
@@ -19,28 +23,20 @@ module Gem
             Base[name]
           end
 
-          def opts
-            except(super, :args, :build_args)
-          end
-
           def args
             super.select { |arg| arg.is_a?(String) && arg[0] != '-' }
           end
 
-          def success
-            context.ui.success "All is good, thanks my friend." unless quiet?
-          end
-
-          def quiet?
-            opts[:quiet] || opts[:silent]
-          end
-
           def opts
-            @opts ||= config.merge(super)
+            @opts ||= except(Base::DEFAULTS.merge(config.merge(super)), :args, :build_args)
           end
 
           def config
-            context.config.for(name.to_sym)
+            Context.new.config.for(name.to_sym)
+          end
+
+          def context
+            @context ||= super || Context.new(opts)
           end
 
           def except(hash, *keys)

@@ -8,11 +8,13 @@ module Gem
     class Context
       attr_accessor :config, :gem, :git, :ui
 
-      def initialize(name = nil)
+      def initialize(*args)
+        opts = args.last.is_a?(Hash) ? args.pop : {}
+        name = args.shift
         @config = Config.new
         @gem    = Gem.new(name || File.basename(Dir.pwd))
         @git    = Git.new
-        @ui     = Ui::Terminal.new
+        @ui     = Ui.new(opts)
       end
 
       def run(cmd)

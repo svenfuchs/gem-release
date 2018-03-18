@@ -15,7 +15,7 @@ module Support
       cmd  ||= respond_to?(:cmd) ? cmd : described_class.registry_key
       args ||= self.args
       opts ||= self.opts
-      Gem::Release::Cmds::Runner.new(context, cmd, args, opts).run
+      Gem::Release::Cmds::Runner.new(cmd, args, opts, context).run
     end
   end
 end

@@ -34,8 +34,12 @@ module Gem
 
           def descr(opt)
             descr = self::DESCR[opt]
-            descr = "#{descr} (default: #{self::DEFAULTS[opt]})" if self::DEFAULTS.key?(opt)
+            descr = "#{descr} (default: #{default(opt)})" if default(opt)
             descr
+          end
+
+          def default(opt)
+            Base::DEFAULTS[opt] || self::DEFAULTS[opt]
           end
 
           def usage(usage = nil)
@@ -51,6 +55,16 @@ module Gem
           def description(description = nil)
             description ? @description = wrap(description, WIDTH) : @description
           end
+        end
+
+        DEFAULTS = {
+          color:   true,
+          pretend: false,
+          quiet:   false
+        }
+
+        opt '--[no-]color' do |value|
+          opts[:color] = value
         end
 
         opt '--pretend' do

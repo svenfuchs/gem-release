@@ -104,6 +104,25 @@ describe Gem::Release::Cmds::Bump do
     it { should run_cmd "git commit -m \"Bump tmp to 1.0.1 [skip ci]\"" }
   end
 
+
+  describe 'given --branch' do
+    let(:opts) { { branch: true } }
+    version 'lib/tmp'
+    run_cmd
+
+    it { should output 'Checking out branch v1.0.1' }
+    it { expect(cmds).to include 'git checkout -b v1.0.1' }
+  end
+
+  describe 'given --branch name' do
+    let(:opts) { { branch: 'name' } }
+    version 'lib/tmp'
+    run_cmd
+
+    it { should output 'Checking out branch name' }
+    it { expect(cmds).to include 'git checkout -b name' }
+  end
+
   describe 'given --no-commit' do
     let(:opts) { { commit: false } }
     version 'lib/tmp'
@@ -186,5 +205,21 @@ describe Gem::Release::Cmds::Bump do
   describe 'fails if there are uncommitted changes' do
     before { allow(git).to receive(:clean?).and_return(false) }
     it { expect { run }.to raise_error('Uncommitted changes found. Please commit or stash. Aborting.') }
+  end
+
+  describe 'stdout is not a tty (pipe attached)' do
+    before { allow($stdout).to receive(:tty?).and_return false }
+
+    cwd     'foo-bar'
+    version 'lib/foo/bar'
+    run_cmd
+
+    it { should output 'bump foo-bar 1.0.0 1.0.1' }
+    it { should output 'version lib/foo/bar/version.rb 1.0.0 1.0.1' }
+    it { should output 'git_add lib/foo/bar/version.rb' }
+    it { should output 'git_commit "Bump foo-bar to 1.0.1"' }
+
+    it { should_not output '$ git add lib/foo/bar/version.rb' }
+    it { should_not output 'All is good, thanks my friend.' }
   end
 end
