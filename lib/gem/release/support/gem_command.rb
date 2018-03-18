@@ -52,7 +52,7 @@ module Gem
 
       def execute
         args = opts.delete(:args)
-        context = Context.new
+        context = Context.new(opts)
         Cmds::Runner.new(context, cmd, args, opts).run
       rescue Abort
         abort

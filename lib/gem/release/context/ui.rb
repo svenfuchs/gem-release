@@ -2,7 +2,58 @@ module Gem
   module Release
     class Context
       module Ui
-        class Terminal
+        class << self
+          def new(opts)
+            const = Quiet if opts[:quiet]
+            const ||= Tty if $stdout.tty?
+            const ||= Pipe
+            const.new
+          end
+        end
+
+        class Base
+          attr_writer :stdout
+
+          def stdout
+            @stdout || $stdout
+          end
+
+          def puts(*str)
+            stdout.puts(*str)
+          end
+        end
+
+        class Pipe < Base
+          %i(announce info notice warn error success).each do |name|
+            define_method (name) do | msg, args, _|
+              puts format_msg(msg, args)
+            end
+          end
+
+          def cmd(*)
+            # noop
+          end
+
+          private
+
+            def format_msg(msg, args)
+              msg = [msg, args].flatten.map(&:to_s)
+              msg = msg.map { |str| quote_spaced(str) }
+              msg.join(' ').strip
+            end
+
+            def quote_spaced(str)
+              str.include?(' ') ? %("#{str}") : str
+            end
+        end
+
+        class Quiet < Base
+          %i(announce info notice warn error success cmd).each do |name|
+            define_method (name) { |*| }
+          end
+        end
+
+        module Colors
           COLORS = {
             red:    "\e[31m",
             green:  "\e[32m",
@@ -12,35 +63,53 @@ module Gem
             reset:  "\e[0m"
           }
 
-          def announce(str)
-            puts colored(:green, with_spacing(str, true))
+          def colored(color, str)
+            [COLORS[color], str, COLORS[:reset]].join
+          end
+        end
+
+        class Tty < Base
+          include Colors
+
+          def announce(msg, args = [], msgs = [])
+            msg = format_msg(msg, args, msgs)
+            puts colored(:green, with_spacing(msg, true))
           end
 
-          def info(str)
-            puts colored(:blue, with_spacing(str, true))
+          def info(msg, args = [], msgs = [])
+            msg = format_msg(msg, args, msgs)
+            puts colored(:blue, with_spacing(msg, true))
           end
 
-          def notice(str)
-            puts colored(:gray, with_spacing(str, false))
+          def notice(msg, args = [], msgs = [])
+            msg = format_msg(msg, args, msgs)
+            puts colored(:gray, with_spacing(msg, false))
           end
 
-          def warn(str)
-            puts colored(:yellow, with_spacing(str, false))
+          def warn(msg, args = [], msgs = [])
+            msg = format_msg(msg, args, msgs)
+            puts colored(:yellow, with_spacing(msg, false))
           end
 
-          def error(str)
-            puts colored(:red, with_spacing(str, true))
+          def error(msg, args = [], msgs = [])
+            msg = format_msg(msg, args, msgs)
+            puts colored(:red, with_spacing(msg, true))
           end
 
-          def success(str)
-            announce(str)
+          def success(msg)
+            announce(msg)
             puts
+          end
+
+          def cmd(msg)
+            notice("$ #{msg}")
           end
 
           private
 
-            def colored(color, str)
-              [COLORS[color], str, COLORS[:reset]].join
+            def format_msg(msg, args, msgs)
+              msg = msgs[msg] % args if msg.is_a?(Symbol)
+              msg.strip
             end
 
             def with_spacing(str, space)

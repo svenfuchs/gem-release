@@ -48,7 +48,7 @@ describe Gem::Release::Cmds::Gemspec do
   describe 'the gemspec exists' do
     gemspec 'foo-bar'
     run_cmd
-    it { expect(out).to include 'Skipping foo-bar.gemspec: already exists' }
+    it { should output 'Skipping foo-bar.gemspec: already exists' }
   end
 
   describe 'strategy' do
