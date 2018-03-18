@@ -1,4 +1,4 @@
-# gem release [![Build Status](https://secure.travis-ci.org/svenfuchs/gem-release.png)](http://travis-ci.org/svenfuchs/gem-release)
+# gem release [![Build Status](https://secure.travis-ci.org/svenfuchs/gem-release.svg)](http://travis-ci.org/svenfuchs/gem-release)
 
 This gem plugin aims at making gem development easier by automating repetitive work based on conventions, configuration, and templates.
 
@@ -8,9 +8,9 @@ It adds the commands `bootstrap`, `gemspec`, `bump`, `tag` and a `release` to th
 | ---------------------- | ------------ |
 | Gem name               |  gem-release |
 | License                |  [MIT](https://github.com/svenfuchs/gem-release/blob/master/LICENSE.md) |
-| Version                |  [![Gem Version](https://badge.fury.io/rb/gem-release.png)](http://badge.fury.io/rb/gem-release) |
-| Continuous integration |  [![Build Status](https://secure.travis-ci.org/svenfuchs/gem-release.png?branch=master)](https://travis-ci.org/svenfuchs/gem-release) |
-| Test coverage          |  [![Coverage Status](https://coveralls.io/repos/svenfuchs/gem-release/badge.png)](https://coveralls.io/r/svenfuchs/gem-release) |
+| Version                |  [![Gem Version](https://badge.fury.io/rb/gem-release.svg)](http://badge.fury.io/rb/gem-release) |
+| Continuous integration |  [![Build Status](https://secure.travis-ci.org/svenfuchs/gem-release.svg?branch=master)](https://travis-ci.org/svenfuchs/gem-release) |
+| Test coverage          |  [![Coverage Status](https://coveralls.io/repos/svenfuchs/gem-release/badge.svg)](https://coveralls.io/r/svenfuchs/gem-release) |
 | Documentation          |  [Documentation](http://rdoc.info/github/svenfuchs/gem-release/frames) |
 | Credits                |  [Contributors](https://github.com/svenfuchs/gem-release/graphs/contributors) |
 
@@ -20,6 +20,7 @@ It adds the commands `bootstrap`, `gemspec`, `bump`, `tag` and a `release` to th
 * [Installation](#installation)
 * [Configuration](#configuration)
 * [Conventions](#conventions)
+* [Piping](#piping)
 * [Reference](#reference)
 * [Scenarios](#scenarios)
 * [Development](#development)
@@ -84,6 +85,29 @@ When bumping the version of an existing gem `gem-name` the following locations a
 
 * `lib/gem/name/version.rb`
 * `lib/gem-name/version.rb`
+
+# Piping
+
+Output depends on a `tty` being available or not. I.e. when run as an
+individual command colorized human readable output will be printed (see the
+Demo screencast above). When attached to a pipe then output is kept simple and
+parsable.
+
+E.g.:
+
+```
+$ gem bump --pretend | cat
+bump gem-release 1.0.0 1.0.1
+git_add lib/gem/release/version.rb
+git_commit "Bump gem-release to 1.0.1"
+```
+
+This is useful, for example, for grabbing the next version number:
+
+```
+$ gem bump --pretend --no-commit | awk '{ print $4 }'
+1.0.1
+```
 
 
 # Reference

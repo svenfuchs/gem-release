@@ -20,6 +20,7 @@ It adds the commands `bootstrap`, `gemspec`, `bump`, `tag` and a `release` to th
 * [Installation](#installation)
 * [Configuration](#configuration)
 * [Conventions](#conventions)
+* [Piping](#piping)
 * [Reference](#reference)
 * [Scenarios](#scenarios)
 * [Development](#development)
@@ -85,6 +86,29 @@ When bumping the version of an existing gem `gem-name` the following locations a
 * `lib/gem/name/version.rb`
 * `lib/gem-name/version.rb`
 
+# Piping
+
+Output depends on a `tty` being available or not. I.e. when run as an
+individual command colorized human readable output will be printed (see the
+Demo screencast above). When attached to a pipe then output is kept simple and
+parsable.
+
+E.g.:
+
+```
+$ gem bump --pretend | cat
+bump gem-release 1.0.0 1.0.1
+git_add lib/gem/release/version.rb
+git_commit "Bump gem-release to 1.0.1"
+```
+
+This is useful, for example, for grabbing the next version number:
+
+```
+$ gem bump --pretend --no-commit | awk '{ print $4 }'
+1.0.1
+```
+
 
 # Reference
 
@@ -109,17 +133,18 @@ gem_name - name of the gem (optional, will default to the current directory name
 ### Options
 
 ```
-    --[no]-scaffold              Scaffold gem files
+    --[no-]scaffold              Scaffold gem files (default: true)
     --dir DIR                    Directory to place the gem in (defaults to the given name, or the current working dir)
 -t, --template NAME              Template groups to use for scaffolding
     --rspec                      Use the rspec group (by default adds .rspec and spec/spec_helper.rb)
     --travis                     Use the rspec group (by default adds .travis.yml)
--l, --no-license NAME
--s, --strategy NAME              Strategy for collecting files [glob|git] in .gemspec
-    --git                        Initialize a git repo
+-l, --[no-]license NAME          License(s) to add (default: mit)
+-s, --strategy NAME              Strategy for collecting files [glob|git] in .gemspec (default: glob)
+    --[no-]git                   Initialize a git repo (default: true)
     --github                     Initialize a git repo, create on github
     --remote                     Git remote repository
     --push                       Push the git repo to github
+    --[no-]color
     --pretend
 ```
 
@@ -167,7 +192,8 @@ global directory `.gem-release/templates/travis`.
 The license added by default is the MIT License. If `--license [name]`
 is given then this license will be added. The only other license file
 shipped is the Mozilla Public License v2.0. Other licenses must be
-present in the local or global directory `.gem-release/licenses`.
+present in the local or global directory `.gem-release/licenses`. If
+`--no-license` is given then no license will be added.
 
 ## gem bump
 
@@ -183,16 +209,18 @@ gem_name - name of the gem (optional, will use the directory name, or all gemspe
 
 ```
 -v, --version VERSION            Target version: next [major|minor|patch|pre|release] or a given version number [x.x.x]
--c, --[no-]commit                Create a commit after incrementing gem version
--m, --message                    Commit message template
+-c, --[no-]commit                Create a commit after incrementing gem version (default: true)
+-m, --message                    Commit message template (default: Bump %{name} to %{version} %{skip_ci})
     --skip-ci                    Add the [skip ci] tag to the commit message
--p, --[no-]push                  Push the new commit to the git remote repository
-    --remote REMOTE              Git remote to push to (defaults to origin)
+-p, --push                       Push the new commit to the git remote repository
+    --remote REMOTE              Git remote to push to (defaults to origin) (default: origin)
 -s, --sign                       GPG sign the commit message
+    --branch [BRANCH]            Check out a new branch for the target version (e.g. `v1.0.0`)
 -t, --tag                        Shortcut for running the `gem tag` command
 -r, --release                    Shortcut for the `gem release` command
     --recurse                    Recurse into directories that contain gemspec files
-    --file                       Full path to the version file
+    --file FILE                  Full path to the version file
+    --[no-]color
     --pretend
 ```
 
@@ -219,7 +247,7 @@ major       # Bump to the next major level (e.g. 0.0.1 to 1.0.0)
 minor       # Bump to the next minor level (e.g. 0.0.1 to 0.1.0)
 patch       # Bump to the next patch level (e.g. 0.0.1 to 0.0.2)
 pre|rc|etc  # Bump to the next pre-release level (e.g. 0.0.1 to
-            #   0.1.0-pre.1, 1.0.0-pre.1 to 1.0.0-pre.2)
+            #   0.1.0.pre.1, 1.0.0.pre.1 to 1.0.0.pre.2)
 ```
 
 When searching for the version file for a gem named `gem-name`: the
@@ -242,8 +270,9 @@ gem_name - name of the gem (optional, will default to the current directory name
 
 ```
     --dir DIR                    Directory to place the gem in (defaults to the given name, or the current working dir)
--l, --[no]-license[s] NAMES      License(s) to list in the gemspec
--s, --strategy                   Strategy for collecting files [glob|git] in gemspec
+-l, --[no-]license NAMES         License(s) to list in the gemspec
+-s, --strategy                   Strategy for collecting files [glob|git] in gemspec (default: glob)
+    --[no-]color
     --pretend
 ```
 
@@ -277,7 +306,9 @@ gem_name - name of the gem (optional, will use the first gemspec, or all gemspec
     --host HOST                  Push to a compatible host other than rubygems.org
 -k, --key KEY                    Use the API key from ~/.gem/credentials
 -t, --tag                        Shortcut for running the `gem tag` command
+-p, --push                       Push tag to the remote git repository
     --recurse                    Recurse into directories that contain gemspec files
+    --[no-]color
     --pretend
 ```
 
@@ -301,8 +332,10 @@ Tags the HEAD commit with the gem's current version.
 ### Options
 
 ```
--p, --[no]-push                  Push tag to the remote git repository
-    --remote REMOTE              Git remote to push to (defaults to origin)
+-p, --[no-]push                  Push tag to the remote git repository
+    --remote REMOTE              Git remote to push to (default: origin)
+-s, --sign                       GPG sign the tag
+    --[no-]color
     --pretend
 ```
 
