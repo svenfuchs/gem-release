@@ -104,6 +104,25 @@ describe Gem::Release::Cmds::Bump do
     it { should run_cmd "git commit -m \"Bump tmp to 1.0.1 [skip ci]\"" }
   end
 
+
+  describe 'given --branch' do
+    let(:opts) { { branch: true } }
+    version 'lib/tmp'
+    run_cmd
+
+    it { should output 'Checking out branch v1.0.1' }
+    it { expect(cmds).to include 'git checkout -b v1.0.1' }
+  end
+
+  describe 'given --branch name' do
+    let(:opts) { { branch: 'name' } }
+    version 'lib/tmp'
+    run_cmd
+
+    it { should output 'Checking out branch name' }
+    it { expect(cmds).to include 'git checkout -b name' }
+  end
+
   describe 'given --no-commit' do
     let(:opts) { { commit: false } }
     version 'lib/tmp'

@@ -43,6 +43,7 @@ module Gem
 
         DESCR = {
           version: 'Target version: next [major|minor|patch|pre|release] or a given version number [x.x.x]',
+          branch:  'Check out a new branch for the target version (e.g. `v1.0.0`)',
           commit:  'Create a commit after incrementing gem version',
           message: 'Commit message template',
           skip_ci: 'Add the [skip ci] tag to the commit message',
@@ -59,6 +60,7 @@ module Gem
           commit:  true,
           message: 'Bump %{name} to %{version} %{skip_ci}',
           push:    false,
+          branch:  false,
           remote:  'origin',
           skip_ci: false,
           sign:    false,
@@ -94,6 +96,10 @@ module Gem
           opts[:sign] = value
         end
 
+        opt '--branch [BRANCH]', descr(:branch) do |value|
+          opts[:branch] = value.nil? ? true : value
+        end
+
         opt '-t', '--tag', descr(:tag) do |value|
           opts[:tag] = value
         end
@@ -114,6 +120,7 @@ module Gem
           bump:          'Bumping %s from version %s to %s',
           version:       'Changing version in %s from %s to %s',
           git_add:       'Staging %s',
+          git_checkout:  'Checking out branch %s',
           git_commit:    'Creating commit',
           git_push:      'Pushing to the %s git repository',
           git_dirty:     'Uncommitted changes found. Please commit or stash.',
@@ -122,14 +129,16 @@ module Gem
         }
 
         CMDS = {
-          git_add:    'git add %s',
-          git_commit: 'git commit -m %p %s',
-          git_push:   'git push %s'
+          git_checkout: 'git checkout -b %s',
+          git_add:      'git add %s',
+          git_commit:   'git commit -m %p %s',
+          git_push:     'git push %s'
         }
 
         def run
           in_gem_dirs do
             validate
+            checkout if opts[:branch]
             bump
             commit if opts[:commit]
             push   if opts[:commit] && opts[:push]
@@ -145,6 +154,10 @@ module Gem
             abort :git_dirty unless git.clean?
             abort :no_git_remote, remote if push? && !git.remotes.include?(remote.to_s)
             abort :not_found, gem.name, version.path || '?' unless version.exists?
+          end
+
+          def checkout
+            cmd :git_checkout, branch
           end
 
           def bump
@@ -169,6 +182,15 @@ module Gem
 
           def release
             Release.new(context, args, except(opts, :tag)).run
+          end
+
+          def branch
+            case opts[:branch]
+            when ::String
+              opts[:branch]
+            when true
+              "v#{version.to}"
+            end
           end
 
           def message
