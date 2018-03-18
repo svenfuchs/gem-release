@@ -44,9 +44,7 @@ module Gem
 
           def num
             return if to_release?
-            part = parts[4].to_i
-            part += 1 if from_release? || same_stage?
-            part
+            same_stage? ? parts[4].to_i + 1 : 1
           end
 
           def to?(*targets)
