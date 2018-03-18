@@ -112,7 +112,7 @@ module Gem
           opts[:recurse] = value
         end
 
-        opt '--file', descr(:file) do |value|
+        opt '--file FILE', descr(:file) do |value|
           opts[:file] = value
         end
 
