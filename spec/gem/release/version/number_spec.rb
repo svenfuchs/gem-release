@@ -199,4 +199,88 @@ describe Gem::Release::Version::Number do
       it { should eq '1.0.0.rc.1' }
     end
   end
+
+  describe 'given 1.0' do
+    let(:number) { '1.0' }
+
+    describe 'given target: 1.2.3' do
+      let(:target) { '1.2.3' }
+      it { should eq '1.2.3' }
+    end
+
+    describe 'given target: :major' do
+      let(:target) { :major }
+      it { should eq '2.0.0' }
+    end
+
+    describe 'given target: :minor' do
+      let(:target) { :minor }
+      it { should eq '1.1.0' }
+    end
+
+    describe 'given target: :patch' do
+      let(:target) { :patch }
+      it { should eq '1.0.1' }
+    end
+
+    describe 'given target: nil (defaults to :patch)' do
+      let(:target) { nil }
+      it { should eq '1.0.1' }
+    end
+
+    describe 'given target: :pre' do
+      let(:target) { :pre }
+      it { should eq '1.1.0.pre.1' }
+    end
+
+    describe 'given target: :rc' do
+      let(:target) { :rc }
+      it { should eq '1.1.0.rc.1' }
+    end
+  end
+
+  describe 'given 1' do
+    let(:number) { '1' }
+
+    describe 'given target: 1.2.3' do
+      let(:target) { '1.2.3' }
+      it { should eq '1.2.3' }
+    end
+
+    describe 'given target: :major' do
+      let(:target) { :major }
+      it { should eq '2.0.0' }
+    end
+
+    describe 'given target: :minor' do
+      let(:target) { :minor }
+      it { should eq '1.1.0' }
+    end
+
+    describe 'given target: :patch' do
+      let(:target) { :patch }
+      it { should eq '1.0.1' }
+    end
+
+    describe 'given target: nil (defaults to :patch)' do
+      let(:target) { nil }
+      it { should eq '1.0.1' }
+    end
+
+    describe 'given target: :pre' do
+      let(:target) { :pre }
+      it { should eq '1.1.0.pre.1' }
+    end
+
+    describe 'given target: :rc' do
+      let(:target) { :rc }
+      it { should eq '1.1.0.rc.1' }
+    end
+  end
+
+  describe 'given A' do
+    let(:number) { 'A' }
+    let(:target) { :major }
+    it { expect { subject }.to raise_error(Gem::Release::Abort, 'Cannot parse version number A') }
+  end
 end

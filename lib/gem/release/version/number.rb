@@ -2,7 +2,7 @@ module Gem
   module Release
     module Version
       class Number < Struct.new(:number, :target)
-        NUMBER = /^(\d+)\.(\d+).(\d+).?(\w+)?.?(\d+)?$/
+        NUMBER = /^(\d+)\.?(\d+)?\.?(\d+)?\.?(\w+)?\.?(\d+)?$/
 
         STAGES = %i(alpha beta pre rc)
 
@@ -25,14 +25,14 @@ module Gem
           end
 
           def minor
-            part = parts[1]
+            part = parts[1].to_i
             part = 0 if to?(:major)
             part += 1 if to?(:minor) || fresh_pre_release?
             part
           end
 
           def patch
-            part = parts[2]
+            part = parts[2].to_i
             part = 0 if to?(:major, :minor) || fresh_pre_release?
             part += 1 if to?(:patch) && from_release?
             part
@@ -89,12 +89,18 @@ module Gem
 
           def parts
             @parts ||= matches.compact.map(&:to_i).tap do |parts|
-              parts[3] = matches[3] && matches[3].to_sym
+              parts[3] = matches[3].to_sym if matches[3]
             end
           end
 
           def matches
-            @matches ||= number.match(NUMBER).to_a[1..-1]
+            @matches ||= parse.to_a[1..-1]
+          end
+
+          def parse
+            matches = number.match(NUMBER)
+            raise Abort, "Cannot parse version number #{number}" unless matches
+            matches
           end
       end
     end
