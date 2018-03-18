@@ -51,9 +51,7 @@ module Gem
       end
 
       def execute
-        args = opts.delete(:args)
-        context = Context.new(opts)
-        Cmds::Runner.new(context, cmd, args, opts).run
+        Cmds::Runner.new(cmd, opts.delete(:args), opts).run
       rescue Abort
         abort
       end

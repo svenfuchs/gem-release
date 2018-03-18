@@ -33,14 +33,6 @@ module Gem
         end
       end
 
-      # def format_msg(msg, args)
-      #   ui.format_msg(msg, args, self.class::MSGS)
-      # end
-
-      def tty?
-        $stdout.tty?
-      end
-
       def abort(msg, *args)
         msg = self.class::MSGS[msg] % args if msg.is_a?(Symbol)
         msg = "#{msg} Aborting."

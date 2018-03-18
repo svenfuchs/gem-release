@@ -7,11 +7,11 @@ module Gem
             const = Quiet if opts[:quiet]
             const ||= Tty if $stdout.tty?
             const ||= Pipe
-            const.new
+            const.new(opts)
           end
         end
 
-        class Base
+        class Base < Struct.new(:opts)
           attr_writer :stdout
 
           def stdout
@@ -24,14 +24,14 @@ module Gem
         end
 
         class Pipe < Base
-          %i(announce info notice warn error success).each do |name|
-            define_method (name) do | msg, args, _|
+          %i(announce info notice warn error).each do |name|
+            define_method (name) do |msg, args = nil, _ = nil|
               puts format_msg(msg, args)
             end
           end
 
-          def cmd(*)
-            # noop
+          %i(success cmd).each do |name|
+            define_method (name) { |*| }
           end
 
           private
@@ -106,6 +106,10 @@ module Gem
           end
 
           private
+
+            def colored(color, str)
+              opts[:color] ? super : str
+            end
 
             def format_msg(msg, args, msgs)
               msg = msgs[msg] % args if msg.is_a?(Symbol)
