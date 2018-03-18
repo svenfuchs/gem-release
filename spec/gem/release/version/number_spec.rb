@@ -142,7 +142,7 @@ describe Gem::Release::Version::Number do
     end
   end
 
-  describe 'given 1.1.1.pre.1' do
+  describe 'given 1.1.1-pre.1' do
     let(:number) { '1.1.1-pre.1' }
 
     describe 'given target: :major' do
@@ -176,7 +176,7 @@ describe Gem::Release::Version::Number do
     end
   end
 
-  describe 'given 1.1.1.rc.1' do
+  describe 'given 1.1.1-rc.1' do
     let(:number) { '1.1.1-rc.1' }
 
     describe 'given target: :major' do
@@ -210,7 +210,7 @@ describe Gem::Release::Version::Number do
     end
   end
 
-  describe 'given 1.0.0.alpha.1' do
+  describe 'given 1.0.0-alpha.1' do
     let(:number) { '1.0.0-alpha.1' }
 
     describe 'given target: :alpha' do
@@ -233,6 +233,75 @@ describe Gem::Release::Version::Number do
       it { should eq '1.0.0-rc.1' }
     end
   end
+
+  describe 'given 1.1.1.pre.1' do
+    let(:number) { '1.1.1.pre.1' }
+
+    describe 'given target: :major' do
+      let(:target) { :major }
+      it { should eq '2.0.0' }
+    end
+
+    describe 'given target: :minor' do
+      let(:target) { :minor }
+      it { should eq '1.2.0' }
+    end
+
+    describe 'given target: :patch' do
+      let(:target) { :patch }
+      it { should eq '1.1.1' }
+    end
+
+    describe 'given target: :pre' do
+      let(:target) { :pre }
+      it { should eq '1.1.1.pre.2' }
+    end
+
+    describe 'given target: nil (defaults to :pre)' do
+      let(:target) { nil }
+      it { should eq '1.1.1.pre.2' }
+    end
+
+    describe 'given target: :rc' do
+      let(:target) { :rc }
+      it { should eq '1.1.1.rc.1' }
+    end
+  end
+
+  describe 'given 1.1.1-rc.1' do
+    let(:number) { '1.1.1-rc.1' }
+
+    describe 'given target: :major' do
+      let(:target) { :major }
+      it { should eq '2.0.0' }
+    end
+
+    describe 'given target: :minor' do
+      let(:target) { :minor }
+      it { should eq '1.2.0' }
+    end
+
+    describe 'given target: :patch' do
+      let(:target) { :patch }
+      it { should eq '1.1.1' }
+    end
+
+    describe 'given target: :pre' do
+      let(:target) { :pre }
+      it { expect { subject }.to raise_error('Cannot go from an rc version to a pre version') }
+    end
+
+    describe 'given target: nil (defaults to :rc)' do
+      let(:target) { nil }
+      it { should eq '1.1.1-rc.2' }
+    end
+
+    describe 'given target: :rc' do
+      let(:target) { :rc }
+      it { should eq '1.1.1-rc.2' }
+    end
+  end
+
 
   describe 'given 1.0' do
     let(:number) { '1.0' }
@@ -264,12 +333,12 @@ describe Gem::Release::Version::Number do
 
     describe 'given target: :pre' do
       let(:target) { :pre }
-      it { should eq '1.1.0.pre.1' }
+      it { should eq '1.1.0-pre.1' }
     end
 
     describe 'given target: :rc' do
       let(:target) { :rc }
-      it { should eq '1.1.0.rc.1' }
+      it { should eq '1.1.0-rc.1' }
     end
   end
 
@@ -303,12 +372,12 @@ describe Gem::Release::Version::Number do
 
     describe 'given target: :pre' do
       let(:target) { :pre }
-      it { should eq '1.1.0.pre.1' }
+      it { should eq '1.1.0-pre.1' }
     end
 
     describe 'given target: :rc' do
       let(:target) { :rc }
-      it { should eq '1.1.0.rc.1' }
+      it { should eq '1.1.0-rc.1' }
     end
   end
 

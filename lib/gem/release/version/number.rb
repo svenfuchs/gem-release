@@ -2,15 +2,16 @@ module Gem
   module Release
     module Version
       class Number < Struct.new(:number, :target)
-        NUMBER = /^(\d+)\.?(\d+)?\.?(\d+)?\-?(\w+)?\.?(\d+)?$/
+        NUMBER = /^(\d+)\.?(\d+)?\.?(\d+)?(\-|\.)?(\w+)?\.?(\d+)?$/
 
         STAGES = %i(alpha beta pre rc)
 
         def bump
           return target if specific?
           validate_stage
-          [major, minor, patch].compact.join('.') +
-            (stage ? '-' + [stage, num].join('.') : '')
+          parts = [[major, minor, patch].compact.join('.')]
+          parts << [stage, num].join('.') if stage
+          parts.join(stage_delim)
         end
 
         private
@@ -43,9 +44,13 @@ module Gem
             target unless to_release?
           end
 
+          def stage_delim
+            parts[3] || '-'
+          end
+
           def num
             return if to_release?
-            same_stage? ? parts[4].to_i + 1 : 1
+            same_stage? ? parts[5].to_i + 1 : 1
           end
 
           def to?(*targets)
@@ -73,7 +78,7 @@ module Gem
           end
 
           def from_stage
-            parts[3]
+            parts[4]
           end
 
           def target
@@ -88,7 +93,8 @@ module Gem
 
           def parts
             @parts ||= matches.compact.map(&:to_i).tap do |parts|
-              parts[3] = matches[3].to_sym if matches[3]
+              parts[3] = matches[3]
+              parts[4] = matches[4].to_sym if matches[4]
             end
           end
 
