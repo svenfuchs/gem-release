@@ -28,7 +28,8 @@ module Gem
           end
 
           def success
-            context.ui.success "All is good, thanks my friend." unless quiet?
+            return if quiet? || !$stdout.tty?
+            context.ui.success "All is good, thanks my friend."
           end
 
           def quiet?

@@ -62,7 +62,8 @@ module Gem
           remote:  'origin',
           skip_ci: false,
           sign:    false,
-          recurse: false
+          recurse: false,
+          pretend: false
         }
 
         opt '-v', '--version VERSION', descr(:version) do |value|

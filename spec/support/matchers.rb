@@ -36,15 +36,23 @@ RSpec::Matchers.define :have_version do |path, version|
   end
 end
 
-RSpec::Matchers.define :output do |line|
+RSpec::Matchers.define :output do |str|
   match do |e|
-    out.include?(line)
+    out.any? { |line| line.include?(str) }
   end
 
   failure_message do
     <<~msg
-      Expected the stdout to include the line #{line.inspect}, but it does not.\n
-      Instead stdout is:\n
+      Expected stdout to include the string #{str.inspect}, but it does not.\n
+      stdout is:\n
+      #{out.join("\n")}
+    msg
+  end
+
+  failure_message_when_negated do
+    <<~msg
+      Expected stdout to not include the string #{str.inspect}, but it does.\n
+      stdout is:\n
       #{out.join("\n")}
     msg
   end

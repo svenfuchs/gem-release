@@ -187,4 +187,20 @@ describe Gem::Release::Cmds::Bump do
     before { allow(git).to receive(:clean?).and_return(false) }
     it { expect { run }.to raise_error('Uncommitted changes found. Please commit or stash. Aborting.') }
   end
+
+  describe 'stdout is not a tty (pipe attached)' do
+    before { allow($stdout).to receive(:tty?).and_return false }
+
+    cwd     'foo-bar'
+    version 'lib/foo/bar'
+    run_cmd
+
+    it { should output 'bump foo-bar 1.0.0 1.0.1' }
+    it { should output 'version lib/foo/bar/version.rb 1.0.0 1.0.1' }
+    it { should output 'git_add lib/foo/bar/version.rb' }
+    it { should output 'git_commit "Bump foo-bar to 1.0.1"' }
+
+    it { should_not output '$ git add lib/foo/bar/version.rb' }
+    it { should_not output 'All is good, thanks my friend.' }
+  end
 end
