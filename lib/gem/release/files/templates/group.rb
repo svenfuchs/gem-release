@@ -22,7 +22,9 @@ module Gem
           private
 
             def pattern
-              "{#{paths.join(',')}}/{#{files.join(',')}}"
+              pattern = "{#{paths.join(',')}}"
+              pattern << "/{#{files.join(',')}}" if files.any?
+              pattern
             end
 
             def relative(file)

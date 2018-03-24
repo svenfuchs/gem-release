@@ -135,9 +135,10 @@ gem_name - name of the gem (optional, will default to the current directory name
 ```
     --[no-]scaffold              Scaffold gem files (default: true)
     --dir DIR                    Directory to place the gem in (defaults to the given name, or the current working dir)
+    --bin                        Create an executable ./bin/[name], add executables directive to .gemspec
 -t, --template NAME              Template groups to use for scaffolding
     --rspec                      Use the rspec group (by default adds .rspec and spec/spec_helper.rb)
-    --travis                     Use the rspec group (by default adds .travis.yml)
+    --travis                     Use the travis group (by default adds .travis.yml)
 -l, --[no-]license NAME          License(s) to add (default: mit)
 -s, --strategy NAME              Strategy for collecting files [glob|git] in .gemspec (default: glob)
     --[no-]git                   Initialize a git repo (default: true)

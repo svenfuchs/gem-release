@@ -13,12 +13,13 @@ module Gem
           'version.rb' => 'lib/%{gem_path}/version.rb'
         }
 
-        attr_accessor :source, :target, :data
+        attr_accessor :source, :target, :data, :opts
 
-        def initialize(source, target, data)
+        def initialize(source, target, data, opts)
           @source = source
           @target = (FILES[target] || target) % data
           @data   = data
+          @opts   = opts
         end
 
         PATH = File.expand_path('../..', __FILE__)
@@ -31,6 +32,7 @@ module Gem
           return false if exists?
           FileUtils.mkdir_p(File.dirname(target))
           File.write(target, render)
+          FileUtils.chmod('+x', target) if opts[:executable]
           true
         end
 

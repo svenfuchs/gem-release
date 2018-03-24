@@ -60,6 +60,7 @@ module Gem
         DEFAULTS = {
           strategy:  :glob,
           scaffold:  true,
+          bin:       false,
           git:       true,
           github:    false,
           push:      false,
@@ -70,10 +71,11 @@ module Gem
         DESCR = {
           scaffold: 'Scaffold gem files',
           dir:      'Directory to place the gem in (defaults to the given name, or the current working dir)',
+          bin:      'Create an executable ./bin/[name], add executables directive to .gemspec',
           license:  'License(s) to add',
           template: 'Template groups to use for scaffolding',
           rspec:    'Use the rspec group (by default adds .rspec and spec/spec_helper.rb)',
-          travis:   'Use the rspec group (by default adds .travis.yml)',
+          travis:   'Use the travis group (by default adds .travis.yml)',
           strategy: 'Strategy for collecting files [glob|git] in .gemspec',
           git:      'Initialize a git repo',
           github:   'Initialize a git repo, create on github',
@@ -87,6 +89,10 @@ module Gem
 
         opt '--dir DIR', descr(:dir) do |value|
           opts[:dir] = value
+        end
+
+        opt '--bin', descr(:bin) do
+          opts[:bin] = true
         end
 
         opt '-t', '--template NAME', descr(:template) do |value|
@@ -170,8 +176,13 @@ module Gem
 
           def files
             files = Files::Templates.new(FILES, opts[:templates], data).all
+            files << executable if opts[:bin]
             files << license if opts[:license]
             files.compact
+          end
+
+          def executable
+            Files::Templates.executable("bin/#{gem.name}")
           end
 
           def license

@@ -106,6 +106,34 @@ describe Gem::Release::Cmds::Bootstrap do
     end
   end
 
+  describe 'given --bin' do
+    cwd 'foo-bar'
+    let(:opts) { { bin: true } }
+    let(:spec) { File.read('foo-bar.gemspec') }
+
+    describe 'by default' do
+      run_cmd
+
+      it { should have_file 'bin/foo-bar', '#!/usr/bin/env ruby' }
+    end
+
+    describe 'with custom template ./.gem-release/executable' do
+      file './.gem-release/executable', 'foo'
+      run_cmd
+
+      it { should have_file 'bin/foo-bar', 'foo' }
+      it { expect(spec).to specify :executables, "Dir.glob('bin/*')" }
+    end
+
+    describe 'with custom template ~/.gem-release/executable' do
+      file '~/.gem-release/executable', 'foo'
+      run_cmd
+
+      it { should have_file 'bin/foo-bar', 'foo' }
+      it { expect(spec).to specify :executables, "Dir.glob('bin/*')" }
+    end
+  end
+
   describe 'given --rspec' do
     let(:opts) { { rspec: true } }
 
