@@ -75,7 +75,7 @@ end
 RSpec::Matchers.define :specify do |name, value|
   match do |gemspec|
     line = gemspec.split("\n").detect { |line| line =~ /#{name}\s+=/ }
-    line.include?(value)
+    line && line.include?(value)
   end
 
   failure_message do |gemspec|

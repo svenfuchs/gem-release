@@ -29,10 +29,15 @@ module Gem
         }
 
         DESCR = {
+          bin:      'Add bin files directive to the gemspec (defaults to true if a ./bin directory exists)',
           dir:      'Directory to place the gem in (defaults to the given name, or the current working dir)',
           license:  'License(s) to list in the gemspec',
           strategy: 'Strategy for collecting files [glob|git] in gemspec'
         }
+
+        opt '--[no]-bin', descr(:bin) do |value|
+          opts[:bin] = value
+        end
 
         opt '--dir DIR', descr(:dir) do |value|
           opts[:dir] = value

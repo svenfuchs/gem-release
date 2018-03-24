@@ -64,6 +64,52 @@ describe Gem::Release::Cmds::Gemspec do
     end
   end
 
+  describe 'bin files' do
+    describe 'given --bin' do
+      run_cmd
+
+      describe 'default (glob)' do
+        let(:opts) { { bin: true } }
+        it { expect(spec).to specify :executables, "Dir.glob('bin/*')" }
+      end
+
+      describe 'given --strategy git' do
+        let(:opts) { { bin: true, strategy: :git } }
+        it { expect(spec).to specify :executables, '`git ls-files bin`' }
+      end
+    end
+
+    describe 'given a directory ./bin' do
+      file './bin/foo'
+      run_cmd
+
+      describe 'default (glob)' do
+        it { expect(spec).to specify :executables, "Dir.glob('bin/*')" }
+      end
+
+      describe 'given --strategy git' do
+        let(:opts) { { strategy: :git } }
+        it { expect(spec).to specify :executables, '`git ls-files bin`' }
+      end
+    end
+
+    describe 'given --no-bin and a directory ./bin' do
+      file './bin/foo'
+      run_cmd
+
+      describe 'default (glob)' do
+        let(:opts) { { bin: false } }
+        it { expect(spec).to_not specify :executables }
+      end
+
+      describe 'given --strategy git' do
+        let(:opts) { { bin: false, strategy: :git } }
+        it { expect(spec).to_not specify :executables }
+      end
+    end
+
+  end
+
   describe 'license' do
     run_cmd
 
