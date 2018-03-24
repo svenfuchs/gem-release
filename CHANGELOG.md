@@ -23,4 +23,6 @@ This is a major rewrite, 7 years after the initial implementation.
 * Add `--branch` to `gem bump` in order to switch to a new branch
 * Add `--sign` to `gem bump` and `gem tag` in order to GPG sign commits and tags
 * Add `--no-color` to all commands
-* Support version files of gems with an `*_rb` suffix
+* Support version files of gems with an `\*\_rb` suffix
+* Add `--bin` to `gem gemspec`, add executables to gemspec
+* Add `--bin` to `gem bootstrap`, create executables
