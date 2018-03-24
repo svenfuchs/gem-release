@@ -18,7 +18,8 @@ module Gem
           licenses:     licenses,
           summary:      '[summary]',
           description:  '[description]',
-          files:        files
+          files:        files,
+          bin_files:    bin_files
         }
       end
 
@@ -61,6 +62,14 @@ module Gem
         end
 
         def files
+          strategy[:files]
+        end
+
+        def bin_files
+          strategy[:bin_files] if opts.key?(:bin) ? opts[:bin] : File.directory?('./bin')
+        end
+
+        def strategy
           STRATEGIES[(opts[:strategy] || :glob).to_sym] || STRATEGIES[:glob]
         end
     end

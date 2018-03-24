@@ -269,6 +269,7 @@ gem_name - name of the gem (optional, will default to the current directory name
 ### Options
 
 ```
+    --[no]-bin                   Add bin files directive to the gemspec (defaults to true if a ./bin directory exists)
     --dir DIR                    Directory to place the gem in (defaults to the given name, or the current working dir)
 -l, --[no-]license NAMES         License(s) to list in the gemspec
 -s, --strategy                   Strategy for collecting files [glob|git] in gemspec (default: glob)

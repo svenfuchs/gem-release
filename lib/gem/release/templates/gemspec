@@ -13,7 +13,9 @@ Gem::Specification.new do |s|
   s.summary       = '<%= summary %>'
   s.description   = '<%= description %>'
 
-  s.files         = <%= files %>
+  s.files         = <%= files %><% if bin_files %>
+  s.executables   = <%= bin_files %>
+<% end %>
   s.platform      = Gem::Platform::RUBY
   s.require_paths = ['lib']
 end
