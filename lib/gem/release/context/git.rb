@@ -26,7 +26,7 @@ module Gem
 
         def user_login
           str = `git config --get github.user`.strip
-          str.empty? ? git_user_name : str
+          str.empty? ? user_name : str
         end
       end
     end
