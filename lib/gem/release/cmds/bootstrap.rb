@@ -8,7 +8,7 @@ module Gem
       class Bootstrap < Base
         summary 'Scaffolds a new gem from template files.'
 
-        description <<~str
+        description <<-str.split("\n").map(&:lstrip).join("\n")
           #{summary} Optionally initialize a git repository, set a git remote, and push
           to the remote repository.
 

@@ -8,7 +8,7 @@ module Gem
       class Gemspec < Base
         summary 'Generates a gemspec.'
 
-        description <<~str
+        description <<-str.split("\n").map(&:lstrip).join("\n")
           #{summary}
 
           If no argument is given the current directory name is used as the gem name. If

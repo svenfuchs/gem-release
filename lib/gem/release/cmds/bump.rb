@@ -7,7 +7,7 @@ module Gem
       class Bump < Base
         summary 'Bumps one, several, or all gems in this directory.'
 
-        description <<~str
+        description <<-str.split("\n").map(&:lstrip).join("\n")
           Bumps the version number defined in lib/[gem_name]/version.rb to to a given,
           specific version number, or to the next major, minor, patch, or pre-release
           level.
