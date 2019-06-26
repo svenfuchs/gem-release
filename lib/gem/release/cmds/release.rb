@@ -83,7 +83,7 @@ module Gem
           end
 
           def release
-            announce :release, gem.name, gem.version
+            announce :release, gem.name, target_version
             build
             push
           ensure
@@ -110,6 +110,10 @@ module Gem
 
           def cleanup
             cmd :cleanup, gem.filename
+          end
+
+          def target_version
+            opts[:version] || gem.version
           end
       end
     end
