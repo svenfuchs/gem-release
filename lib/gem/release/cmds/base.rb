@@ -61,7 +61,7 @@ module Gem
           color:   true,
           pretend: false,
           quiet:   false
-        }
+        }.freeze
 
         opt '--[no-]color' do |value|
           opts[:color] = value

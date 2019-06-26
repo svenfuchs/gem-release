@@ -54,7 +54,7 @@ module Gem
           recurse: 'Recurse into directories that contain gemspec files',
           release: 'Shortcut for the `gem release` command',
           file:    'Full path to the version file'
-        }
+        }.freeze
 
         DEFAULTS = {
           commit:  true,
@@ -66,7 +66,7 @@ module Gem
           sign:    false,
           recurse: false,
           pretend: false
-        }
+        }.freeze
 
         opt '-v', '--version VERSION', descr(:version) do |value|
           opts[:version] = value
@@ -126,14 +126,14 @@ module Gem
           git_dirty:     'Uncommitted changes found. Please commit or stash.',
           not_found:     'Ignoring %s. Version file %s not found.',
           no_git_remote: 'Cannot push to missing git remote %s.'
-        }
+        }.freeze
 
         CMDS = {
           git_checkout: 'git checkout -b %s',
           git_add:      'git add %s',
           git_commit:   'git commit -m %p %s',
           git_push:     'git push %s'
-        }
+        }.freeze
 
         def run
           in_gem_dirs do

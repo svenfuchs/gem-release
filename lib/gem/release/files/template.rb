@@ -11,7 +11,7 @@ module Gem
           'license'    => 'MIT-LICENSE.md',
           'main.rb'    => 'lib/%{gem_path}.rb',
           'version.rb' => 'lib/%{gem_path}/version.rb'
-        }
+        }.freeze
 
         attr_accessor :source, :target, :data, :opts
 

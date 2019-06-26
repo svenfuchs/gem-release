@@ -27,13 +27,13 @@ module Gem
           push:   false,
           remote: 'origin',
           sign:   false
-        }
+        }.freeze
 
         DESCR = {
           push:   'Push tag to the remote git repository',
           remote: 'Git remote to push to',
           sign:   'GPG sign the tag',
-        }
+        }.freeze
 
         opt '-p', '--[no-]push', descr(:push) do |value|
           opts[:push] = value
@@ -54,12 +54,12 @@ module Gem
           git_push:  'Pushing tags to the %s git repository',
           no_remote: 'Cannot push to missing git remote %s',
           git_dirty: 'Uncommitted changes found. Please commit or stash.',
-        }
+        }.freeze
 
         CMDS = {
           git_tag:   'git tag -am "tag %s" %s %s',
           git_push:  'git push --tags %s'
-        }
+        }.freeze
 
         def run
           in_gem_dirs do

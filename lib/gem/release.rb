@@ -11,7 +11,7 @@ module Gem
         files: "Dir.glob('{bin/*,lib/**/*,[A-Z]*}')",
         bin_files: "Dir.glob('bin/*').map { |f| File.basename(f) }",
       }
-    }
+    }.freeze
   end
 end
 

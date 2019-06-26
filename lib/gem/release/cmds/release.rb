@@ -26,7 +26,7 @@ module Gem
           tag:     false,
           push:    false,
           recurse: false
-        }
+        }.freeze
 
         DESCR = {
           host:    'Push to a compatible host other than rubygems.org',
@@ -34,7 +34,7 @@ module Gem
           tag:     'Shortcut for running the `gem tag` command',
           push:   'Push tag to the remote git repository',
           recurse: 'Recurse into directories that contain gemspec files'
-        }
+        }.freeze
 
         opt '-h', '--host HOST', descr(:host) do |value|
           opts[:host] = value
@@ -62,11 +62,11 @@ module Gem
           push:      'Pushing %s',
           cleanup:   'Deleting left over gem file %s',
           git_dirty: 'Uncommitted changes found. Please commit or stash.',
-        }
+        }.freeze
 
         CMDS = {
           cleanup: 'rm -f %s'
-        }
+        }.freeze
 
         def run
           in_gem_dirs do

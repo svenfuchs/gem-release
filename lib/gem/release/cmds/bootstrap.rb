@@ -66,7 +66,7 @@ module Gem
           push:      false,
           license:   :mit,
           templates: []
-        }
+        }.freeze
 
         DESCR = {
           scaffold: 'Scaffold gem files',
@@ -81,7 +81,7 @@ module Gem
           github:   'Initialize a git repo, create on github',
           remote:   'Git remote repository',
           push:     'Push the git repo to github'
-        }
+        }.freeze
 
         opt '--[no-]scaffold', descr(:scaffold) do |value|
           opts[:scaffold] = value
@@ -141,7 +141,7 @@ module Gem
           git_remote:      'Adding git remote %s',
           git_push:        'Pushing to git remote %s',
           unknown_license: 'Unknown license: %s'
-        }
+        }.freeze
 
         CMDS = {
           git_init:   'git init',
@@ -149,7 +149,7 @@ module Gem
           git_commit: 'git commit -m "Initial commit"',
           git_remote: 'git remote add %s https://github.com/%s.git',
           git_push:   'git push -u %s master'
-        }
+        }.freeze
 
         def run
           in_dirs do

@@ -61,7 +61,7 @@ module Gem
             blue:   "\e[34m",
             gray:   "\e[37m",
             reset:  "\e[0m"
-          }
+          }.freeze
 
           def colored(color, str)
             [COLORS[color], str, COLORS[:reset]].join
