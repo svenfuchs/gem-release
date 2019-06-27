@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.0.2 - 2019-06-17
+
+### Fixed
+
+- Fix typo triggered by `gem bootstrap`  
+  (PR: https://github.com/svenfuchs/gem-release/pull/78)
+
+## v2.0.1 - 2018-06-17
+
+`2.0.0` is yanked due to bad release  
+So this version is the real `2.0.0`  
+
 ## v2.0.0
 
 This is a major rewrite, 7 years after the initial implementation.
