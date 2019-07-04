@@ -8,7 +8,7 @@ module Gem
       class Release < Base
         summary 'Releases one or all gems in this directory.'
 
-        description <<~str
+        description <<-str.split("\n").map(&:lstrip).join("\n")
           Builds one or many gems from the given gemspec(s), pushes them to rubygems.org
           (or another, compatible host), and removes the left over gem file.
 

@@ -42,7 +42,7 @@ RSpec::Matchers.define :output do |str|
   end
 
   failure_message do
-    <<~msg
+    <<-msg.split("\n").map(&:lstrip).join("\n")
       Expected stdout to include the string #{str.inspect}, but it does not.\n
       stdout is:\n
       #{out.join("\n")}
@@ -50,7 +50,7 @@ RSpec::Matchers.define :output do |str|
   end
 
   failure_message_when_negated do
-    <<~msg
+    <<-msg.split("\n").map(&:lstrip).join("\n")
       Expected stdout to not include the string #{str.inspect}, but it does.\n
       stdout is:\n
       #{out.join("\n")}
@@ -64,7 +64,7 @@ RSpec::Matchers.define :run_cmd do |cmd|
   end
 
   failure_message do
-    <<~msg
+    <<-msg.split("\n").map(&:lstrip).join("\n")
       Expected the command `#{cmd}` to have run, but it did not.\n
       Run commands are:\n
       #{cmds.join("\n")}
@@ -79,7 +79,7 @@ RSpec::Matchers.define :specify do |name, value|
   end
 
   failure_message do |gemspec|
-    <<~msg
+    <<-msg.split("\n").map(&:lstrip).join("\n")
       Expected this gemspec to specify #{name} as #{value.inspect}, but it did not.\n
       The gemspec is:\n
       #{gemspec}

@@ -6,7 +6,7 @@ module Gem
       class Tag < Base
         summary "Tags the HEAD commit with the gem's current version."
 
-        description <<~str
+        description <<-str.split("\n").map(&:lstrip).join("\n")
           Creates an annotated tag for the current HEAD commit, using the gem's
           current version.
 
