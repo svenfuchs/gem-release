@@ -136,16 +136,18 @@ module Gem
         }.freeze
 
         def run
+          new_version = nil
           in_gem_dirs do
             validate
             checkout if opts[:branch]
             bump
+            new_version = version.to
             commit if opts[:commit]
             push   if opts[:commit] && opts[:push]
             reset
           end
-          tag     if opts[:tag]
-          release if opts[:release]
+          tag(new_version)     if opts[:tag]
+          release(new_version) if opts[:release]
         end
 
         private
@@ -176,12 +178,12 @@ module Gem
             cmd :git_push, remote
           end
 
-          def tag
-            Tag.new(context, args, opts).run
+          def tag(new_version)
+            Tag.new(context, args, opts.merge(version: new_version)).run
           end
 
-          def release
-            Release.new(context, args, except(opts, :tag)).run
+          def release(new_version)
+            Release.new(context, args, except(opts, :tag).merge(version: new_version)).run
           end
 
           def branch

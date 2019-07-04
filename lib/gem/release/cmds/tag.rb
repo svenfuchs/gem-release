@@ -63,7 +63,7 @@ module Gem
 
         def run
           in_gem_dirs do
-            announce :tag, gem.name, gem.version
+            announce :tag, gem.name, target_version
             validate
             tag_and_push
           end
@@ -95,7 +95,7 @@ module Gem
           end
 
           def tag_name
-            "v#{gem.version}"
+            "v#{target_version}"
           end
 
           def push?
@@ -104,6 +104,10 @@ module Gem
 
           def remote
             opts[:remote]
+          end
+
+          def target_version
+            opts[:version] || gem.version
           end
       end
     end
