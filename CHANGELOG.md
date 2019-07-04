@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.0.3 - 2019-07-04
+
+### Fixed
+
+- Fix `gem-release` Heredoc for Ruby 2.2  
+  (PR: https://github.com/svenfuchs/gem-release/pull/82)
+- Partially Fix "gem bump tags the wrong version"  
+  (PR: https://github.com/svenfuchs/gem-release/pull/83)
+
 ## v2.0.2 - 2019-06-27
 
 ### Fixed
