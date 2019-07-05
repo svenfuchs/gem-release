@@ -23,7 +23,7 @@ module Gem
         end
 
         def const
-          Cmds[name] || raise("Unknonw command #{name}")
+          Cmds[name] || raise("Unknown command #{name}")
         end
 
         def usage
