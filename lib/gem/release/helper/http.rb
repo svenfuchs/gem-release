@@ -20,7 +20,9 @@ module Gem
             end
 
             def client
-              Net::HTTP.new(uri.host, uri.port)
+              http_client = Net::HTTP.new(uri.host, uri.port)
+              http_client.use_ssl = (uri.scheme == 'https')
+              http_client
             end
 
             def const

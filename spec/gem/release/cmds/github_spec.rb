@@ -8,7 +8,7 @@ describe Gem::Release::Cmds::Github do
   gemspec 'foo-bar'
 
   before { context.git.tags << 'v1.0.0' }
-  before { stub_request(:post, 'http://api.github.com:443/repos/foo/bar/releases').with(body: body).to_return(status: status) }
+  before { stub_request(:post, 'https://api.github.com:443/repos/foo/bar/releases').with(body: body).to_return(status: status) }
 
   describe 'by default' do
     run_cmd
