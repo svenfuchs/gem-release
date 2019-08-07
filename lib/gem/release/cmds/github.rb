@@ -25,7 +25,7 @@ module Gem
           token: 'GitHub OAuth token'
         }.freeze
 
-        opt '-d', '--description DESCRIPTION', descr(:desc) do |value|
+        opt '-d', '--description DESCRIPTION', descr(:descr) do |value|
           opts[:descr] = value
         end
 
@@ -38,7 +38,7 @@ module Gem
         end
 
         MSGS = {
-          release:  'Creating GitHub release for %s version %s',
+          release:  'Creating GitHub release for %s version %s.',
           no_tag:   'Tag %s does not exist. Run `gem tag` or pass `--tag`.',
           no_repo:  'Could not determine the repository name. Please pass `--repo REPO`, or set homepage or metadata[:github_url] to the GitHub repository URL in the gemspec.',
           no_token: 'Could not determine the GitHub OAuth token. Please pass `--token TOKEN`. See https://developer.github.com/v3/#oauth2-token-sent-in-a-header for more details.',
