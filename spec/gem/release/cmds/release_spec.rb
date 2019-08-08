@@ -76,21 +76,21 @@ describe Gem::Release::Cmds::Release do
   end
 
   describe 'given --github' do
-    let(:opts) { { github: true, repo: 'foo/bar', token: 'token' } }
+    let(:opts) { { github: true, repo: 'foo/bar', token: 'token', descr: 'A new foo bar' } }
 
-    let(:body)   { '{"tag_name":"v1.0.0","name":"foo-bar v1.0.0","body":null,"prerelease":false}' }
+    let(:body)   { '{"tag_name":"v1.0.0","name":"foo-bar v1.0.0","body":"A new foo bar","prerelease":false}' }
     let(:status) { 200 }
 
     gemspec 'foo-bar'
 
     before { context.git.tags << 'v1.0.0' }
-    before { stub_request(:post, 'http://api.github.com:443/repos/foo/bar/releases').with(body: body).to_return(status: status) }
+    before { stub_request(:post, 'https://api.github.com:443/repos/foo/bar/releases').with(body: body).to_return(status: status) }
 
     describe 'by default' do
       run_cmd
 
       it { should_not run_cmd 'git push --tags origin' }
-      it { should output  'Creating GitHub release for foo-bar version v1.0.0' }
+      it { should output 'Creating GitHub release for foo-bar version v1.0.0.' }
       it { should output 'All is good, thanks my friend.' }
     end
   end

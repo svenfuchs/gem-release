@@ -71,7 +71,7 @@ module Gem
 
         # region github
 
-        opt '-d', '--description DESCRIPTION', descr(:desc) do |value|
+        opt '-d', '--description DESCRIPTION', descr(:descr) do |value|
           opts[:descr] = value
         end
 
