@@ -12,7 +12,7 @@ module Gem
 
         MSGS = {
           error: 'GitHub returned %s (body: %p)'
-        }
+        }.freeze
 
         attr_reader :repo, :data
 
@@ -22,9 +22,11 @@ module Gem
         end
 
         def release
+          # Create a release
+          # https://developer.github.com/v3/repos/releases/#create-a-release
           resp = post(url, body, headers)
           status, body = resp
-          raise Abort, MSGS[:error] % [status, body] unless status == 200
+          raise Abort, MSGS.fetch(:error) % [status, body] unless status == 200
         end
 
         private
