@@ -52,8 +52,8 @@ module Gem
 
       def execute
         Cmds::Runner.new(cmd, opts.delete(:args), opts).run
-      rescue Abort
-        abort
+      rescue Abort => ex
+        abort(ex.message)
       end
 
       def cmd
