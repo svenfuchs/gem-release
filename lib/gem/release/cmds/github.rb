@@ -13,30 +13,6 @@ module Gem
           Requires a tag `v[version]` to be present or --tag to be given.
         str
 
-        DEFAULTS = {
-          tag: false,
-        }.freeze
-
-        DESCR = {
-          tag:   'Shortcut for running the `gem tag` command',
-          name:  'Name of the release (defaults to "[gem name] [version]")',
-          descr: 'Description of the release',
-          repo:  "Full name of the repository on GitHub, e.g. svenfuchs/gem-release (defaults to the repo name from the gemspec's homepage if this is a GitHub URL)",
-          token: 'GitHub OAuth token'
-        }.freeze
-
-        opt '-d', '--description DESCRIPTION', descr(:descr) do |value|
-          opts[:descr] = value
-        end
-
-        opt '-r', '--repo REPO', descr(:repo) do |value|
-          opts[:repo] = value
-        end
-
-        opt '-t', '--token TOKEN', descr(:token) do |value|
-          opts[:token] = value
-        end
-
         MSGS = {
           release:  'Creating GitHub release for %s version %s.',
           no_tag:   'Tag %s does not exist. Run `gem tag` or pass `--tag`.',
