@@ -57,10 +57,6 @@ module Gem
           opts[:tag] = value
         end
 
-        opt '-g', '--github', descr(:github) do |value|
-          opts[:github] = value
-        end
-
         opt '-p', '--push', descr(:push) do |value|
           opts[:push] = value
         end
@@ -71,15 +67,19 @@ module Gem
 
         # region github
 
+        opt '-g', '--github', descr(:github) do |value|
+          opts[:github] = value
+        end
+
         opt '-d', '--description DESCRIPTION', descr(:descr) do |value|
           opts[:descr] = value
         end
 
-        opt '-r', '--repo REPO', descr(:repo) do |value|
+        opt '--repo REPO', descr(:repo) do |value|
           opts[:repo] = value
         end
 
-        opt '-t', '--token TOKEN', descr(:token) do |value|
+        opt '--token TOKEN', descr(:token) do |value|
           opts[:token] = value
         end
 
