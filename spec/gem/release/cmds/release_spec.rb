@@ -79,7 +79,9 @@ describe Gem::Release::Cmds::Release do
     let(:opts) { { github: true, repo: 'foo/bar', token: 'token', descr: 'A new foo bar' } }
 
     let(:body)   { '{"tag_name":"v1.0.0","name":"foo-bar v1.0.0","body":"A new foo bar","prerelease":false}' }
-    let(:status) { 200 }
+    # success status code is 201 (created) not 200 (ok)
+    # https://developer.github.com/v3/repos/releases/#create-a-release
+    let(:status) { 201 }
 
     gemspec 'foo-bar'
 
