@@ -26,7 +26,8 @@ module Gem
           # https://developer.github.com/v3/repos/releases/#create-a-release
           resp = post(url, body, headers)
           status, body = resp
-          raise Abort, MSGS.fetch(:error) % [status, body] unless status == 200
+          # success status code is 201 (created) not 200 (ok)
+          raise Abort, MSGS.fetch(:error) % [status, body] unless status == 201
         end
 
         private
