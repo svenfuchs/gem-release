@@ -31,12 +31,12 @@ describe Gem::Release::Version::Number do
 
     describe 'given target: :pre' do
       let(:target) { :pre }
-      it { should eq '1.1.0-pre.1' }
+      it { should eq '1.1.0.pre.1' }
     end
 
     describe 'given target: :rc' do
       let(:target) { :rc }
-      it { should eq '1.1.0-rc.1' }
+      it { should eq '1.1.0.rc.1' }
     end
   end
 
@@ -65,12 +65,12 @@ describe Gem::Release::Version::Number do
 
     describe 'given target: :pre' do
       let(:target) { :pre }
-      it { should eq '1.2.0-pre.1' }
+      it { should eq '1.2.0.pre.1' }
     end
 
     describe 'given target: :rc' do
       let(:target) { :rc }
-      it { should eq '1.2.0-rc.1' }
+      it { should eq '1.2.0.rc.1' }
     end
   end
 
@@ -99,12 +99,12 @@ describe Gem::Release::Version::Number do
 
     describe 'given target: :pre' do
       let(:target) { :pre }
-      it { should eq '1.2.0-pre.1' }
+      it { should eq '1.2.0.pre.1' }
     end
 
     describe 'given target: :rc' do
       let(:target) { :rc }
-      it { should eq '1.2.0-rc.1' }
+      it { should eq '1.2.0.rc.1' }
     end
   end
 
@@ -333,12 +333,12 @@ describe Gem::Release::Version::Number do
 
     describe 'given target: :pre' do
       let(:target) { :pre }
-      it { should eq '1.1.0-pre.1' }
+      it { should eq '1.1.0.pre.1' }
     end
 
     describe 'given target: :rc' do
       let(:target) { :rc }
-      it { should eq '1.1.0-rc.1' }
+      it { should eq '1.1.0.rc.1' }
     end
   end
 
@@ -372,12 +372,12 @@ describe Gem::Release::Version::Number do
 
     describe 'given target: :pre' do
       let(:target) { :pre }
-      it { should eq '1.1.0-pre.1' }
+      it { should eq '1.1.0.pre.1' }
     end
 
     describe 'given target: :rc' do
       let(:target) { :rc }
-      it { should eq '1.1.0-rc.1' }
+      it { should eq '1.1.0.rc.1' }
     end
   end
 
