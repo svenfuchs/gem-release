@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.0.4 - 2019-10-10
+
+### Fixed
+
+- Make default "stage delimiter" to be dot instead of dash  
+  (PR: https://github.com/svenfuchs/gem-release/pull/87)
+
 ## v2.0.3 - 2019-07-04
 
 ### Fixed
