@@ -45,7 +45,10 @@ module Gem
           end
 
           def stage_delim
-            parts[3] || '-'
+            # Use what's being used or default to dot (`.`)
+            # dot is preferred due to rubygems issue
+            # https://github.com/rubygems/rubygems/issues/592
+            parts[3] || '.'
           end
 
           def num
