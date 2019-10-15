@@ -34,9 +34,12 @@ module Gem
       end
 
       def abort(msg, *args)
-        msg = self.class::MSGS[msg] % args if msg.is_a?(Symbol)
-        msg = "#{msg} Aborting."
-        context.abort(msg)
+        processed_msg = if msg.is_a?(Symbol)
+          self.class::MSGS.fetch(msg) % args
+        else
+          msg
+        end
+        context.abort("#{processed_msg} Aborting.")
       end
     end
   end

@@ -14,6 +14,10 @@ module Gem
           parts.join(stage_delim)
         end
 
+        def pre?
+          !!parts[4]
+        end
+
         private
 
           def specific?

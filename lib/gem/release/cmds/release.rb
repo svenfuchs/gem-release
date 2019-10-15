@@ -32,8 +32,17 @@ module Gem
           host:    'Push to a compatible host other than rubygems.org',
           key:     'Use the API key from ~/.gem/credentials',
           tag:     'Shortcut for running the `gem tag` command',
-          push:   'Push tag to the remote git repository',
-          recurse: 'Recurse into directories that contain gemspec files'
+          push:    'Push tag to the remote git repository',
+          github:  'Create a GitHub release',
+          recurse: 'Recurse into directories that contain gemspec files',
+
+          # region github
+
+          descr: 'Description of the release',
+          repo:  "Full name of the repository on GitHub, e.g. svenfuchs/gem-release (defaults to the repo name from the gemspec's homepage if this is a GitHub URL)",
+          token: 'GitHub OAuth token'
+
+          # endregion github
         }.freeze
 
         opt '-h', '--host HOST', descr(:host) do |value|
@@ -56,6 +65,26 @@ module Gem
           opts[:recurse] = value
         end
 
+        # region github
+
+        opt '-g', '--github', descr(:github) do |value|
+          opts[:github] = value
+        end
+
+        opt '-d', '--description DESCRIPTION', descr(:descr) do |value|
+          opts[:descr] = value
+        end
+
+        opt '--repo REPO', descr(:repo) do |value|
+          opts[:repo] = value
+        end
+
+        opt '--token TOKEN', descr(:token) do |value|
+          opts[:token] = value
+        end
+
+        # endregion github
+
         MSGS = {
           release:   'Releasing %s with version %s',
           build:     'Building %s',
@@ -73,7 +102,8 @@ module Gem
             validate
             release
           end
-          tag if opts[:tag]
+          tag    if opts[:tag]
+          github if opts[:github]
         end
 
         private
@@ -84,14 +114,11 @@ module Gem
 
           def release
             announce :release, gem.name, target_version
+            return if pretend?
             build
             push
           ensure
             cleanup
-          end
-
-          def tag
-            Tag.new(context, args, opts).run
           end
 
           def build
@@ -100,6 +127,14 @@ module Gem
 
           def push
             gem_cmd :push, gem.filename, *push_args
+          end
+
+          def tag
+            Tag.new(context, args, opts).run
+          end
+
+          def github
+            Github.new(context, args, opts).run
           end
 
           def push_args

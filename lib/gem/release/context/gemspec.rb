@@ -9,6 +9,10 @@ module Gem
           @filename = name && "#{name}.gemspec" || filenames.first
         end
 
+        def exists?
+          filename && File.exist?(filename)
+        end
+
         def gem_name
           gemspec.name if gemspec
         end
@@ -21,8 +25,12 @@ module Gem
           gemspec.file_name if gemspec
         end
 
-        def exists?
-          filename && File.exist?(filename)
+        def metadata
+          gemspec && gemspec.metadata || {}
+        end
+
+        def homepage
+          gemspec.homepage if gemspec
         end
 
         private

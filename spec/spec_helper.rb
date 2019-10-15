@@ -9,6 +9,9 @@ require 'support/matchers'
 require 'support/now'
 require 'support/run'
 
+require 'webmock'
+require 'webmock/rspec'
+
 ENV.delete_if { |key, _| key.start_with?('GEM_RELEASE') }
 
 Kernel.send(:undef_method, :system)
