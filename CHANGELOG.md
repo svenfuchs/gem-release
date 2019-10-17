@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.1.0 - 2019-10-17
+
+### Added
+
+- Add gem release --github  
+  (PR: https://github.com/svenfuchs/gem-release/pull/73)
+
 ## v2.0.4 - 2019-10-10
 
 ### Fixed
