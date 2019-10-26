@@ -76,7 +76,7 @@ module Gem
           opts[:commit] = value
         end
 
-        opt '-m', '--message', descr(:message) do |value|
+        opt '-m', '--message MESSAGE', descr(:message) do |value|
           opts[:message] = value
         end
 
