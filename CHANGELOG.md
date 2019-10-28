@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.1.1 - 2019-10-28
+
+### Fixed
+
+- Fix error when custom message provided for `gem bump`  
+  (PR: https://github.com/svenfuchs/gem-release/pull/92)
+
 ## v2.1.0 - 2019-10-17
 
 ### Added
