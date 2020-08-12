@@ -312,6 +312,8 @@ gem_name - name of the gem (optional, will use the first gemspec, or all gemspec
     --recurse                    Recurse into directories that contain gemspec files
     --[no-]color
     --pretend
+    --github                     Creates a Release on GitHub. Requires GitHub OAuth token passed by `--token TOKEN`
+    --token                      GitHub OAuth token. See https://developer.github.com/v3/#oauth2-token-sent-in-a-header for more details.
 ```
 
 ### Description
