@@ -3,6 +3,7 @@ module Gem
     module Version
       class Number < Struct.new(:number, :target)
         NUMBER = /^(\d+)\.?(\d+)?\.?(\d+)?(\-|\.)?(\w+)?\.?(\d+)?$/
+        PRE_RELEASE  = /^(\d+)\.(\d+)\.(\d+)\.?(.*)(\d+)$/
 
         STAGES = %i(alpha beta pre rc)
 
@@ -21,7 +22,7 @@ module Gem
         private
 
           def specific?
-            target =~ NUMBER
+            target =~ NUMBER || target =~ PRE_RELEASE
           end
 
           def major
