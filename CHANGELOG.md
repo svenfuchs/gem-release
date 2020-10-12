@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.2.0 - 2020-10-12
+
+### Added
+
+- Allow version bump to specific prerelease version number  
+  (PR: https://github.com/svenfuchs/gem-release/pull/97)
+
 ## v2.1.1 - 2019-10-28
 
 ### Fixed
