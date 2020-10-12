@@ -209,7 +209,7 @@ gem_name - name of the gem (optional, will use the directory name, or all gemspe
 ### Options
 
 ```
--v, --version VERSION            Target version: next [major|minor|patch|pre|release] or a given version number [x.x.x]
+-v, --version VERSION            Target version: next [major|minor|patch|pre|release] or a given version number [x.x.x, x.x.x.yyy.z]
 -c, --[no-]commit                Create a commit after incrementing gem version (default: true)
 -m, --message                    Commit message template (default: Bump %{name} to %{version} %{skip_ci})
     --skip-ci                    Add the [skip ci] tag to the commit message
@@ -249,6 +249,7 @@ minor       # Bump to the next minor level (e.g. 0.0.1 to 0.1.0)
 patch       # Bump to the next patch level (e.g. 0.0.1 to 0.0.2)
 pre|rc|etc  # Bump to the next pre-release level (e.g. 0.0.1 to
             #   0.1.0.pre.1, 1.0.0.pre.1 to 1.0.0.pre.2)
+1.2.0.pre.3 # Bump to specific version number with provided pre-release level and build number
 ```
 
 When searching for the version file for a gem named `gem-name`: the
