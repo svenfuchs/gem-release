@@ -9,6 +9,11 @@ describe Gem::Release::Version::Number do
       it { should eq '1.2.3' }
     end
 
+    describe 'given target: 1.2.3.pre.17' do
+      let(:target) { '1.2.3.pre.17' }
+      it { should eq '1.2.3.pre.17' }
+    end
+
     describe 'given target: :major' do
       let(:target) { :major }
       it { should eq '2.0.0' }
