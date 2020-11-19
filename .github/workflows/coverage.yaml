@@ -1,4 +1,4 @@
-name: Tests
+name: Coverage
 
 on:
   pull_request:
@@ -14,7 +14,7 @@ on:
 
 jobs:
   unit_tests:
-    name: Unit Tests
+    name: Unit Tests with Code Coverage
     if: "contains(github.event.commits[0].message, '[ci skip]') == false"
     strategy:
       fail-fast: false
@@ -22,20 +22,12 @@ jobs:
         os:
           - ubuntu
         ruby:
-          - 2.2
-          - 2.3
-          - 2.4
-          - 2.5
-          - 2.6
           - 2.7
         allow_failures:
           - false
-        include:
-          - os: ubuntu
-            ruby: ruby-head
-            allow_failures: true
     env:
       ALLOW_FAILURES: "${{ matrix.allow_failures }}"
+      COVERAGE: true
     runs-on: ${{ matrix.os }}-latest
     continue-on-error: ${{ endsWith(matrix.ruby, 'head') || matrix.ruby == 'debug' }}
     steps:
@@ -48,3 +40,7 @@ jobs:
           bundler-cache: true
       - name: Test
         run: bundle exec rspec || $ALLOW_FAILURES
+      - name: Send to Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
