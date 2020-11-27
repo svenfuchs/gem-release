@@ -8,6 +8,7 @@ require 'support/files'
 require 'support/matchers'
 require 'support/now'
 require 'support/run'
+require 'support/tty'
 
 require 'webmock'
 require 'webmock/rspec'
@@ -23,4 +24,5 @@ RSpec.configure do |c|
   c.include Support::Files
   c.include Support::Now
   c.include Support::Run
+  c.include Support::Tty
 end
