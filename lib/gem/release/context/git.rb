@@ -3,7 +3,7 @@ module Gem
     class Context
       class Git
         def clean?
-          system 'git diff-index --quiet HEAD'
+          system 'git update-index --refresh && git diff-index --quiet HEAD'
         end
 
         def remotes
