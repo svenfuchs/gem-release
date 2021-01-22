@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.2.1 - 2021-01-22
+
+### Fixed
+
+- Ensure git index is refreshed before uncommitted changes check  
+  (PR: https://github.com/svenfuchs/gem-release/pull/99)
+
 ## v2.2.0 - 2020-10-12
 
 ### Added
