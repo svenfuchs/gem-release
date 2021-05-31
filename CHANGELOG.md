@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.2.2 - 2021-05-31
+
+### Fixed
+
+- Add missing require for `fileutils`  
+  (Issue: https://github.com/svenfuchs/gem-release/issues/100)
+
 ## v2.2.1 - 2021-01-22
 
 ### Fixed
