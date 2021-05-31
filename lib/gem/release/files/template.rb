@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+require 'fileutils'
 require 'gem/release/files/template/context'
 
 module Gem
@@ -30,6 +33,7 @@ module Gem
 
         def write
           return false if exists?
+
           FileUtils.mkdir_p(File.dirname(target))
           File.write(target, render)
           FileUtils.chmod('+x', target) if opts[:executable]
