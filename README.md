@@ -209,9 +209,9 @@ gem_name - name of the gem (optional, will use the directory name, or all gemspe
 ### Options
 
 ```
--v, --version VERSION            Target version: next [major|minor|patch|pre|release] or a given version number [x.x.x, x.x.x.yyy.z]
+-v, --version VERSION            Target version: next [major|minor|patch|pre|release] or a given version number [x.x.x]
 -c, --[no-]commit                Create a commit after incrementing gem version (default: true)
--m, --message                    Commit message template (default: Bump %{name} to %{version} %{skip_ci})
+-m, --message MESSAGE            Commit message template (default: Bump %{name} to %{version} %{skip_ci})
     --skip-ci                    Add the [skip ci] tag to the commit message
 -p, --push                       Push the new commit to the git remote repository
     --remote REMOTE              Git remote to push to (defaults to origin) (default: origin)
@@ -248,8 +248,7 @@ major       # Bump to the next major level (e.g. 0.0.1 to 1.0.0)
 minor       # Bump to the next minor level (e.g. 0.0.1 to 0.1.0)
 patch       # Bump to the next patch level (e.g. 0.0.1 to 0.0.2)
 pre|rc|etc  # Bump to the next pre-release level (e.g. 0.0.1 to
-            #   0.1.0.pre.1, 1.0.0.pre.1 to 1.0.0.pre.2)
-1.2.0.pre.3 # Bump to specific version number with provided pre-release level and build number
+#   0.1.0.pre.1, 1.0.0.pre.1 to 1.0.0.pre.2)
 ```
 
 When searching for the version file for a gem named `gem-name`: the
@@ -311,10 +310,12 @@ gem_name - name of the gem (optional, will use the first gemspec, or all gemspec
 -t, --tag                        Shortcut for running the `gem tag` command
 -p, --push                       Push tag to the remote git repository
     --recurse                    Recurse into directories that contain gemspec files
+-g, --github                     Create a GitHub release
+-d, --description DESCRIPTION    Description of the release
+    --repo REPO                  Full name of the repository on GitHub, e.g. svenfuchs/gem-release (defaults to the repo name from the gemspec's homepage if this is a GitHub URL)
+    --token TOKEN                GitHub OAuth token
     --[no-]color
     --pretend
-    --github                     Creates a Release on GitHub. Requires GitHub OAuth token passed by `--token TOKEN`
-    --token                      GitHub OAuth token. See https://developer.github.com/v3/#oauth2-token-sent-in-a-header for more details.
 ```
 
 ### Description
@@ -679,4 +680,3 @@ echo ':localhost: none' >> ~/.gem/credentials
 # test release
 bundle exec gem release --host=http://localhost:9292 --key localhost
 ```
-
