@@ -1,0 +1,36 @@
+name: Ensure readme.md is up to date
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+
+jobs:
+  ensure_readme_up_to_date:
+    name: Ensure readme.md is up to date
+    if: "contains(github.event.commits[0].message, '[ci skip]') == false"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1
+          bundler-cache: true
+      - name: generate readme
+        run: script/generate_readme
+      - name: check that new readme is identical to the old
+        run: |
+          if [ -z "$(git status --porcelain README.md)" ]
+          then
+            echo "✅ README.md is up to date!"
+          else
+            echo "❌ README.md is out of date. Please run script/generate_readme and commit the results."
+            git diff
+            git status --porcelain
+            exit 1
+          fi
