@@ -6,11 +6,13 @@ on:
       - master
     paths-ignore:
       - 'README.md'
+      - 'README.md.erb'
   push:
     branches:
       - master
     paths-ignore:
       - 'README.md'
+      - 'README.md.erb'
 
 jobs:
   unit_tests:
@@ -22,13 +24,13 @@ jobs:
         os:
           - ubuntu
         ruby:
-          - 2.2
-          - 2.3
-          - 2.4
-          - 2.5
-          - 2.6
-          - 2.7
-          - 3.0
+          - "2.2"
+          - "2.3"
+          - "2.4"
+          - "2.5"
+          - "2.6"
+          - "2.7"
+          - "3.0"
         allow_failures:
           - false
         include:
