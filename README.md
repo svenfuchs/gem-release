@@ -227,7 +227,7 @@ gem_name - name of the gem (optional, will use the directory name, or all gemspe
 
 ### Description
 
-Bumps the version number defined in lib/[gem_name]/version.rb to a
+Bumps the version number defined in lib/[gem_name]/version.rb to to a
 given, specific version number, or to the next major, minor, patch, or
 pre-release level.
 
