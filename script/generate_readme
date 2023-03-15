@@ -60,7 +60,8 @@ end
 
 cmds = %i(bootstrap bump gemspec release tag)
 cmds = cmds.map { |cmd| [cmd, help(cmd)] }
-erb  = ERB.new(File.read('README.md.erb'), nil, '-')
+# Requires Ruby >= 2.6
+erb  = ERB.new(File.read('README.md.erb'), trim_mode: '-')
 readme = erb.result(binding)
 
 puts readme
