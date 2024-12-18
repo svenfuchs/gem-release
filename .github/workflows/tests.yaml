@@ -22,7 +22,8 @@ jobs:
       fail-fast: false
       matrix:
         ruby:
-          - "2.2"
+          # Bundler 1.x not working on CI
+          # - "2.2"
           - "2.3"
           - "2.4"
           - "2.5"
