@@ -2,12 +2,10 @@
 
 $: << 'lib'
 
-require 'bundler'
+require 'bundler/setup'
 require 'erb'
 require 'stringio'
 load './lib/rubygems_plugin.rb'
-
-Bundler.setup
 
 def camelize(str)
   str.to_s.split(/[^a-z0-9]/i).map { |str| str.capitalize }.join

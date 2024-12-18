@@ -16,6 +16,4 @@ Gem::Specification.new do |s|
   s.files        = Dir.glob('{bin/*,lib/**/*,[A-Z]*}', File::FNM_DOTMATCH)
   s.platform     = Gem::Platform::RUBY
   s.require_path = 'lib'
-
-  s.add_dependency 'uri'
 end
