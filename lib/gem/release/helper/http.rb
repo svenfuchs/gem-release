@@ -20,13 +20,13 @@ module Gem
             end
 
             def client
-              http_client = Net::HTTP.new(uri.host, uri.port)
+              http_client = ::Net::HTTP.new(uri.host, uri.port)
               http_client.use_ssl = (uri.scheme == 'https')
               http_client
             end
 
             def const
-              Net::HTTP.const_get(method.to_s.capitalize)
+              ::Net::HTTP.const_get(method.to_s.capitalize)
             end
         end
 

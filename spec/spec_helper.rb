@@ -25,4 +25,9 @@ RSpec.configure do |c|
   c.include Support::Now
   c.include Support::Run
   c.include Support::Tty
+
+  c.before :suite do
+    # Ensure no request really sent
+    WebMock.disable_net_connect!(:allow_localhost => false)
+  end
 end
