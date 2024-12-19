@@ -1,4 +1,4 @@
-require 'gem/release/helper/hash'
+require_relative '../helper/hash'
 
 module Gem
   module Release

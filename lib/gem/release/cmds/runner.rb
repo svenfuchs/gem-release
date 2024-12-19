@@ -1,4 +1,4 @@
-require 'gem/release/context'
+require_relative '../context'
 
 module Gem
   module Release

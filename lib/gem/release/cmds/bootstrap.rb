@@ -1,6 +1,6 @@
-require 'gem/release/cmds/base'
-require 'gem/release/data'
-require 'gem/release/files/templates'
+require_relative 'base'
+require_relative '../data'
+require_relative '../files/templates'
 
 module Gem
   module Release

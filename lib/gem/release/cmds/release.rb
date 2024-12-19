@@ -1,4 +1,4 @@
-require 'gem/release/cmds/base'
+require_relative 'base'
 require 'rubygems/commands/build_command'
 require 'rubygems/commands/push_command'
 

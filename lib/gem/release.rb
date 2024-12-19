@@ -15,5 +15,5 @@ module Gem
   end
 end
 
-require 'gem/release/cmds'
-require 'gem/release/config'
+require_relative 'release/cmds'
+require_relative 'release/config'

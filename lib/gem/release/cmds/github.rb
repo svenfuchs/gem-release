@@ -1,5 +1,5 @@
-require 'gem/release/cmds/base'
-require 'gem/release/context/github'
+require_relative 'base'
+require_relative '../context/github'
 
 module Gem
   module Release

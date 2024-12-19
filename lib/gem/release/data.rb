@@ -1,6 +1,6 @@
 require 'erb'
 require 'ostruct'
-require 'gem/release/helper/string'
+require_relative 'helper/string'
 
 module Gem
   module Release

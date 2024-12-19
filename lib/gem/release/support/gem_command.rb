@@ -1,4 +1,4 @@
-require 'gem/release/cmds/runner'
+require_relative '../cmds/runner'
 
 module Gem
   module Release

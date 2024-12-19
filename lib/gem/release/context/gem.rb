@@ -1,4 +1,4 @@
-require 'gem/release/context/gemspec'
+require_relative 'gemspec'
 
 module Gem
   module Release

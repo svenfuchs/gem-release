@@ -72,4 +72,4 @@ module Gem
   end
 end
 
-require 'gem/release/files/templates/group'
+require_relative 'templates/group'

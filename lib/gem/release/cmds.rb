@@ -1,10 +1,10 @@
-require 'gem/release/cmds/bootstrap'
-require 'gem/release/cmds/bump'
-require 'gem/release/cmds/gemspec'
-require 'gem/release/cmds/github'
-require 'gem/release/cmds/release'
-require 'gem/release/cmds/runner'
-require 'gem/release/cmds/tag'
+require_relative 'cmds/bootstrap'
+require_relative 'cmds/bump'
+require_relative 'cmds/gemspec'
+require_relative 'cmds/github'
+require_relative 'cmds/release'
+require_relative 'cmds/runner'
+require_relative 'cmds/tag'
 
 module Gem
   module Release
