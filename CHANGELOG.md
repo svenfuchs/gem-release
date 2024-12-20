@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.2.3 - 2024-12-20
+
+### Fixed
+
+- Fix error seen when this gem installed but not specified as dependency in project  
+  (PR: https://github.com/svenfuchs/gem-release/pull/111)
+
 ## v2.2.2 - 2021-05-31
 
 ### Fixed
