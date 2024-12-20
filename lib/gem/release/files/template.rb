@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'fileutils'
-require 'gem/release/files/template/context'
+require_relative 'template/context'
 
 module Gem
   module Release

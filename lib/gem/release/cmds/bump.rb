@@ -1,5 +1,5 @@
-require 'gem/release/cmds/base'
-require 'gem/release/files/version'
+require_relative 'base'
+require_relative '../files/version'
 
 module Gem
   module Release

@@ -1,7 +1,7 @@
-require 'gem/release/context/gem'
-require 'gem/release/context/git'
-require 'gem/release/context/paths'
-require 'gem/release/context/ui'
+require_relative 'context/gem'
+require_relative 'context/git'
+require_relative 'context/paths'
+require_relative 'context/ui'
 
 module Gem
   module Release

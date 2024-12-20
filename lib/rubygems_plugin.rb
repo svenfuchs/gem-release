@@ -1,11 +1,11 @@
-require 'gem/release'
+require_relative 'gem/release'
 require 'rubygems/command_manager'
 
-require 'rubygems/commands/bootstrap_command'
-require 'rubygems/commands/bump_command'
-require 'rubygems/commands/gemspec_command'
-require 'rubygems/commands/release_command'
-require 'rubygems/commands/tag_command'
+require_relative 'rubygems/commands/bootstrap_command'
+require_relative 'rubygems/commands/bump_command'
+require_relative 'rubygems/commands/gemspec_command'
+require_relative 'rubygems/commands/release_command'
+require_relative 'rubygems/commands/tag_command'
 
 Gem::CommandManager.instance.register_command :bootstrap
 Gem::CommandManager.instance.register_command :bump

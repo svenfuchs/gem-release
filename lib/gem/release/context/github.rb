@@ -1,6 +1,6 @@
 require 'json'
-require 'gem/release/helper/http'
-require 'gem/release/version'
+require_relative '../helper/http'
+require_relative '../version'
 
 module Gem
   module Release

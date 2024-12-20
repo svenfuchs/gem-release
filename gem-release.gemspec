@@ -1,7 +1,6 @@
 # encoding: utf-8
 
-$:.unshift File.expand_path('../lib', __FILE__)
-require 'gem/release/version'
+require_relative 'lib/gem/release/version'
 
 Gem::Specification.new do |s|
   s.name         = 'gem-release'

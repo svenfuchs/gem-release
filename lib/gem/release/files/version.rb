@@ -1,4 +1,4 @@
-require 'gem/release/version/number'
+require_relative '../version/number'
 
 module Gem
   module Release

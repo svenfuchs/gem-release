@@ -1,4 +1,4 @@
-require 'gem/release/cmds/base'
+require_relative 'base'
 
 module Gem
   module Release

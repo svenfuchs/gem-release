@@ -1,7 +1,7 @@
-require 'gem/release/helper'
-require 'gem/release/helper/hash'
-require 'gem/release/helper/string'
-require 'gem/release/support/registry'
+require_relative '../helper'
+require_relative '../helper/hash'
+require_relative '../helper/string'
+require_relative '../support/registry'
 
 module Gem
   module Release
