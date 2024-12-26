@@ -25,6 +25,7 @@ jobs:
           - "2.7"
           - "3.2"
           - "3.3"
+          - "3.4"
         allow_failures:
           - false
     env:
