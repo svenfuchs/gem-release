@@ -59,7 +59,7 @@ module Gem
           end
 
           def context
-            Context.new(data)
+            Context.new(*data.values)
           end
       end
     end
