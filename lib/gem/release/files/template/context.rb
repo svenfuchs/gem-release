@@ -2,7 +2,7 @@ module Gem
   module Release
     module Files
       class Template
-        class Context < OpenStruct
+        class Context < Struct.new(*Gem::Release::Data::KEYS)
           class Const < Struct.new(:type, :names)
             def define(&block)
               lines = build(names) { |name| "#{type} #{name}" }

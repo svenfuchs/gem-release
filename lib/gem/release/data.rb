@@ -1,5 +1,4 @@
 require 'erb'
-require 'ostruct'
 require_relative 'helper/string'
 
 module Gem
@@ -7,20 +6,13 @@ module Gem
     class Data < Struct.new(:git, :gem, :opts)
       include Helper::String
 
+      KEYS = %i[
+        gem_name gem_path module_names author email homepage
+        licenses summary description files bin_files
+      ].freeze
+
       def data
-        {
-          gem_name:     gem_name,
-          gem_path:     gem_path,
-          module_names: module_names,
-          author:       user_name,
-          email:        user_email,
-          homepage:     homepage,
-          licenses:     licenses,
-          summary:      '[summary]',
-          description:  '[description]',
-          files:        files,
-          bin_files:    bin_files
-        }
+        KEYS.map { |key| [key, send(key)] }.to_h
       end
 
       private
@@ -41,11 +33,11 @@ module Gem
           git.user_login || '[your login]'
         end
 
-        def user_name
+        def author
           git.user_name || '[your name]'
         end
 
-        def user_email
+        def email
           git.user_email || '[your email]'
         end
 
@@ -71,6 +63,14 @@ module Gem
 
         def strategy
           STRATEGIES[(opts[:strategy] || :glob).to_sym] || STRATEGIES[:glob]
+        end
+
+        def summary
+          '[summary]'
+        end
+
+        def description
+          '[description]'
         end
     end
   end
