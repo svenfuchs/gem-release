@@ -307,6 +307,201 @@ describe Gem::Release::Version::Number do
     end
   end
 
+  describe 'given epoch semver 1.0.0.0' do
+    let(:number) { '1.0.0.0' }
+
+    describe 'given target: 1.2.3.9' do
+      let(:target) { '1.2.3.9' }
+      it { should eq '1.2.3.9' }
+    end
+
+    describe 'given target: 1.0.0.0.pre.17' do
+      let(:target) { '1.0.0.0.pre.17' }
+      it { should eq '1.0.0.0.pre.17' }
+    end
+
+    describe 'given target: :epoch' do
+      let(:target) { :major }
+      pending { should eq '2.0.0.0' }
+    end
+
+    describe 'given target: :major' do
+      let(:target) { :major }
+      pending { should eq '1.1.0.0' }
+    end
+
+    describe 'given target: :minor' do
+      let(:target) { :minor }
+      pending { should eq '1.0.1.0' }
+    end
+
+    describe 'given target: :patch' do
+      let(:target) { :patch }
+      pending { should eq '1.0.0.1' }
+    end
+
+    describe 'given target: nil (defaults to :patch)' do
+      let(:target) { nil }
+      pending { should eq '1.0.0.1' }
+    end
+
+    describe 'given target: :pre' do
+      let(:target) { :pre }
+      pending { should eq '1.0.0.0.pre.1' }
+    end
+
+    describe 'given target: :rc' do
+      let(:target) { :rc }
+      pending { should eq '1.0.0.0.rc.1' }
+    end
+  end
+
+  describe 'given epoch semver 1.2.0.0' do
+    let(:number) { '1.2.0.0' }
+
+    describe 'given target: 1.2.3.9' do
+      let(:target) { '1.2.3.9' }
+      it { should eq '1.2.3.9' }
+    end
+
+    describe 'given target: 1.2.0.0.pre.17' do
+      let(:target) { '1.2.0.0.pre.17' }
+      it { should eq '1.2.0.0.pre.17' }
+    end
+
+    describe 'given target: :epoch' do
+      let(:target) { :major }
+      pending { should eq '2.0.0.0' }
+    end
+
+    describe 'given target: :major' do
+      let(:target) { :major }
+      pending { should eq '1.3.0.0' }
+    end
+
+    describe 'given target: :minor' do
+      let(:target) { :minor }
+      pending { should eq '1.2.1.0' }
+    end
+
+    describe 'given target: :patch' do
+      let(:target) { :patch }
+      pending { should eq '1.2.0.1' }
+    end
+
+    describe 'given target: nil (defaults to :patch)' do
+      let(:target) { nil }
+      pending { should eq '1.2.0.1' }
+    end
+
+    describe 'given target: :pre' do
+      let(:target) { :pre }
+      pending { should eq '1.2.0.0.pre.1' }
+    end
+
+    describe 'given target: :rc' do
+      let(:target) { :rc }
+      pending { should eq '1.2.0.0.rc.1' }
+    end
+  end
+
+  describe 'given epoch semver 1.2.3.0' do
+    let(:number) { '1.2.3.0' }
+
+    describe 'given target: 1.2.3.9' do
+      let(:target) { '1.2.3.9' }
+      it { should eq '1.2.3.9' }
+    end
+
+    describe 'given target: 1.2.3.0.pre.17' do
+      let(:target) { '1.2.3.0.pre.17' }
+      it { should eq '1.2.3.0.pre.17' }
+    end
+
+    describe 'given target: :epoch' do
+      let(:target) { :major }
+      pending { should eq '2.0.0.0' }
+    end
+
+    describe 'given target: :major' do
+      let(:target) { :major }
+      pending { should eq '1.3.0.0' }
+    end
+
+    describe 'given target: :minor' do
+      let(:target) { :minor }
+      pending { should eq '1.2.4.0' }
+    end
+
+    describe 'given target: :patch' do
+      let(:target) { :patch }
+      pending { should eq '1.2.3.1' }
+    end
+
+    describe 'given target: nil (defaults to :patch)' do
+      let(:target) { nil }
+      pending { should eq '1.2.3.1' }
+    end
+
+    describe 'given target: :pre' do
+      let(:target) { :pre }
+      pending { should eq '1.2.3.0.pre.1' }
+    end
+
+    describe 'given target: :rc' do
+      let(:target) { :rc }
+      pending { should eq '1.2.3.0.rc.1' }
+    end
+  end
+
+  describe 'given epoch semver 1.2.3.4' do
+    let(:number) { '1.2.3.4' }
+
+    describe 'given target: 1.2.3.9' do
+      let(:target) { '1.2.3.9' }
+      it { should eq '1.2.3.9' }
+    end
+
+    describe 'given target: 1.2.3.4.pre.17' do
+      let(:target) { '1.2.3.4.pre.17' }
+      it { should eq '1.2.3.4.pre.17' }
+    end
+
+    describe 'given target: :epoch' do
+      let(:target) { :major }
+      pending { should eq '2.0.0.0' }
+    end
+
+    describe 'given target: :major' do
+      let(:target) { :major }
+      pending { should eq '1.3.0.0' }
+    end
+
+    describe 'given target: :minor' do
+      let(:target) { :minor }
+      pending { should eq '1.2.4.0' }
+    end
+
+    describe 'given target: :patch' do
+      let(:target) { :patch }
+      pending { should eq '1.2.3.5' }
+    end
+
+    describe 'given target: nil (defaults to :patch)' do
+      let(:target) { nil }
+      pending { should eq '1.2.3.5' }
+    end
+
+    describe 'given target: :pre' do
+      let(:target) { :pre }
+      pending { should eq '1.2.3.4.pre.1' }
+    end
+
+    describe 'given target: :rc' do
+      let(:target) { :rc }
+      pending { should eq '1.2.3.4.rc.1' }
+    end
+  end
 
   describe 'given 1.0' do
     let(:number) { '1.0' }
