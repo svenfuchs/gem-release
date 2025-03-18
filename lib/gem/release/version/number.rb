@@ -2,7 +2,7 @@ module Gem
   module Release
     module Version
       class Number < Struct.new(:number, :target)
-        NUMBER = /^(\d+)\.?(\d+)?\.?(\d+)?(\-|\.)?(\w+)?\.?(\d+)?$/
+        NUMBER = /^(?<major>\d+)\.?(?<minor>\d+)?\.?(?<patch>\d+)?(?<stage_delim>\-|\.)?(?<stage>\w+)?\.?(?<stage_num>\d+)?$/
         PRE_RELEASE  = /^(\d+)\.(\d+)\.(\d+)\.?(.*)(\d+)$/
 
         STAGES = %i(alpha beta pre rc)
@@ -16,7 +16,7 @@ module Gem
         end
 
         def pre?
-          !!parts[4]
+          !!parts[:stage] || !!parts[:stage_num]
         end
 
         private
@@ -26,20 +26,20 @@ module Gem
           end
 
           def major
-            part = parts[0]
+            part = parts[:major]
             part += 1 if to?(:major)
             part
           end
 
           def minor
-            part = parts[1].to_i
+            part = parts[:minor].to_i
             part = 0 if to?(:major)
             part += 1 if to?(:minor) || fresh_pre_release?
             part
           end
 
           def patch
-            part = parts[2].to_i
+            part = parts[:patch].to_i
             part = 0 if to?(:major, :minor) || fresh_pre_release?
             part += 1 if to?(:patch) && from_release?
             part
@@ -53,12 +53,12 @@ module Gem
             # Use what's being used or default to dot (`.`)
             # dot is preferred due to rubygems issue
             # https://github.com/rubygems/rubygems/issues/592
-            parts[3] || '.'
+            parts[:stage_delim] || '.'
           end
 
           def num
             return if to_release?
-            same_stage? ? parts[5].to_i + 1 : 1
+            same_stage? ? parts[:stage_num] + 1 : 1
           end
 
           def to?(*targets)
@@ -86,7 +86,7 @@ module Gem
           end
 
           def from_stage
-            parts[4]
+            parts[:stage]
           end
 
           def target
@@ -100,20 +100,22 @@ module Gem
           end
 
           def parts
-            @parts ||= matches.compact.map(&:to_i).tap do |parts|
-              parts[3] = matches[3]
-              parts[4] = matches[4].to_sym if matches[4]
+            @parts ||= {
+              major: matches[:major].to_i,
+              minor: matches[:minor]&.to_i,
+              patch: matches[:patch]&.to_i,
+              stage_delim: matches[:stage_delim],
+              stage: matches[:stage]&.to_sym,
+              stage_num: matches[:stage_num]&.to_i,
+            }.compact
+        end
+
+        def matches
+            @matches = begin
+              @matches = number.match(NUMBER)
+              raise Abort, "Cannot parse version number #{number}" unless @matches
+              @matches
             end
-          end
-
-          def matches
-            @matches ||= parse.to_a[1..-1]
-          end
-
-          def parse
-            matches = number.match(NUMBER)
-            raise Abort, "Cannot parse version number #{number}" unless matches
-            matches
           end
       end
     end
