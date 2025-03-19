@@ -327,22 +327,22 @@ describe Gem::Release::Version::Number do
 
     describe 'given target: :major' do
       let(:target) { :major }
-      pending { should eq '1.1.0.0' }
+      it { should eq '1.1.0.0' }
     end
 
     describe 'given target: :minor' do
       let(:target) { :minor }
-      pending { should eq '1.0.1.0' }
+      it { should eq '1.0.1.0' }
     end
 
     describe 'given target: :patch' do
       let(:target) { :patch }
-      pending { should eq '1.0.0.1' }
+      it { should eq '1.0.0.1' }
     end
 
     describe 'given target: nil (defaults to :patch)' do
       let(:target) { nil }
-      pending { should eq '1.0.0.1' }
+      it { should eq '1.0.0.1' }
     end
 
     describe 'given target: :pre' do
@@ -376,22 +376,22 @@ describe Gem::Release::Version::Number do
 
     describe 'given target: :major' do
       let(:target) { :major }
-      pending { should eq '1.3.0.0' }
+      it { should eq '1.3.0.0' }
     end
 
     describe 'given target: :minor' do
       let(:target) { :minor }
-      pending { should eq '1.2.1.0' }
+      it { should eq '1.2.1.0' }
     end
 
     describe 'given target: :patch' do
       let(:target) { :patch }
-      pending { should eq '1.2.0.1' }
+      it { should eq '1.2.0.1' }
     end
 
     describe 'given target: nil (defaults to :patch)' do
       let(:target) { nil }
-      pending { should eq '1.2.0.1' }
+      it { should eq '1.2.0.1' }
     end
 
     describe 'given target: :pre' do
@@ -425,22 +425,22 @@ describe Gem::Release::Version::Number do
 
     describe 'given target: :major' do
       let(:target) { :major }
-      pending { should eq '1.3.0.0' }
+      it { should eq '1.3.0.0' }
     end
 
     describe 'given target: :minor' do
       let(:target) { :minor }
-      pending { should eq '1.2.4.0' }
+      it { should eq '1.2.4.0' }
     end
 
     describe 'given target: :patch' do
       let(:target) { :patch }
-      pending { should eq '1.2.3.1' }
+      it { should eq '1.2.3.1' }
     end
 
     describe 'given target: nil (defaults to :patch)' do
       let(:target) { nil }
-      pending { should eq '1.2.3.1' }
+      it { should eq '1.2.3.1' }
     end
 
     describe 'given target: :pre' do
@@ -474,22 +474,22 @@ describe Gem::Release::Version::Number do
 
     describe 'given target: :major' do
       let(:target) { :major }
-      pending { should eq '1.3.0.0' }
+      it { should eq '1.3.0.0' }
     end
 
     describe 'given target: :minor' do
       let(:target) { :minor }
-      pending { should eq '1.2.4.0' }
+      it { should eq '1.2.4.0' }
     end
 
     describe 'given target: :patch' do
       let(:target) { :patch }
-      pending { should eq '1.2.3.5' }
+      it { should eq '1.2.3.5' }
     end
 
     describe 'given target: nil (defaults to :patch)' do
       let(:target) { nil }
-      pending { should eq '1.2.3.5' }
+      it { should eq '1.2.3.5' }
     end
 
     describe 'given target: :pre' do

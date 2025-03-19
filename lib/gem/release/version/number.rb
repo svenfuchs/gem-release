@@ -2,6 +2,7 @@ module Gem
   module Release
     module Version
       class Number < Struct.new(:number, :target)
+        EPOCH_NUMBER = /^(?<epoch>\d+)\.(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)(?<stage_delim>\-|\.)?(?<stage>\w+)?\.?(?<stage_num>\d+)?$/
         NUMBER = /^(?<major>\d+)\.?(?<minor>\d+)?\.?(?<patch>\d+)?(?<stage_delim>\-|\.)?(?<stage>\w+)?\.?(?<stage_num>\d+)?$/
         PRE_RELEASE  = /^(\d+)\.(\d+)\.(\d+)\.?(.*)(\d+)$/
 
@@ -10,7 +11,7 @@ module Gem
         def bump
           return target if specific?
           validate_stage
-          parts = [[major, minor, patch].compact.join('.')]
+          parts = [[epoch, major, minor, patch].compact.join('.')]
           parts << [stage, num].join('.') if stage
           parts.join(stage_delim)
         end
@@ -25,22 +26,29 @@ module Gem
             target =~ NUMBER || target =~ PRE_RELEASE
           end
 
+          def epoch
+            part = parts[:epoch] || return
+            part += 1 if to?(:epoch)
+            part
+          end
+
           def major
             part = parts[:major]
+            part = 0 if to?(:epoch)
             part += 1 if to?(:major)
             part
           end
 
           def minor
             part = parts[:minor].to_i
-            part = 0 if to?(:major)
+            part = 0 if to?(:epoch, :major)
             part += 1 if to?(:minor) || fresh_pre_release?
             part
           end
 
           def patch
             part = parts[:patch].to_i
-            part = 0 if to?(:major, :minor) || fresh_pre_release?
+            part = 0 if to?(:epoch, :major, :minor) || fresh_pre_release?
             part += 1 if to?(:patch) && from_release?
             part
           end
@@ -66,7 +74,7 @@ module Gem
           end
 
           def to_release?
-            to?(:major, :minor, :patch)
+            to?(:epoch, :major, :minor, :patch)
           end
 
           def fresh_pre_release?
@@ -101,6 +109,7 @@ module Gem
 
           def parts
             @parts ||= {
+              epoch: (matches[:epoch]&.to_i if matches.names.include?('epoch')),
               major: matches[:major].to_i,
               minor: matches[:minor]&.to_i,
               patch: matches[:patch]&.to_i,
@@ -112,7 +121,7 @@ module Gem
 
         def matches
             @matches = begin
-              @matches = number.match(NUMBER)
+              @matches = number.match(EPOCH_NUMBER) || number.match(NUMBER)
               raise Abort, "Cannot parse version number #{number}" unless @matches
               @matches
             end
