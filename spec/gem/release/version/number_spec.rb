@@ -321,8 +321,8 @@ describe Gem::Release::Version::Number do
     end
 
     describe 'given target: :epoch' do
-      let(:target) { :major }
-      pending { should eq '2.0.0.0' }
+      let(:target) { :epoch }
+      it { should eq '2.0.0.0' }
     end
 
     describe 'given target: :major' do
@@ -347,12 +347,12 @@ describe Gem::Release::Version::Number do
 
     describe 'given target: :pre' do
       let(:target) { :pre }
-      pending { should eq '1.0.0.0.pre.1' }
+      it { should eq '1.0.1.0.pre.1' }
     end
 
     describe 'given target: :rc' do
       let(:target) { :rc }
-      pending { should eq '1.0.0.0.rc.1' }
+      it { should eq '1.0.1.0.rc.1' }
     end
   end
 
@@ -370,8 +370,8 @@ describe Gem::Release::Version::Number do
     end
 
     describe 'given target: :epoch' do
-      let(:target) { :major }
-      pending { should eq '2.0.0.0' }
+      let(:target) { :epoch }
+      it { should eq '2.0.0.0' }
     end
 
     describe 'given target: :major' do
@@ -396,12 +396,12 @@ describe Gem::Release::Version::Number do
 
     describe 'given target: :pre' do
       let(:target) { :pre }
-      pending { should eq '1.2.0.0.pre.1' }
+      it { should eq '1.2.1.0.pre.1' }
     end
 
     describe 'given target: :rc' do
       let(:target) { :rc }
-      pending { should eq '1.2.0.0.rc.1' }
+      it { should eq '1.2.1.0.rc.1' }
     end
   end
 
@@ -419,8 +419,8 @@ describe Gem::Release::Version::Number do
     end
 
     describe 'given target: :epoch' do
-      let(:target) { :major }
-      pending { should eq '2.0.0.0' }
+      let(:target) { :epoch }
+      it { should eq '2.0.0.0' }
     end
 
     describe 'given target: :major' do
@@ -445,12 +445,12 @@ describe Gem::Release::Version::Number do
 
     describe 'given target: :pre' do
       let(:target) { :pre }
-      pending { should eq '1.2.3.0.pre.1' }
+      it { should eq '1.2.4.0.pre.1' }
     end
 
     describe 'given target: :rc' do
       let(:target) { :rc }
-      pending { should eq '1.2.3.0.rc.1' }
+      it { should eq '1.2.4.0.rc.1' }
     end
   end
 
@@ -468,8 +468,8 @@ describe Gem::Release::Version::Number do
     end
 
     describe 'given target: :epoch' do
-      let(:target) { :major }
-      pending { should eq '2.0.0.0' }
+      let(:target) { :epoch }
+      it { should eq '2.0.0.0' }
     end
 
     describe 'given target: :major' do
@@ -494,12 +494,12 @@ describe Gem::Release::Version::Number do
 
     describe 'given target: :pre' do
       let(:target) { :pre }
-      pending { should eq '1.2.3.4.pre.1' }
+      it { should eq '1.2.4.0.pre.1' }
     end
 
     describe 'given target: :rc' do
       let(:target) { :rc }
-      pending { should eq '1.2.3.4.rc.1' }
+      it { should eq '1.2.4.0.rc.1' }
     end
   end
 
