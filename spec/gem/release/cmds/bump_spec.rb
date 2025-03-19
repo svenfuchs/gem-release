@@ -68,6 +68,11 @@ describe Gem::Release::Cmds::Bump do
       it { should have_version 'foo/bar', '1.2.3' }
     end
 
+    describe 'epoch' do
+      let(:opts) { { version: :epoch } }
+      it { should have_version 'foo/bar', '1000.0.0' }
+    end
+
     describe 'major' do
       let(:opts) { { version: :major } }
       it { should have_version 'foo/bar', '2.0.0' }
