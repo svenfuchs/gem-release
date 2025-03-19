@@ -56,11 +56,7 @@ module Support
 
       def version(path, version = '1.0.0')
         # path = "lib/#{path}" unless path.include?('lib')
-        # squiggly heredoc was added in Ruby 2.3; Do we need to support older versions?
-        file "#{path.gsub('-', '/')}/version.rb", <<~CONTENT.chomp
-          VERSION = '#{version}'
-          # VERSION = '0.0.0.1'  # Epoch SemVer is also supported; https://antfu.me/posts/epoch-semver
-        CONTENT
+        file "#{path.gsub('-', '/')}/version.rb", "VERSION = '#{version}'"
       end
     end
 
