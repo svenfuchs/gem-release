@@ -34,7 +34,14 @@ module Gem
 
           def major
             part = parts[:major]
-            part = 0 if to?(:epoch)
+            if to?(:epoch)
+              if parts[:epoch]
+                part = 0
+              else
+                part -= part % 1000
+                part += 1000
+              end
+            end
             part += 1 if to?(:major)
             part
           end
