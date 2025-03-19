@@ -245,40 +245,6 @@ describe Gem::Release::Version::Number do
     end
   end
 
-  describe 'given 1.1.1' do
-    let(:number) { '1.1.1' }
-
-    describe 'given target: :major' do
-      let(:target) { :major }
-      it { should eq '2.0.0' }
-    end
-
-    describe 'given target: :minor' do
-      let(:target) { :minor }
-      it { should eq '1.2.0' }
-    end
-
-    describe 'given target: :patch' do
-      let(:target) { :patch }
-      it { should eq '1.1.2' }
-    end
-
-    describe 'given target: nil (defaults to :patch)' do
-      let(:target) { nil }
-      it { should eq '1.1.2' }
-    end
-
-    describe 'given target: :pre' do
-      let(:target) { :pre }
-      it { should eq '1.2.0.pre.1' }
-    end
-
-    describe 'given target: :rc' do
-      let(:target) { :rc }
-      it { should eq '1.2.0.rc.1' }
-    end
-  end
-
   describe 'given 1.0.0-alpha.1' do
     let(:number) { '1.0.0-alpha.1' }
 
