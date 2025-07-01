@@ -28,7 +28,7 @@ jobs:
       - name: generate readme
         run: script/generate_readme
       - name: Commit updated README.md
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v6
         with:
           file_pattern: 'README.md'
       - name: check that new readme is identical to the old
