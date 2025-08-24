@@ -5,10 +5,19 @@ module Gem
     module Files
       class Version < Struct.new(:name, :version, :opts)
         VERSION      = /(VERSION\s*=\s*(?:"|'))((?:(?!"|').)*)("|')/
-        RELEASE      = /^(\d+)\.(\d+)\.(\d+)(.*)$/
-        PRE_RELEASE  = /^(\d+)\.(\d+)\.(\d+)\.?(.*)(\d+)$/
 
-        STAGES = [:major, :minor, :patch]
+        # Note from implementing Epoch versioning:
+        # The RELEASE+PRE_RELEASE+STAGES constants were already here but appear to be unused.
+        # As a first time contributor, I figured it would be safer to leave them in place.
+        # I have added EPOCH_RELEASE and EPOCH_PRE_RELEASE just to keep things consistent.
+        EPOCH_PREFIX  = /^(?<epoch>\d+)\./
+        SEMVER        = /(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)/
+        STAGE         = /\.?(?<stage>.*)(?<stage_num>\d+)/
+        RELEASE       = /^#{SEMVER}(.*)$/
+        PRE_RELEASE   = /^#{SEMVER}$#{STAGE}/
+        EPOCH_RELEASE = /#{EPOCH_PREFIX}#{SEMVER}(.*)$/
+        EPOCH_PRE_RELEASE = /#{EPOCH_PREFIX}#{SEMVER}$#{STAGE}/
+        STAGES = [:epoch, :major, :minor, :patch]
 
         def exists?
           !!path
