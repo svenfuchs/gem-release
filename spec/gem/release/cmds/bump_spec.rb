@@ -43,10 +43,13 @@ describe Gem::Release::Cmds::Bump do
     gemspec 'foo/foo',     '1.0.0'
     version 'bar/lib/bar', '2.0.0'
     gemspec 'bar/bar',     '2.0.0'
+    version 'epo/lib/epo', '3.0.0.0'
+    gemspec 'epo/epo',     '3.0.0.0'
     run_cmd
 
     it { should output "Bumping foo from version 1.0.0 to 1.0.1" }
     it { should output "Bumping bar from version 2.0.0 to 2.0.1" }
+    it { should output "Bumping epo from version 3.0.0.0 to 3.0.0.1" }
   end
 
   describe 'given a gem name ending in *_rb' do
@@ -66,6 +69,11 @@ describe Gem::Release::Cmds::Bump do
     describe '1.2.3' do
       let(:opts) { { version: '1.2.3' } }
       it { should have_version 'foo/bar', '1.2.3' }
+    end
+
+    describe 'epoch' do
+      let(:opts) { { version: :epoch } }
+      it { should have_version 'foo/bar', '1000.0.0' }
     end
 
     describe 'major' do

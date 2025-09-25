@@ -9,7 +9,7 @@ module Gem
 
         description <<-str.split("\n").map(&:lstrip).join("\n")
           Bumps the version number defined in lib/[gem_name]/version.rb to a given,
-          specific version number, or to the next major, minor, patch, or pre-release
+          specific version number, or to the next epoch, major, minor, patch, or pre-release
           level.
 
           Optionally it pushes to the origin repository. Also, optionally it invokes the
@@ -30,6 +30,8 @@ module Gem
           patch       # Bump to the next patch level (e.g. 0.0.1 to 0.0.2)
           pre|rc|etc  # Bump to the next pre-release level (e.g. 0.0.1 to
                       #   0.1.0.pre.1, 1.0.0.pre.1 to 1.0.0.pre.2)
+          epoch       # Bump to the next epoch level
+                      # (e.g. 4.0.0 to 1000.0.0 or 1.0.0.0 to 2.0.0.0)
           ```
 
           When searching for the version file for a gem named `gem-name`: the following
@@ -42,7 +44,7 @@ module Gem
         arg :gem_name, 'name of the gem (optional, will use the directory name, or all gemspecs if --recurse is given)'
 
         DESCR = {
-          version: 'Target version: next [major|minor|patch|pre|release] or a given version number [x.x.x]',
+          version: 'Target version: next [epoch|major|minor|patch|pre|release] or a given version number [x.x.x]',
           branch:  'Check out a new branch for the target version (e.g. `v1.0.0`)',
           commit:  'Create a commit after incrementing gem version',
           message: 'Commit message template',
