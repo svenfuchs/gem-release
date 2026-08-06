@@ -15,5 +15,10 @@ describe Gem::Release::Files::Version do
       let(:target) { :patch }
       it { expect(version.to).to eq '1.0.1' }
     end
+
+    describe 'given :patch (default)' do
+      let(:target) { :epoch }
+      it { expect(version.to).to eq '1000.0.0' }
+    end
   end
 end

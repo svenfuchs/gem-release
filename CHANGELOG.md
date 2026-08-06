@@ -1,5 +1,14 @@
 # Changelog
 
+## UNRELEASED
+
+### Added
+
+- Add support for Epoch semantic versioning
+- `gem bump -v epoch` bumps `EXXX.Y.Z` to `<E+1>000.0.0`
+- `gem bump -v epoch` bumps `E.X.Y.Z` to `<E+1>.0.0.0`
+  (PR: https://github.com/svenfuchs/gem-release/pull/114)
+
 ## v2.2.4 - 2024-12-28
 
 ### Changed
