@@ -1,6 +1,7 @@
 describe Gem::Release::Config do
-  let(:global) { { bump: { commit: false }, tag: { push: false }, quiet: true } }
-  let(:local)  { { bump: { commit: true, push: true }, quiet: false } }
+  let(:global) { { release: { host: 'https://example.com/global' } } }
+  let(:local) { { release: { host: 'https://example.com/local' } } }
+  let(:xdg_config) { { release: { host: 'https://example.com/xdg' } } }
 
   subject { described_class.new.opts }
 
@@ -36,6 +37,41 @@ describe Gem::Release::Config do
     describe 'with an empty file' do
       before { write './.gem_release.yml', '' }
       it { should eq({}) }
+    end
+
+    describe 'XDG_CONFIG_HOME' do
+      describe 'default' do
+        before { write File.join(ENV.fetch('HOME'), '.config/.gem_release.yml'), YAML.dump(xdg_config) }
+        it { should eq xdg_config }
+      end
+
+      describe 'set to ~/.my-little-config' do
+        env XDG_CONFIG_HOME: '~/.my-little-config'
+        before { write '~/.my-little-config/.gem_release.yml', YAML.dump(xdg_config) }
+        it { should eq xdg_config }
+      end
+    end
+
+    describe 'all three ./.gem_release.yml, XDG_CONFIG_HOME, and ~/.gem_release.yml' do
+      before { write './.gem_release.yml', YAML.dump(local) }
+      env XDG_CONFIG_HOME: '~/.my-little-config'
+      before { write '~/.my-little-config/.gem_release.yml', YAML.dump(xdg_config) }
+      before { write '~/.gem_release.yml', YAML.dump(global) }
+      it { should eq local }
+    end
+
+    describe 'both XDG_CONFIG_HOME and ~/.gem_release.yml' do
+      describe 'XDG_CONFIG_HOME default' do
+        before { write File.join(ENV.fetch('HOME'), '.config/.gem_release.yml'), YAML.dump(xdg_config) }
+        before { write '~/.gem_release.yml', YAML.dump(global) }
+        it { should eq xdg_config }
+      end
+      describe 'XDG_CONFIG_HOME set to ~/.my-little-config' do
+        env XDG_CONFIG_HOME: '~/.my-little-config'
+        before { write '~/.my-little-config/.gem_release.yml', YAML.dump(xdg_config) }
+        before { write '~/.gem_release.yml', YAML.dump(global) }
+        it { should eq xdg_config }
+      end
     end
   end
 
